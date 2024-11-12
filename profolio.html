@@ -156,6 +156,62 @@
         }
         .dark-mode section h2{
         color:#9F0202;}
+         /* Fade and slide-up animation */
+         @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Apply the animation to the modal */
+        .modal.fade .modal-dialog {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            transform: translateY(30px);
+            opacity: 0;
+        }
+
+        .modal.fade.show .modal-dialog {
+            animation: fadeInUp 0.5s ease-out;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .dark-mode .modal-content {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .dark-mode .modal-header, .dark-mode .modal-footer {
+            border-color: #444;
+        }
+
+        .dark-mode .btn-close {
+            filter: invert(1); /* Make the close button visible on dark background */
+        }
+
+        .dark-mode .btn-secondary {
+            background-color: #555;
+            border-color: #444;
+        }
+
+        .dark-mode .btn-secondary:hover {
+            background-color: #666;
+            border-color: #555;
+        }
+
+        .dark-mode .btn-primary {
+            background-color: #0066cc;
+            border-color: #005bb5;
+        }
+
+        .dark-mode .btn-primary:hover {
+            background-color: #005bb5;
+            border-color: #004999;
+        }
     </style>
 </head>
 <body>
@@ -190,8 +246,10 @@
                     <img src="thsss.png" class="img-fluid profile-pic" alt="Profile Picture">
                 </div>
                 <div class="col-md-8">
-                    <p class="lead">I am THET HTAR SANN, a developer. I specialize in Java Spring Boot.</p>
-                    <p class="lead">I hold a Bachelor of Computer Science(B.C.Sc.) in Computer Science from University of Computer Studies, Yangon . </p>
+                    <p class="mt-5"></p>
+                    <p class="lead align-items-center">I am THET HTAR SANN, a developer.</p>
+                    <p> I specialize in Java Spring Boot and PHP laravel.</p>
+                    <!-- <p class="lead">I hold a Bachelor of Computer Science(B.C.Sc.) in Computer Science from University of Computer Studies, Yangon . </p> -->
                <!--      <p class="lead">My skills include [Key Skill 1], [Key Skill 2], [Key Skill 3], and proficiency in [Tool/Framework]. I excel in [Soft Skill 1] and [Soft Skill 2], allowing me to [Achieve Specific Outcome/Goal].</p>
                     <p class="lead">I have successfully [Achievement/Project Description], demonstrating my ability to [Your Key Strength/Competency]. One of my notable projects includes [Project Name/Description], where I [Contributed Role/Impact].</p>
                  --></div>
@@ -207,7 +265,7 @@
                     <div class="skill">
                         <h4>Programming Languages</h4>
                         <div class="bar">
-                            <div class="bar-fill" style="width: 60%;"></div>
+                            <div class="bar-fill" style="width: 70%;"></div>
                         </div>
                         <p>JavaScript</p>
                         <div class="bar">
@@ -218,6 +276,10 @@
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
                         <p>Java</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 70%;"></div>
+                        </div>
+                        <p>PHP</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -228,13 +290,13 @@
                         </div>
                         <p>Spring boot</p>
                         <div class="bar">
-                            <div class="bar-fill" style="width: 50%;"></div>
-                        </div>
-                        <p>Git</p>
-                       <!--  <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>Django</p> -->
+                        <p>Git</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 70%;"></div>
+                        </div>
+                        <p>Laravel</p>
                     </div>
                 </div>
              <div class="col-md-4">
@@ -262,28 +324,141 @@
     <section id="projects" class="py-5 bg-light">
         <div class="container">
             <h2 class="display-6">Projects</h2>
-            <div class="row">
+            <div class="row g-4 mb-4">
                 <div class="col-md-6">
-                    <div class="card mb-4">
+                    <div class="card h-100 mb-4">
                         <img src="game.png" class="card-img-top" alt="Project 1 Image">
                         <div class="card-body">
                             <h5 class="card-title">Game Project</h5>
-                            <p class="card-text">This is an online game website. Include games especially board game.</p>
-                            <a href="#" class="btn btn-primary">View Project</a>
+                            <p class="card-text">
+                                This online gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. 
+                                Users can enjoy interactive gameplay while competing against friends or other players. The application 
+                                includes a scoring system that displays the winner of each match and maintains a record of winning results, 
+                                enhancing the competitive experience.
+                            </p>
+                            <!-- Button to open modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">
+                                View Project
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal Structure -->
+                    <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="projectModalLabel">Game Project Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>This online gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. 
+                                       Users can enjoy interactive gameplay while competing against friends or other players. The application 
+                                       includes a scoring system that displays the winner of each match and maintains a record of winning results, 
+                                       enhancing the competitive experience.</p>
+                                    <ul>
+                                        <li><strong>Game 1:</strong> Tic Tac Toe</li>
+                                        <li><strong>Game 2:</strong> Four in a Row</li>
+                                        <li><strong>Game 3:</strong> Checkers</li>
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="https://github.com/thethtar17/games" class="btn btn-primary">Go to Project</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card mb-4">
-                        <img src="saku.png" class="card-img-top" alt="Project 2 Image">
+                    <!-- Card Structure for Chatter Project -->
+                    <div class="card h-100 mb-4">
+                        <img src="chatterlight.png" class="card-img-top" alt="Project 2 Image">
                         <div class="card-body">
-                            <h5 class="card-title">Project Name 2</h5>
-                            <p class="card-text">Brief description of Project 2. Include key features, technologies used, and your role.</p>
-                            <a href="#" class="btn btn-primary">View Project</a>
+                            <h5 class="card-title">Chatter</h5>
+                            <p class="card-text">
+                                Chatter is a messaging web application. The application allows registered users to log in, 
+                                send and receive messages, use emojis, and share files. Its interactive interface and features 
+                                make it user-friendly and engaging.
+                            </p>
+                            <!-- Button to open modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatterModal">
+                                View Project
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Modal Structure for Chatter Project -->
+                    <div class="modal fade" id="chatterModal" tabindex="-1" aria-labelledby="chatterModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="chatterModalLabel">Chatter Project Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="chatterlight.png" class="img-fluid mb-3" alt="Chatter Project Image">
+                                    <p>Chatter is a messaging web application that enables registered users to log in, send and receive messages, 
+                                       use emojis, and share files. Designed with a user-friendly interface, Chatter makes online communication 
+                                       more interactive and accessible.</p>
+                                    <h6><strong>Key Features:</strong></h6>
+                                    <ul>
+                                        <li>User Registration and Authentication: Secure registration and login system.</li>
+                                        <li>Messaging: Users can send and receive instant messages.</li>
+                                        <li>Emojis: Emoji support for a more expressive messaging experience.</li>
+                                        <li>File Sharing: Capability to send files directly in chats.</li>
+                                    </ul>
+                                    <h6><strong>Technologies Used:</strong></h6>
+                                    <ul>
+                                        <li><strong>Backend:</strong> Spring Boot (Java) for application logic and API endpoints</li>
+                                        <li><strong>Database:</strong> MySQL for data storage</li>
+                                        <li><strong>Frontend:</strong> React for an interactive user interface</li>
+                                    </ul>
+                                    <h6><strong>Role:</strong></h6>
+                                    <p>
+                                        Led the development of core messaging functionalities, including the emoji and file-sharing features.<br>
+                                        Built and integrated authentication using Spring Boot, ensuring secure login and user management.<br>
+                                        Enhanced the UI in React to make the application more engaging and responsive.
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="https://github.com/thethtar17/chatter" class="btn btn-primary" target="_blank">Go to Project</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <!-- <div class="row g-4">
+                <div class="col-md-6 ">
+                    <div class="card h-100 mb-4">
+                        <img src="game.png" class="card-img-top" alt="Project 1 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">School Management Project</h5>
+                            <p class="card-text">This is an online game website. Includes games, especially board games.</p>
+                            <a href="https://github.com/thethtar17/games" class="btn btn-primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 mb-4">
+                        <img src="chatterlight.png" class="card-img-top" alt="Project 2 Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Chatter</h5>
+                            <p class="card-text">Chatter is a messaging web application. The application allows registered users to log in, 
+                                send and receive messages, use emojis, and share files. Its interactive interface and features make it user-friendly and engaging.</p>
+                            <a href="https://github.com/thethtar17/chatter" class="btn btn-primary">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
         </div>
     </section>
 
@@ -387,6 +562,12 @@
         document.getElementById('dark-mode-toggle').addEventListener('click', function() {
             document.body.classList.toggle('dark-mode');
         });
+        document.getElementById("toggleDarkMode").addEventListener("click", function() {
+            document.getElementById("chatterModal").classList.toggle("dark-mode");
+        });
+
+       
     </script>
+  
 </body>
 </html>
