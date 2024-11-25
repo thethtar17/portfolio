@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Porfolio Website</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
     <style>
@@ -244,25 +245,38 @@
             background-color: #005bb5;
             border-color: #004999;
         }
+        #language-switch {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        #language-toggle {
+            margin-left: 0.5rem;
+        }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
     <header class="bgnav text-white py-3">
         <div class="container">
-            <h1 class="display-4">Portfolio Website</h1>
+            <h1 id="header-title" class="display-4">Portfolio Website</h1>
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="container-fluid">
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
+                        <ul id="nav-links" class="navbar-nav">
                             <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                             <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
                             <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                             <li class="nav-item"><a class="nav-link" href="#skills">Skill</a></li>
                         </ul>
+                        <div id="language-switch" class="ms-auto">
+                            <label for="language-toggle" class="text-white ml-3">日本語</label>
+                            <input id="language-toggle" type="checkbox">
+                        </div>
                         <button id="dark-mode-toggle" class="btn btn-secondary ms-auto">Toggle Dark Mode</button>
                     </div>
                 </div>
@@ -272,86 +286,127 @@
 
     <section id="about" class="py-3">
         <div class="container">
-            <h2 class="display-6">About Me</h2>
+            <h2 id="about-title" class="display-6 mb-4">About Me</h2>
             <div class="row">
                 <div class="col-md-4">
                     <img src="thsss.png" class="img-fluid profile-pic" alt="Profile Picture">
                 </div>
                 <div class="col-md-8">
-                    <p class="mt-5"></p>
-                    <p class="lead align-items-center">I am THET HTAR SANN, a developer.</p>
-                    <p> I specialize in Java Spring Boot and PHP laravel.</p>
-                    <a href="タッターサン.xlsx" class="btn btn-success" download="タッターサン.xlsx">Download CV</a>
-                </div>             
-            </div>        
+                    <p id="about-name" class="lead">THET HTAR SANN</p>
+                    <p id="about-position" class="lead">System Engineer</p>
+                    <p id="about-description">I specialize in Java Spring Boot and PHP Laravel.</p>
+                    <a id="download-cv" href="タッターサン.xlsx" class="btn btn-success" download="タッターサン.xlsx">Download CV</a>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="skills" class="py-5">
         <div class="container">
-            <h2 class="display-6 mb-3">Programming Skills</h2>
+            <h2 id="skills-title" class="display-6 mb-3">Programming Skills</h2>
             <div class="row">
                 <div class="col-md-4">
                     <div class="skill">
-                        <h4>Programming Languages</h4>
+                        <h4 id="programming-languages-title">Programming Languages</h4>
                         <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>JavaScript</p>
+                        <p id="lang-js">JavaScript</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>Python</p>
+                        <p id="lang-python">Python</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>Java</p>
+                        <p id="lang-java">Java</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>PHP</p>
+                        <p id="lang-php">PHP</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 60%;"></div>
+                        </div>
+                        <p id="lang-csharp">C#</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="skill">
-                        <h4>Frameworks & Tools</h4>
+                        <h4 id="frameworks-title">Frameworks</h4>
                         <div class="bar">
                             <div class="bar-fill" style="width: 75%;"></div>
                         </div>
-                        <p>Spring Boot</p>
+                        <p id="framework-spring">Spring Boot</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>Git</p>
+                        <p id="framework-laravel">Laravel</p>
                         <div class="bar">
-                            <div class="bar-fill" style="width: 70%;"></div>
+                            <div class="bar-fill" style="width: 60%;"></div>
                         </div>
-                        <p>Laravel</p>
+                        <p id="framework-react">React</p>
                         <div class="bar">
-                            <div class="bar-fill" style="width: 50%;"></div>
+                            <div class="bar-fill" style="width: 80%;"></div>
                         </div>
-                        <p>React</p> <!-- Added React -->
-                        <div class="bar">
-                            <div class="bar-fill" style="width: 50%;"></div>
-                        </div>
-                        <p>Docker</p> <!-- Added Docker -->
+                        <p id="framework-bootstrap">Bootstrap</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 50%;"></div>
                         </div>
-                        <p>PostgreSQL</p> <!-- Added PostgreSQL -->
+                        <p id="framework-vue">Vue</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 50%;"></div>
+                        </div>
+                        <p id="framework-node">Node</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="skill">
-                        <h4>Languages</h4>
-                        <div class="bar">
-                            <div class="bar-fill" style="width: 75%;"></div>
-                        </div>
-                        <p>English</p>
+                        <h4 id="tools-title">Tools</h4>
                         <div class="bar">
                             <div class="bar-fill" style="width: 70%;"></div>
                         </div>
-                        <p>Japanese</p>
+                        <p id="tool-git">Git</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 70%;"></div>
+                        </div>
+                        <p id="tool-docker">Docker</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 50%;"></div>
+                        </div>
+                        <p id="tool-postman">Postman</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 60%;"></div>
+                        </div>
+                        <p id="tool-figma">Figma</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="skill">
+                        <h4 id="languages-title">Languages</h4>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 75%;"></div>
+                        </div>
+                        <p id="lang-english">English</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 70%;"></div>
+                        </div>
+                        <p id="lang-japanese">Japanese</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="database">
+                        <h4 id="database-title">Database</h4>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 75%;"></div>
+                        </div>
+                        <p id="db-mysql">MySQL</p>
+                        <div class="bar">
+                            <div class="bar-fill" style="width: 70%;"></div>
+                        </div>
+                        <p id="db-postgresql">PostgreSQL</p>
                     </div>
                 </div>
             </div>
@@ -361,7 +416,7 @@
 
     <section id="projects" class="py-5 bg-light">
         <div class="container">
-            <h2 class="display-6">Projects</h2>
+            <h2 id="project-title" class="display-6">Projects</h2>
             <div class="row g-4 mb-4">
                 <div class="col-md-6">
                     <div class="card h-100 mb-4">
@@ -369,15 +424,15 @@
                             <img src="game.png" class="card-img-top game-image" alt="Project 1 Image">
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Game Project</h5>
-                            <p class="card-text">
+                            <h5 id="project-name-title-one" class="card-title">Game Project</h5>
+                            <p id="project-name-text-one" class="card-text">
                                 This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. 
                                 The game allows two players to compete against each other locally on the same device. 
                                 The application includes a scoring system that displays the winner of each match and maintains a record of winning results, 
                                 enhancing the competitive experience.
                             </p>
                             <!-- Button to open modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">
+                            <button id="project-view-one" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal">
                                 View Project
                             </button>
                         </div>
@@ -393,30 +448,29 @@
                                 </div>
                                 <div class="modal-body">
                                     <img src="game.png" class="img-fluid mb-3" alt="Game Project Image">
-                                    <p>This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. 
+                                    <p id="project-one-modal-text">This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. 
                                        The game allows two players to compete against each other locally on the same device. 
                                        The application includes a scoring system that displays the winner of each match and maintains a record of winning results, 
                                        enhancing the competitive experience.</p>
 
                                     <!-- Key Features Section -->
-                                    <h6><strong>Key Features:</strong></h6>
-                                    <ul>
-                                        <li>Multiplayer gameplay for two players locally).</li>
-                                        <li>Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.</li>
-                                        <li>Scoring system to track the winner of each match.</li>
-                                    
+                                    <strong><h6 id="keyfeatures">Key Features:</h6></strong>
+                                    <ul id="keyitemsOne">
+                                        <li id="keyitemOne">Multiplayer gameplay for two players locally).</li>
+                                        <li id="keyitemOne">Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.</li>
+                                        <li id="keyitemOne">Scoring system to track the winner of each match.</li>
                                     </ul>
 
                                     <!-- Technologies Used Section -->
-                                    <h6><strong>Technologies Used:</strong></h6>
-                                    <ul>
-                                        <li><strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.</li>
-                                        <li><strong>Database:</strong> MySQL for storing player data, game sessions, and results.</li>
+                                    <h6><strong id="technology-used">Technologies Used:</strong></h6>
+                                    <ul id="techsOne">
+                                        <li id="techOne"><strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.</li>
+                                        <li id="techOne"><strong>Database:</strong> MySQL for storing player data, game sessions, and results.</li>
                                     </ul>
 
                                     <!-- Role Section -->
-                                    <h6><strong>Role:</strong></h6>
-                                    <p>
+                                    <h6><strong id="role">Role:</strong></h6>
+                                    <p id="project-one-role-text">
                                         Developed the core gameplay mechanics for each game, ensuring smooth and interactive user experience.<br>
                                         Implemented multiplayer game logic for two players, allowing them to compete locally or over a local network.<br>
                                         Created the scoring system and leaderboard to track winners and maintain game statistics.<br>
@@ -424,13 +478,16 @@
                                     </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <a href="https://github.com/thethtar17/games" class="btn btn-primary" target="_blank">Go to Project</a>
+                                    <button id="close-one" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="https://github.com/thethtar17/games" class="btn btn-primary" target="_blank"  id="go-to-project-one" >Go to Project</a>
                                 </div>
                             </div>
+
+                          
+
                         </div>
                     </div>
-
+<!-- modal -->
                 </div>
                 <div class="col-md-6">
                     <!-- Card Structure for Chatter Project -->
@@ -439,14 +496,14 @@
                             <img src="chatterlight.png" class="card-img-top chatter-image" alt="Chatter Project Image">
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Chatter</h5>
-                            <p class="card-text">
+                            <h5  id="project-name-title-two" class="card-title">Chatter</h5>
+                            <p  id="project-name-text-two" class="card-text">
                                 Chatter is a messaging web application. The application allows registered users to log in, 
                                 send and receive messages, use emojis, and share files. Its interactive interface and features 
                                 make it user-friendly and engaging.
                             </p>
                             <!-- Button to open modal -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatterModal">
+                            <button id="project-view-two" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chatterModal">
                                 View Project
                             </button>
                         </div>
@@ -458,39 +515,38 @@
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="chatterModalLabel">Chatter Project Details</h5>
+                                    <h5 class="modal-title" id="projectTwoModalLabel">Chatter Project Details</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <img src="chatterlight.png" class="img-fluid mb-3" alt="Chatter Project Image">
-                                    <p>Chatter is a messaging web application that enables registered users to log in, send and receive messages, 
-                                       use emojis, and share files. Designed with a user-friendly interface, Chatter makes online communication 
-                                       more interactive and accessible.</p>
-                                    <h6><strong>Key Features:</strong></h6>
-                                    <ul>
-                                        <li>User Registration and Authentication: Secure registration and login system.</li>
-                                        <li>Messaging: Users can send and receive instant messages.</li>
-                                        <li>Emojis: Emoji support for a more expressive messaging experience.</li>
-                                        <li>File Sharing: Capability to send files directly in chats.</li>
+                                    <p id="chatter-description">Chatter is a messaging web application that enables registered users to log in, send and receive messages, use emojis, and share files. Designed with a user-friendly interface, Chatter makes online communication more interactive and accessible.</p>
+                                    <h6><strong id="key-features-title">Key Features:</strong></h6>
+                                    <ul id="key-features-list">
+                                        <li id="registration-authentication">User Registration and Authentication: Secure registration and login system.</li>
+                                        <li id="messaging">Messaging: Users can send and receive instant messages.</li>
+                                        <li id="emojis">Emojis: Emoji support for a more expressive messaging experience.</li>
+                                        <li id="file-sharing">File Sharing: Capability to send files directly in chats.</li>
                                     </ul>
-                                    <h6><strong>Technologies Used:</strong></h6>
-                                    <ul>
-                                        <li><strong>Backend:</strong> Spring Boot (Java) for application logic and API endpoints</li>
-                                        <li><strong>Database:</strong> MySQL for data storage</li>
-                                        <li><strong>Frontend:</strong> React for an interactive user interface</li>
+                                    <h6><strong id="technologies-used-title">Technologies Used:</strong></h6>
+                                    <ul id="technologies-used-list">
+                                        <li id="backend"><strong>Backend:</strong> Spring Boot (Java) for application logic and API endpoints</li>
+                                        <li id="database"><strong>Database:</strong> MySQL for data storage</li>
+                                        <li id="frontend"><strong>Frontend:</strong> React for an interactive user interface</li>
                                     </ul>
-                                    <h6><strong>Role:</strong></h6>
-                                    <p>
+                                    <h6><strong id="role-title">Role:</strong></h6>
+                                    <p id="role-description">
                                         Led the development of core messaging functionalities, including the emoji and file-sharing features.<br>
                                         Built and integrated authentication using Spring Boot, ensuring secure login and user management.<br>
                                         Enhanced the UI in React to make the application more engaging and responsive.
                                     </p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <a href="https://github.com/thethtar17/chatter" class="btn btn-primary" target="_blank">Go to Project</a>
+                                    <button id="close-two" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="https://github.com/thethtar17/chatter" class="btn btn-primary" target="_blank"  id="go-to-project-two" >Go to Project</a>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -529,21 +585,21 @@
 
     <section id="contact" class="py-5">
         <div class="container">
-            <h2 class="display-6">Contact</h2>
+            <h2 class="display-6" id="contact-title">Contact</h2>
             <form action="mailto:thethtar1707@gmail.com" method="post" enctype="text/plain">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Name:</label>
+                    <label for="name" class="form-label" id="name-label">Name:</label>
                     <input type="text" id="name" name="name" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
+                    <label for="email" class="form-label" id="email-label">Email:</label>
                     <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="message" class="form-label">Message:</label>
+                    <label for="message" class="form-label" id="message-label">Message:</label>
                     <textarea id="message" name="message" rows="4" class="form-control" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <button type="submit" class="btn btn-primary" id="send-btn">Send</button>
             </form>
         </div>
     </section>
@@ -552,16 +608,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h4>Find Me Here</h4>
+                    <h4 id="footer-title">Find Me Here</h4>
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9164.60328680735!2d139.31605134999995!3d35.392794150000014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6019abad13995441%3A0x975b02cc80f80db5!2sSakuradai%2C%20Isehara%2C%20Kanagawa%20259-1132!5e1!3m2!1sen!2sjp!4v1731380138057!5m2!1sen!2sjp" width="100%" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>               
-                         <p><strong>Address:</strong> Sakura Dai,Isehara, Kanagawa, Japan</p>
+                    <p id="footer-address-title"><strong >Address:</strong> Sakura Dai, Isehara, Kanagawa, Japan</p>
                 </div>
             </div>
         </div>
         <div class="row">
-            <p>&copy; 2024 Portfolio Website. All rights reserved.</p>
+            <p id="footer-rights">&copy; 2024 Portfolio Website. All rights reserved.</p>
         </div>
     </footer>
+
 
         
   
@@ -643,8 +700,352 @@
             document.getElementById("chatterModal").classList.toggle("dark-mode");
         });
 
-       
+     
     </script>
-  
+       <script>
+        // Content dictionary for translations
+        document.addEventListener('DOMContentLoaded', function () {
+            const languageToggle = document.getElementById('language-toggle');
+            const headerTitle = document.getElementById('header-title');
+            const navLinks = document.querySelectorAll('#nav-links .nav-link');
+            const aboutTitle = document.getElementById('about-title');
+            const aboutName = document.getElementById('about-name');
+            const aboutPosition = document.getElementById('about-position');
+            const aboutDescription = document.getElementById('about-description');
+            const downloadCv = document.getElementById('download-cv');
+            const skillstitle= document.getElementById('skills-title');
+            const programminglanguagestitle= document.getElementById('programming-languages-title');
+            const toolstitle= document.getElementById('tools-title');
+            const frameworkstitle= document.getElementById('frameworks-title');
+            const languagestitle= document.getElementById('languages-title');
+            const databasetitle= document.getElementById('database-title');
+            const langenglish= document.getElementById('lang-english');
+            const langjapanese= document.getElementById('lang-japanese');
+            const projecttitle= document.getElementById('project-title');
+            const projectnametitleone= document.getElementById('project-name-title-one');
+            const projectnametextone= document.getElementById('project-name-text-one');
+            const projectviewone= document.getElementById('project-view-one');
+            const projectviewtwo= document.getElementById('project-view-two');
+           const projectModalLabel=document.getElementById('projectModalLabel');
+           const projectonemodaltext=document.getElementById('project-one-modal-text');
+            const keyFeatures=document.getElementById('keyfeatures');
+            const listItems = document.querySelectorAll('#keyitemsOne li');
+            const technologyused=document.getElementById(" technology-used");
+            const role=document.getElementById("role");
+            const techListItems = document.querySelectorAll('#techsOne li');
+            const roleElement = document.getElementById("role");
+            const techused=document.getElementById("technology-used");
+            const projectoneroletext=document.getElementById("project-one-role-text");
+            const projectnametitletwo= document.getElementById("project-name-title-two");
+            const projectnametexttwo= document.getElementById('project-name-text-two');
+            const  projectTwoModalLabel=document.getElementById('projectTwoModalLabel');
+            const chatterdescription=document.getElementById('chatter-description');
+            const keyfeaturestitle=document.getElementById('key-features-title');
+            const keyfeatureslist=document.querySelectorAll('#key-features-list li');
+            // const registrationauthentication=document.getElementById('registration-authentication');
+            const technologiesusedtitle=document.getElementById("technologies-used-title");
+            const technologiesusedlist=document.querySelectorAll("#technologies-used-list li");
+            const roletitle=document.getElementById("role-title");
+            const roledescription=document.getElementById("role-description");
+            const closeOne=document.getElementById("close-one");
+            const closeTwo=document.getElementById("close-two");
+            const goOne=document.getElementById("go-to-project-one");
+            const goTwo=document.getElementById("go-to-project-two");
+            const contacttitle= document.getElementById("contact-title");
+            const namelabel=  document.getElementById("name-label");
+               const emaillabel=  document.getElementById("email-label");
+               const messagelabel=document.getElementById("message-label");
+               const sendbtn=document.getElementById("send-btn");
+               const foottile= document.getElementById('footer-title');
+            const footaddresstitle= document.getElementById('footer-address-title');
+            const footerrights=document.getElementById('footer-rights');
+            const translations = {
+                en: {
+                    header: "Portfolio Website",
+                    navLinks: ["About", "Projects", "Contact", "Skill"],
+                   
+                     about: {
+                        title: "About Me",
+                        name: "THET HTAR SANN",
+                        position: "System Engineer",
+                        description: "I specialize in Java Spring Boot and PHP Laravel.",
+                        cvText: "Download CV",
+                        cvFile: "ThetHtarSann_CV.xlsx"
+                    },
+                    skills: {
+                        title: "Programming Skills",
+                        programmingLanguages: "Programming Languages",
+                        frameworks: "Frameworks",
+                        tools: "Tools",
+                        languages: "Languages",
+                        database: "Database",
+                        langJs: "JavaScript",
+                        langPython: "Python",
+                        langJava: "Java",
+                        langPhp: "PHP",
+                        langCsharp: "C#",
+                        frameworkSpring: "Spring Boot",
+                        frameworkLaravel: "Laravel",
+                        frameworkReact: "React",
+                        frameworkBootstrap: "Bootstrap",
+                        frameworkVue: "Vue",
+                        frameworkNode: "Node",
+                        toolGit: "Git",
+                        toolDocker: "Docker",
+                        toolPostman: "Postman",
+                        toolFigma: "Figma",
+                        langEnglish: "English",
+                        langJapanese: "Japanese",
+                        dbMysql: "MySQL",
+                        dbPostgresql: "PostgreSQL",
+                    },
+                    projects: {
+                        title: "Projects",
+                        viewProjectButton: "View Project",
+                        keys:"Key Feature",
+                        role: "Role:",
+                        technologyUsed: "Technologies Used:",
+                        projectOne: {
+                            name: "Game Project",
+                            description: "This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. The game allows two players to compete against each other locally on the same device. The application includes a scoring system that displays the winner of each match and maintains a record of winning results, enhancing the competitive experience.",
+                            projectModalTitle:"Game Project Details",
+                            projectModalTest:"This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. The game allows two players to compete against each other locally on the same device. The application includes a scoring system that displays the winner of each match and maintains a record of winning results, enhancing the competitive experience.",
+                            keyitemsOne: [
+                                "Multiplayer gameplay for two players locally.",
+                                "Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.",
+                                "Scoring system to track the winner of each match."
+                            ],
+                            techsOne: [
+                                "<strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.",
+                                "<strong>Database:</strong> MySQL for storing player data, game sessions, and results."
+                            ],
+                            projectOneRoleText: "Developed the core gameplay mechanics for each game, ensuring smooth and interactive user experience.Implemented multiplayer game logic for two players, allowing them to compete locally or over a local network.<br> Created the scoring system and leaderboard to track winners and maintain game statistics.Worked on both the back-end (Spring Boot, MySQL) and front-end to ensure seamless gameplay. "
+                        },
+                        projectTwo:{
+                            projectNameTitle: "Chatter",
+                            projectNameText: `
+                                Chatter is a messaging web application. The application allows registered users to log in, 
+                                send and receive messages, use emojis, and share files. Its interactive interface and features 
+                                make it user-friendly and engaging.
+                            `,
+                            projectModalTitleTwo: "Chatter Project Details",
+                            projectModalTestTwo: "Chatter is a messaging web application that enables registered users to log in, send and receive messages, use emojis, and share files. Designed with a user-friendly interface, Chatter makes online communication more interactive and accessible.",
+                            keyitemsTwo: [
+                                "User Registration and Authentication: Secure registration and login system.",
+                                "Messaging: Users can send and receive instant messages.",
+                                "Emojis: Emoji support for a more expressive messaging experience.",
+                                "File Sharing: Capability to send files directly in chats."
+                            ],
+                            techsTwo: [
+                                "<strong>Backend:</strong> Spring Boot (Java) for application logic and API endpoints",
+                                "<strong>Database:</strong> MySQL for data storage",
+                                "<strong>Frontend:</strong> React for an interactive user interface"
+                            ],
+                            projectTwoRoleText: "Led the development of core messaging functionalities, including the emoji and file-sharing features. Built and integrated authentication using Spring Boot, ensuring secure login and user management. Enhanced the UI in React to make the application more engaging and responsive.",
+                        },
+                      close:"close",
+                      goProject:"Go To Project",
+                    },
+                    contact:{
+                            contactTitle: "Contact",
+                            nameLabel: "Name:",
+                            emailLabel: "Email:",
+                            messageLabel: "Message:",
+                            sendBtn: "Send",
+                        
+                    },
+                    footer:{
+                        footerTitle: "Find Me Here",
+                        footerAddressTitle: "<strong >Address:</strong> Sakura Dai, Isehara, Kanagawa, Japan",
+                        footerRights: "&copy; 2024 Portfolio Website. All rights reserved."
+                    },
+
+                },
+                jp: {
+                    header: "ポートフォリオサイト",
+                    navLinks: ["私について", "プロジェクト", "連絡先", "スキル"],
+                  
+                    about: {
+                        title: "私について",
+                        name: "タッターサン",
+                        position: "システムエンジニア",
+                        description: "Java Spring Boot と PHP Laravel を専門としています。",
+                        cvText: "履歴書をダウンロード",
+                        cvFile: "タッターサン.xlsx"
+                    },
+                     skills: {
+                        title: "プログラミングスキル",
+                        programmingLanguages: "プログラミング言語",
+                        frameworks: "フレームワーク",
+                        tools: "ツール",
+                        languages: "言語",
+                        database: "データベース",
+                        langJs: "JavaScript",
+                        langPython: "Python",
+                        langJava: "Java",
+                        langPhp: "PHP",
+                        langCsharp: "C#",
+                        frameworkSpring: "Spring Boot",
+                        frameworkLaravel: "Laravel",
+                        frameworkReact: "React",
+                        frameworkBootstrap: "Bootstrap",
+                        frameworkVue: "Vue",
+                        frameworkNode: "Node",
+                        toolGit: "Git",
+                        toolDocker: "Docker",
+                        toolPostman: "Postman",
+                        toolFigma: "Figma",
+                        langEnglish: "英語",
+                        langJapanese: "日本語",
+                        dbMysql: "MySQL",
+                        dbPostgresql: "PostgreSQL",
+                    },
+                    projects: {
+                        title: "プロジェクト",
+                        keys :"主な特徴",
+                        viewProjectButton: "プロジェクトを見る",
+                        role: "役割:",
+                        technologyUsed: "使用技術:",
+                        projectOne: {
+                            name: "ゲームプロジェクト",
+                            description: "このマルチプレイヤーゲームプラットフォームは、三つのクラシックゲームを提供します：三目並べ、四つ並べ、チェッカー。 ゲームは、同じデバイスで二人のプレイヤーが対戦できるようになっています。 アプリケーションには、各試合の勝者を表示し、勝利結果を記録するスコアリングシステムが含まれており、競争の体験を向上させます。",
+                            projectModalTitle:"ゲームプロジェクトの内容",
+                            projectModalTest: "このマルチプレイヤーゲームプラットフォームは、三つのクラシックゲームを提供します：三目並べ、四つ並べ、チェッカー。 ゲームは、同じデバイスで二人のプレイヤーが対戦できるようになっています。 アプリケーションには、各試合の勝者を表示し、勝利結果を記録するスコアリングシステムが含まれており、競争の体験を向上させます。",
+                            keyitemsOne:["ローカルで2人プレイ可能なマルチプレイヤーゲームプレイ。","プレイヤーは、三目並べ、四目並べ、チェッカーなどのゲームを楽しむことができます。","各試合の勝者を記録するスコアリングシステムを搭載。"],
+                            techsOne: [
+                                "<strong>バックエンド:</strong> ゲームロジック、APIリクエスト、ユーザー管理を処理するためのSpring Bootを使用したJava。",
+                                "<strong>データベース:</strong> プレイヤーデータ、ゲームセッション、結果を保存するためのMySQL。"
+                            ],
+                            projectOneRoleText: "  各ゲームのコアゲームプレイメカニクスを開発し、スムーズでインタラクティブなユーザー体験を実現しました。2人のプレイヤーがローカルまたはローカルネットワーク上で競い合うマルチプレイヤーゲームロジックを実装しました。勝者を追跡し、ゲーム統計を維持するためのスコアリングシステムとリーダーボードを作成しました。バックエンド（Spring Boot、MySQL）とフロントエンドの両方でシームレスなゲームプレイを実現しました。 "
+                        },
+                        projectTwo:{
+                            projectNameTitle: "チャッター",
+                            projectNameText: `
+                                チャッターはメッセージングウェブアプリケーションです。アプリケーションは登録ユーザーがログインし、 
+                                メッセージを送受信し、絵文字を使用し、ファイルを共有することを可能にします。インタラクティブなインターフェースと機能により、 
+                                ユーザーフレンドリーで魅力的です。
+                            `,
+                            projectModalTitleTwo: "チャッタープロジェクト詳細",
+                            projectModalTestTwo: "Chatterは、登録ユーザーがログインし、メッセージの送受信、絵文字の使用、ファイルの共有ができるメッセージングウェブアプリケーションです。ユーザーフレンドリーなインターフェースを備えたChatterは、オンラインコミュニケーションをよりインタラクティブでアクセス可能にします。",
+                            keyitemsTwo: [
+                                "ユーザー登録と認証: セキュアな登録とログインシステム。",
+                                "メッセージング: ユーザーがインスタントメッセージを送受信できます。",
+                                "絵文字: より表現力豊かなメッセージング体験のための絵文字サポート。",
+                                "ファイル共有: チャット内で直接ファイルを送信する機能。"
+                            ],
+                            techsTwo: [
+                                "<strong>バックエンド:</strong> アプリケーションロジックとAPIエンドポイントのためのSpring Boot（Java）",
+                                "<strong>データベース:</strong> データストレージのためのMySQL",
+                                "<strong>フロントエンド:</strong> インタラクティブなユーザーインターフェースのためのReact"
+                            ],
+                            projectTwoRoleText: "絵文字およびファイル共有機能を含むコアメッセージング機能の開発を主導しました。Spring Bootを使用して認証機能を構築し、セキュアなログインとユーザー管理を実現しました。ReactでUIを強化し、アプリケーションをより魅力的で応答性の高いものにしました。",
+   
+                        },
+                        close:"閉じる",
+                      goProject:'プロジェクトへ移動',
+                    },
+                    contact:{
+                        contactTitle: "お問い合わせ",
+                        nameLabel: "名前:",
+                        emailLabel: "メール:",
+                        messageLabel: "メッセージ:",
+                        sendBtn: "送信",
+                    },
+                    footer:{
+                        footerTitle: "ここで見つけてください",
+                        footerAddressTitle: "　住所: 桜台　伊勢原　神奈川県",
+                        footerRights: "&copy; 2024 ポートフォリオウェブサイト。全著作権所有。",
+                    },
+                }
+            };
+
+            function switchLanguage(lang) {
+                // Update header
+                headerTitle.textContent = translations[lang].header;
+
+                // Update navigation links
+                navLinks.forEach((link, index) => {
+                    link.textContent = translations[lang].navLinks[index];
+                });
+
+                // Update About Me section
+                aboutTitle.textContent = translations[lang].about.title;
+                aboutName.textContent = translations[lang].about.name;
+                aboutPosition.textContent = translations[lang].about.position;
+                aboutDescription.textContent = translations[lang].about.description;
+                downloadCv.textContent = translations[lang].about.cvText;
+                downloadCv.setAttribute('download', translations[lang].about.cvFile);
+                downloadCv.setAttribute('href', translations[lang].about.cvFile);
+                skillstitle.textContent=translations[lang].skills.title;
+                toolstitle.textContent=translations[lang].skills.tools;
+                programminglanguagestitle.textContent=translations[lang].skills.programmingLanguages;
+                frameworkstitle.textContent=translations[lang].skills.frameworks;
+                languagestitle.textContent=translations[lang].skills.languages;
+                databasetitle.textContent=translations[lang].skills.database;
+                langenglish.textContent=translations[lang].skills.langEnglish;
+                langjapanese.textContent=translations[lang].skills.langJapanese;
+                projecttitle.textContent=translations[lang].projects.title;
+                projectnametitleone.textContent=translations[lang].projects.projectOne.name; 
+                projectnametextone.textContent=translations[lang].projects.projectOne.description;
+                projectviewone.textContent=translations[lang].projects.viewProjectButton;
+                projectviewtwo.textContent=translations[lang].projects.viewProjectButton;
+
+            projectModalLabel.textContent=translations[lang].projects.projectOne.projectModalTitle;
+            projectonemodaltext.textContent=translations[lang].projects.projectOne.projectModalTest;
+            keyFeatures.textContent=translations[lang].projects.keys;
+            listItems.forEach((li, index) => {
+                    li.textContent =translations[lang].projects.projectOne.keyitemsOne[index];
+                });
+
+                techListItems.forEach((li, index) => {
+                    li.innerHTML =translations[lang].projects.projectOne.techsOne[index];
+                });
+
+                roleElement.textContent = translations[lang].projects.role;
+                techused.textContent = translations[lang].technologyUsed;
+                projectoneroletext.textContent = translations[lang].projects.projectOne.projectOneRoleText;
+
+
+
+                projectnametitletwo.textContent=translations[lang].projects.projectTwo.projectNameTitle;
+                projectnametexttwo.textContent=translations[lang].projects.projectTwo.projectNameText;
+                projectTwoModalLabel.textContent=translations[lang].projects.projectTwo.projectNameTitle;
+                chatterdescription.textContent=translations[lang].projects.projectTwo.projectNameText;
+                keyfeaturestitle.textContent=translations[lang].projects.keys;
+                keyfeatureslist.forEach((li, index) => {
+                    li.textContent =translations[lang].projects.projectTwo.keyitemsTwo[index];
+                });
+                technologiesusedtitle.textContent=translations[lang].projects.technologyUsed;
+                technologiesusedlist.forEach((li, index) => {
+                    li.innerHTML =translations[lang].projects.projectTwo.techsTwo[index];
+                });
+                roletitle.textContent=translations[lang].projects.role;
+                roledescription.textContent=translations[lang].projects.projectTwo.projectTwoRoleText;
+                closeOne.textContent=translations[lang].projects.close;
+                closeTwo.textContent=translations[lang].projects.close;
+                goOne.textContent=translations[lang].projects.goProject;
+                goTwo.textContent=translations[lang].projects.goProject;
+               contacttitle.textContent = translations[lang].contact.contactTitle;
+              namelabel.textContent = translations[lang].contact.nameLabel;
+              emaillabel.textContent = translations[lang].contact.emailLabel;
+                messagelabel.textContent = translations[lang].contact.messageLabel;
+                sendbtn.textContent = translations[lang].contact.sendBtn;
+
+               foottile.textContent = translations[lang].footer.footerTitle;
+               footaddresstitle.textContent = translations[lang].footer.footerAddressTitle;
+                footerrights.textContent = translations[lang].footer.footerRights;
+
+            }
+
+            languageToggle.addEventListener('change', function () {
+                if (languageToggle.checked) {
+                    switchLanguage('jp');
+                } else {
+                    switchLanguage('en');
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
