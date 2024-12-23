@@ -556,34 +556,85 @@
                     </div>
 
                         </div>
+
+
+                        <div class="col-md-6">
+                            <div class="card h-100 mb-4">
+                                <div class="image-container">
+                                    <img src="netbuddy.png" class="card-img-top netbuddy-image" alt="NetBuddy Project Image">
+                                </div>
+                                <div class="card-body">
+                                    <h5 id="netbuddy-name-title" class="card-title">NetBuddy Project</h5>
+                                    <p id="netbuddy-name-text" class="card-text">
+                                        NetBuddy is a social media platform designed for seamless user interaction, content sharing, and real-time communication. 
+                                        The platform integrates modern technologies like WebSocket for real-time messaging, Google Drive for media storage, and SQL Server for data management. 
+                                        It offers a rich feature set for users to share content, interact with others, and communicate effectively.
+                                    </p>
+                                    <!-- Button to open modal -->
+                                    <button id="netbuddy-view" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#netBuddyModal">
+                                        View Project
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Modal Structure -->
+                            <div class="modal fade" id="netBuddyModal" tabindex="-1" aria-labelledby="netBuddyModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="netBuddyModalLabel">NetBuddy Project Details</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="netbuddy.png" class="img-fluid mb-3" alt="NetBuddy Project Image">
+                                            <p id="netbuddy-modal-text">NetBuddy is a social media platform designed for seamless user interaction, content sharing, and real-time communication. 
+                                               The platform integrates modern technologies like WebSocket for real-time messaging, Google Drive for media storage, and SQL Server for data management. 
+                                               It offers a rich feature set for users to share content, interact with others, and communicate effectively.</p>
+
+                                            <!-- Key Features Section -->
+                                            <strong><h6 id="keyfeatures">Key Features:</h6></strong>
+                                            <ul id="keyitemsNetBuddy">
+                                                <li id="keyitemNetBuddy">User registration and profile creation with customizable details.</li>
+                                                <li id="keyitemNetBuddy">Content sharing with media uploads saved to Google Drive.</li>
+                                                <li id="keyitemNetBuddy">Real-time messaging between friends using WebSocket.</li>
+                                                <li id="keyitemNetBuddy">Follow, friend, and interact with other users.</li>
+                                                <li id="keyitemNetBuddy">Post and comment management with edit and delete options.</li>
+                                            </ul>
+
+                                            <!-- Technologies Used Section -->
+                                            <h6><strong id="technology-used">Technologies Used:</strong></h6>
+                                            <ul id="techsNetBuddy">
+                                                <li id="techNetBuddy"><strong>Frontend:</strong> ASP.NET Razor Pages for user interface and interactions.</li>
+                                                <li id="techNetBuddy"><strong>Backend:</strong> C# with ASP.NET Core for server-side processing.</li>
+                                                <li id="techNetBuddy"><strong>Database:</strong> SQL Server for storing user data, posts, and comments.</li>
+                                                <li id="techNetBuddy"><strong>Real-Time Communication:</strong> WebSocket for live messaging.</li>
+                                                <li id="techNetBuddy"><strong>File Integration:</strong> Google Drive API for multimedia storage.</li>
+                                            </ul>
+
+                                            <!-- Role Section -->
+                                            <h6><strong id="role">Role:</strong></h6>
+                                            <p id="netbuddy-role-text">
+                                                Designed and developed the core features for user management, content sharing, and real-time communication.<br>
+                                                Integrated Google Drive API for storing multimedia files and ensuring seamless media management.<br>
+                                                Implemented WebSocket for real-time messaging and user interactions.<br>
+                                                Worked on both the back-end (ASP.NET Core, SQL Server) and front-end to create an intuitive user experience.
+                                            </p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="close-netbuddy" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a href="https://github.com/yourusername/netbuddy" class="btn btn-primary" target="_blank" id="go-to-netbuddy-project">Go to Project</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
 
-            <!-- <div class="row g-4">
-                <div class="col-md-6 ">
-                    <div class="card h-100 mb-4">
-                        <img src="game.png" class="card-img-top" alt="Project 1 Image">
-                        <div class="card-body">
-                            <h5 class="card-title">School Management Project</h5>
-                            <p class="card-text">This is an online game website. Includes games, especially board games.</p>
-                            <a href="https://github.com/thethtar17/games" class="btn btn-primary">View Project</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card h-100 mb-4">
-                        <img src="chatterlight.png" class="card-img-top" alt="Project 2 Image">
-                        <div class="card-body">
-                            <h5 class="card-title">Chatter</h5>
-                            <p class="card-text">Chatter is a messaging web application. The application allows registered users to log in, 
-                                send and receive messages, use emojis, and share files. Its interactive interface and features make it user-friendly and engaging.</p>
-                            <a href="https://github.com/thethtar17/chatter" class="btn btn-primary">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+     
 
         </div>
     </section>
