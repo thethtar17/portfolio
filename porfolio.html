@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THET HTAR SANN | Portfolio</title>
+
+  <meta name="description" content="Portfolio of THET HTAR SANN — System Engineer specializing in Java Spring Boot, PHP Laravel, and C# ASP.NET." />
+
+  <meta property="og:title" content="THET HTAR SANN | Portfolio" />
+  <meta property="og:description" content="System Engineer specializing in Java Spring Boot, PHP Laravel, and C# ASP.NET." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="thettharsan.webp" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="THET HTAR SANN | Portfolio" />
+  <meta name="twitter:description" content="System Engineer specializing in Java Spring Boot, PHP Laravel, and C# ASP.NET." />
+  <meta name="twitter:image" content="thettharsan.webp" />
+
+  <link rel="icon" type="image/png" href="sakura.png" />
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="porfolio.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">TH</div>
+        <div class="brand-text">
+          <strong id="ui-name">THET HTAR SANN</strong>
+          <span id="ui-role">System Engineer</span>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <nav class="nav-links" aria-label="Primary">
+          <a id="nav-about" href="#about">About</a>
+          <a id="nav-projects" href="#projects">Projects</a>
+          <a id="nav-experience" href="#experience">Experience</a>
+          <a id="nav-certificates" href="#certificates">Certificate</a>
+          <a id="nav-skills" href="#skills">Skill</a>
+          <a id="nav-contact" href="#contact">Contact</a>
+        </nav>
+
+        <div class="pill" title="Language">
+          <label for="langToggle" id="ui-lang-label">日本語</label>
+          <input id="langToggle" type="checkbox" />
+        </div>
+
+        <button id="themeToggle" class="btn-icon" type="button" title="Toggle theme">
+          <i class="bi bi-moon-stars" id="themeIcon" aria-hidden="true"></i>
+          <span id="ui-theme">Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div class="panel">
+          <div class="panel-body">
+            <div class="kicker"><span class="dot" aria-hidden="true"></span><span id="ui-kicker">Portfolio</span></div>
+            <h1 id="ui-hero-title">Portfolio Website</h1>
+            <p id="ui-hero-sub" class="subtitle">I specialize in Java Spring Boot, PHP Laravel and C# ASP.NET.</p>
+
+            <div class="cta-row" role="group" aria-label="Quick actions">
+              <a id="btn-cv" class="cta cta-primary" href="タッターサン.pdf" download="タッターサン.pdf">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span id="ui-cv">Download CV</span>
+              </a>
+              <a id="btn-linkedin" class="cta" href="https://www.linkedin.com/in/thet-htar-sann-4946771b2/" target="_blank" rel="noreferrer">
+                <i class="bi bi-linkedin" aria-hidden="true"></i>
+                <span>LinkedIn</span>
+              </a>
+              <a id="btn-email" class="cta" href="mailto:thethtar1707@gmail.com">
+                <i class="bi bi-envelope" aria-hidden="true"></i>
+                <span>Email</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="portrait">
+          <img src="thettharsan.webp" alt="THET HTAR SANN profile photo" />
+          <div class="note" id="ui-note">Based in Japan • Open to opportunities</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="section-head">
+        <h2 id="about-title">About Me</h2>
+        <p id="about-mini">A quick introduction</p>
+      </div>
+      <div class="panel">
+        <div class="panel-body">
+          <p id="about-desc" class="subtitle" style="margin:0;">
+            I specialize in Java Spring Boot, PHP Laravel and C# ASP.NET.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <div class="section-head">
+        <h2 id="experience-title">Experience</h2>
+        <p id="experience-mini">Recent roles and training</p>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-body">
+            <div class="scrollable" aria-label="Experience list">
+              <ul class="list" style="margin-top:0;">
+                <li class="item">
+                  <strong id="exp-0-title">System Engineer</strong>
+                  <div class="meta">
+                    <span class="tag">Fellowship Corporation</span>
+                    <span class="tag" id="exp-0-date">Nov 2024 - Present</span>
+                  </div>
+                  <div class="meta" id="exp-0-location" style="margin-top:8px;">Isehara, Kanagawa, Japan</div>
+                </li>
+                <li class="item">
+                  <strong id="exp-1-title">Trainee</strong>
+                  <div class="meta">
+                    <span class="tag">GIC</span>
+                    <span class="tag" id="exp-1-date">Aug 2024 - Oct 2024</span>
+                  </div>
+                  <div class="meta" id="exp-1-location" style="margin-top:8px;">Lanmadaw, Yangon, Myanmar</div>
+                </li>
+                <li class="item">
+                  <strong id="exp-2-title">Internship Trainee</strong>
+                  <div class="meta">
+                    <span class="tag">DAT</span>
+                    <span class="tag" id="exp-2-date">May 2024 - Jul 2024</span>
+                  </div>
+                  <div class="meta" id="exp-2-location" style="margin-top:8px;">Hlaing, Yangon, Myanmar</div>
+                </li>
+                <li class="item">
+                  <strong id="exp-3-title">Instructor</strong>
+                  <div class="meta">
+                    <span class="tag">Kanji Japanese</span>
+                    <span class="tag" id="exp-3-date">Oct 2022 - Apr 2023</span>
+                  </div>
+                  <div class="meta" id="exp-3-location" style="margin-top:8px;">North Dagon, Yangon, Myanmar</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-body">
+            <h3 style="margin:0 0 10px;font-size:15px;" id="experience-side-title">Highlights</h3>
+            <ul style="margin:0;padding-left:18px;color:var(--muted);line-height:1.8;font-size:13px;">
+              <li id="experience-hl-1">Backend development with Java Spring Boot, C# ASP.NET Core</li>
+              <li id="experience-hl-2">Database experience with MySQL, SQL Server, PostgreSQL</li>
+              <li id="experience-hl-3">Frontend experience with React and Vue.js</li>
+              <li id="experience-hl-4">Hands-on building full-stack projects end-to-end</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="certificates" class="section">
+      <div class="section-head">
+        <h2 id="certificates-title">Certificates</h2>
+        <p id="certificates-mini">Key milestones</p>
+      </div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="scrollable" aria-label="Certificates list" style="max-height: 420px;">
+            <ul class="list" style="margin-top:0;">
+              <li class="item"><strong id="cert-0-title">NATTEST N2</strong><div class="meta"><span class="tag" id="cert-0-date">Aug 2024</span></div></li>
+              <li class="item"><strong id="cert-1-title">Fundamentals of Engineering</strong><div class="meta"><span class="tag" id="cert-1-date">Oct 2023</span></div></li>
+              <li class="item"><strong id="cert-2-title">JLPT N3</strong><div class="meta"><span class="tag" id="cert-2-date">Jul 2023</span></div></li>
+
+              <li class="item">
+                <strong id="cert-3-title">Python For EveryBody</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Coursera</span><span class="tag" id="cert-3-date">Jul 2021</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-4-title">Python For Beginners</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Sololearn</span><span class="tag" id="cert-4-date">May 2021</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-5-title">Introduction to Html 5</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Coursera</span><span class="tag" id="cert-5-date">Sep 2020</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-6-title">SQL Fundamentals</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Sololearn</span><span class="tag" id="cert-6-date">Sep 2020</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-7-title">Capstone: Retrieving, Processing, and Visualizing Data with Python</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Coursera</span><span class="tag" id="cert-7-date">Jul 2020</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-8-title">Programming for Everybody</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Coursera</span><span class="tag" id="cert-8-date">Jul 2020</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-9-title">Python Data structures</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Coursera</span><span class="tag" id="cert-9-date">Jul 2020</span></div>
+              </li>
+              <li class="item">
+                <strong id="cert-10-title">Using Python to Access Web Data</strong>
+                <div class="meta"><span class="tag"><span class="issued-by-label">Issued by:</span> Coursera</span><span class="tag" id="cert-10-date">Jul 2020</span></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="section-head">
+        <h2 id="skills-title">Programming Skills</h2>
+        <p id="skills-mini">Tools and technologies</p>
+      </div>
+
+      <div class="skills">
+        <div class="panel box">
+          <div class="panel-body">
+            <h3 id="programming-languages-title" style="margin:0 0 8px;font-size:15px;">Programming Languages</h3>
+
+            <div class="skill-row"><strong id="lang-js" style="font-size:13px;">JavaScript</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong id="lang-python" style="font-size:13px;">Python</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong id="lang-java" style="font-size:13px;">Java</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong id="lang-php" style="font-size:13px;">PHP</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong id="lang-csharp" style="font-size:13px;">C#</strong><small>90%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="90"></span></div>
+          </div>
+        </div>
+
+        <div class="panel box">
+          <div class="panel-body">
+            <h3 id="frameworks-title" style="margin:0 0 8px;font-size:15px;">Frameworks</h3>
+
+            <div class="skill-row"><strong style="font-size:13px;">Spring Boot</strong><small>80%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="80"></span></div>
+
+            <div class="skill-row"><strong style="font-size:13px;">ASP.NET</strong><small>90%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="90"></span></div>
+
+            <div class="skill-row"><strong id="framework-laravel" style="font-size:13px;">Laravel</strong><small>75%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="75"></span></div>
+
+            <div class="skill-row"><strong id="framework-react" style="font-size:13px;">React</strong><small>60%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="60"></span></div>
+
+            <div class="skill-row"><strong id="framework-bootstrap" style="font-size:13px;">Bootstrap</strong><small>80%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="80"></span></div>
+
+            <div class="skill-row"><strong id="framework-vue" style="font-size:13px;">Vue</strong><small>50%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="50"></span></div>
+
+            <div class="skill-row"><strong id="framework-node" style="font-size:13px;">Node</strong><small>50%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="50"></span></div>
+          </div>
+        </div>
+
+        <div class="panel box">
+          <div class="panel-body">
+            <h3 id="tools-title" style="margin:0 0 8px;font-size:15px;">Tools</h3>
+
+            <div class="skill-row"><strong id="tool-git" style="font-size:13px;">Git</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong id="tool-docker" style="font-size:13px;">Docker</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong id="tool-postman" style="font-size:13px;">Postman</strong><small>50%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="50"></span></div>
+
+            <div class="skill-row"><strong id="tool-figma" style="font-size:13px;">Figma</strong><small>60%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="60"></span></div>
+          </div>
+        </div>
+
+        <div class="panel box" style="grid-column: span 6;">
+          <div class="panel-body">
+            <h3 id="languages-title" style="margin:0 0 8px;font-size:15px;">Languages</h3>
+            <div class="skill-row"><strong id="lang-english" style="font-size:13px;">English</strong><small>75%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="75"></span></div>
+
+            <div class="skill-row"><strong id="lang-japanese" style="font-size:13px;">Japanese</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+          </div>
+        </div>
+
+        <div class="panel box" style="grid-column: span 6;">
+          <div class="panel-body">
+            <h3 id="database-title" style="margin:0 0 8px;font-size:15px;">Database</h3>
+            <div class="skill-row"><strong id="db-mysql" style="font-size:13px;">MySQL</strong><small>75%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="75"></span></div>
+
+            <div class="skill-row"><strong id="db-postgresql" style="font-size:13px;">PostgreSQL</strong><small>70%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="70"></span></div>
+
+            <div class="skill-row"><strong style="font-size:13px;">SQL Server</strong><small>80%</small></div>
+            <div class="meter" aria-hidden="true"><span data-fill="80"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="section-head">
+        <h2 id="project-title">Projects</h2>
+        <p id="projects-mini">Selected work</p>
+      </div>
+
+      <div class="projects">
+        <article class="project" aria-label="Game Project">
+          <div class="media"><img src="game.png" alt="Game Project preview" /></div>
+          <div class="body">
+            <h3 id="project-name-title-one">Game Project</h3>
+            <p id="project-name-text-one">This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. The game allows two players to compete against each other locally on the same device. The application includes a scoring system that displays the winner of each match and maintains a record of winning results, enhancing the competitive experience.</p>
+
+            <details>
+              <summary><span id="project-one-details">Details</span><span id="project-one-summary">Key features • Tech • Role</span></summary>
+              <div>
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="project-one-keys-title">Key Features</h4>
+                <ul id="keyitemsOne">
+                  <li>Multiplayer gameplay for two players locally.</li>
+                  <li>Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.</li>
+                  <li>Scoring system to track the winner of each match.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="project-one-tech-title">Technologies Used</h4>
+                <ul id="techsOne">
+                  <li><strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.</li>
+                  <li><strong>Database:</strong> MySQL for storing player data, game sessions, and results.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="project-one-role-title">Role</h4>
+                <p id="project-one-role-text">Developed the core gameplay mechanics for each game, ensuring smooth and interactive user experience. Implemented multiplayer game logic for two players, allowing them to compete locally or over a local network. Created the scoring system and leaderboard to track winners and maintain game statistics. Worked on both the back-end (Spring Boot, MySQL) and front-end to ensure seamless gameplay.</p>
+              </div>
+            </details>
+
+            <div class="actions">
+              <a class="cta cta-primary" href="https://github.com/thethtar17/games" target="_blank" rel="noreferrer" id="go-to-project-one">
+                <i class="bi bi-github" aria-hidden="true"></i>
+                <span id="project-one-go">Go to Project</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" aria-label="Chatter Project">
+          <div class="media"><img src="chatterlight.png" alt="Chatter Project preview" /></div>
+          <div class="body">
+            <h3 id="project-name-title-two">Chatter</h3>
+            <p id="project-name-text-two">Chatter is a messaging web application. The application allows registered users to log in, send and receive messages, use emojis, and share files. Its interactive interface and features make it user-friendly and engaging.</p>
+
+            <details>
+              <summary><span id="project-two-details">Details</span><span id="project-two-summary">Key features • Tech • Role</span></summary>
+              <div>
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="key-features-title">Key Features</h4>
+                <ul id="key-features-list">
+                  <li>User Registration and Authentication: Secure registration and login system.</li>
+                  <li>Messaging: Users can send and receive instant messages.</li>
+                  <li>Emojis: Emoji support for a more expressive messaging experience.</li>
+                  <li>File Sharing: Capability to send files directly in chats.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="technologies-used-title">Technologies Used</h4>
+                <ul id="technologies-used-list">
+                  <li><strong>Backend:</strong> Spring Boot (Java) for application logic and API endpoints</li>
+                  <li><strong>Database:</strong> MySQL for data storage</li>
+                  <li><strong>Frontend:</strong> React for an interactive user interface</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="role-title">Role</h4>
+                <p id="role-description">Led the development of core messaging functionalities, including the emoji and file-sharing features. Built and integrated authentication using Spring Boot, ensuring secure login and user management. Enhanced the UI in React to make the application more engaging and responsive.</p>
+              </div>
+            </details>
+
+            <div class="actions">
+              <a class="cta cta-primary" href="https://github.com/thethtar17/chatter" target="_blank" rel="noreferrer" id="go-to-project-two">
+                <i class="bi bi-github" aria-hidden="true"></i>
+                <span id="project-two-go">Go to Project</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" aria-label="NetBuddy Project">
+          <div class="media">
+            <div class="gallery" aria-label="NetBuddy screenshots">
+              <img src="images/netbuddy/netbuddy.png" alt="NetBuddy screenshot 1" />
+              <img src="images/netbuddy/search.png" alt="NetBuddy screenshot 2" />
+              <img src="images/netbuddy/Chat.png" alt="NetBuddy screenshot 3" />
+              <img src="images/netbuddy/post.png" alt="NetBuddy screenshot 4" />
+              <img src="images/netbuddy/profile.png" alt="NetBuddy screenshot 5" />
+              <img src="images/netbuddy/register.png" alt="NetBuddy screenshot 6" />
+              <img src="images/netbuddy/login.png" alt="NetBuddy screenshot 7" />
+              <img src="images/netbuddy/profilebox.png" alt="NetBuddy screenshot 8" />
+            </div>
+          </div>
+          <div class="body">
+            <h3 id="netbuddy-name-title">NetBuddy Project</h3>
+            <p id="netbuddy-name-text">NetBuddy is a social media platform designed for seamless user interaction, content sharing, and real-time communication. The platform integrates modern technologies like WebSocket for real-time messaging, Google Drive for media storage, and SQL Server for data management. It offers a rich feature set for users to share content, interact with others, and communicate effectively.</p>
+
+            <details>
+              <summary><span id="netbuddy-details">Details</span><span id="netbuddy-summary">Key features • Tech • Role</span></summary>
+              <div>
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="netbuddy-keys-title">Key Features</h4>
+                <ul id="keyitemsNetBuddy">
+                  <li>User registration and profile creation with customizable details.</li>
+                  <li>Content sharing with media uploads saved to Google Drive.</li>
+                  <li>Real-time messaging between friends using WebSocket.</li>
+                  <li>Follow, friend, and interact with other users.</li>
+                  <li>Post and comment management with edit and delete options.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="netbuddy-tech-title">Technologies Used</h4>
+                <ul id="techsNetBuddy">
+                  <li><strong>Frontend:</strong> ASP.NET Razor Pages for user interface and interactions.</li>
+                  <li><strong>Backend:</strong> C# with ASP.NET Core for server-side processing.</li>
+                  <li><strong>Database:</strong> SQL Server for storing user data, posts, and comments.</li>
+                  <li><strong>Real-Time Communication:</strong> WebSocket for live messaging.</li>
+                  <li><strong>File Integration:</strong> Google Drive API for multimedia storage.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="netbuddy-role-title">Role</h4>
+                <p id="netbuddy-role-text">Designed and developed the core features for user management, content sharing, and real-time communication. Integrated Google Drive API for storing multimedia files and ensuring seamless media management. Implemented WebSocket for real-time messaging and user interactions. Worked on both the back-end (ASP.NET Core, SQL Server) and front-end to create an intuitive user experience.</p>
+              </div>
+            </details>
+
+            <div class="actions">
+              <a class="cta cta-primary" href="https://github.com/yourusername/netbuddy" target="_blank" rel="noreferrer" id="go-to-netbuddy-project">
+                <i class="bi bi-github" aria-hidden="true"></i>
+                <span id="netbuddy-go">Go to Project</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project" aria-label="Product Management Project">
+          <div class="media">
+            <div class="gallery" aria-label="Product Management screenshots">
+              <img src="images/product/home.png" alt="Product Management screenshot 1" />
+              <img src="images/product/login.png" alt="Product Management screenshot 2" />
+              <img src="images/product/myproduct.png" alt="Product Management screenshot 3" />
+              <img src="images/product/register.png" alt="Product Management screenshot 4" />
+              <img src="images/product/exchange.png" alt="Product Management screenshot 5" />
+            </div>
+          </div>
+          <div class="body">
+            <h3 id="product-name-title">Product Management Project</h3>
+            <p id="product-name-text">Product Management is a full-stack application for managing user accounts and product inventories. It enables users to register, log in, add products, and view products added by other users. The application combines C# for backend services, Vue.js for the frontend, and SQL Server for data storage.</p>
+
+            <details>
+              <summary><span id="product-details">Details</span><span id="product-summary">Key features • Tech • Role</span></summary>
+              <div>
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="product-keyfeatures-title">Highlighted Features:</h4>
+                <ul id="keyitemsProductManagement">
+                  <li>User registration and login with JWT and session-based authentication.</li>
+                  <li>Add, view, and manage products in a user-friendly interface.</li>
+                  <li>Display products from other users in a public catalog.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="product-technology-used-title">Technical Stack:</h4>
+                <ul id="techsProductManagement">
+                  <li><strong>Frontend:</strong> Vue.js for a dynamic and responsive user interface.</li>
+                  <li><strong>Backend:</strong> C# for handling server-side logic and API endpoints.</li>
+                  <li><strong>Database:</strong> SQL Server for reliable and structured data storage.</li>
+                  <li><strong>Authentication:</strong> JWT and session management for secure user access.</li>
+                </ul>
+
+                <h4 style="margin:12px 0 6px;font-size:13px;" id="product-role-title">My Contribution:</h4>
+                <p id="product-management-role-text">Designed and implemented the backend using C# for API development and authentication. Developed frontend components using Vue.js for seamless user experience. Integrated SQL Server for data storage and retrieval. Implemented JWT and session-based authentication for user security.</p>
+              </div>
+            </details>
+
+            <div class="actions">
+              <a class="cta cta-primary" href="https://github.com/yourusername/productmanagement" target="_blank" rel="noreferrer" id="go-to-product-management-project">
+                <i class="bi bi-github" aria-hidden="true"></i>
+                <span id="product-go">View on GitHub</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="section-head">
+        <h2 id="contact-title">Contact</h2>
+        <p id="contact-mini">Let’s connect</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="panel">
+          <div class="panel-body">
+            <form action="mailto:thethtar1707@gmail.com" method="post" enctype="text/plain">
+              <div class="mb-3">
+                <label class="form-label" for="name" id="name-label">Name:</label>
+                <input class="form-control" type="text" id="name" name="name" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="email" id="email-label">Email:</label>
+                <input class="form-control" type="email" id="email" name="email" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="message" id="message-label">Message:</label>
+                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+              </div>
+              <button class="cta cta-primary" type="submit" id="send-btn">
+                <i class="bi bi-send" aria-hidden="true"></i>
+                <span id="send-btn-text">Send</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-body">
+            <h3 style="margin:0 0 10px;font-size:15px;" id="footer-title">Find Me Here</h3>
+            <iframe
+              title="Map"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9164.60328680735!2d139.31605134999995!3d35.392794150000014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6019abad13995441%3A0x975b02cc80f80db5!2sSakuradai%2C%20Isehara%2C%20Kanagawa%20259-1132!5e1!3m2!1sen!2sjp!4v1731380138057!5m2!1sen!2sjp"
+              width="100%"
+              height="220"
+              style="border:0;border-radius:14px;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            <p id="footer-address-title" style="margin:12px 0 0;color:var(--muted);"><strong>Address:</strong> Sakura Dai, Isehara, Kanagawa, Japan</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap" style="padding-top:18px;padding-bottom:18px;">
+      <small id="footer-rights">© 2024 Portfolio Website. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <script src="porfolio.js"></script>
+   
+</body>
+</html>

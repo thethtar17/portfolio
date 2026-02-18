@@ -5,11 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Porfolio Website</title>
 
+    <meta name="description" content="Portfolio of THET HTAR SANN — System Engineer specializing in Java Spring Boot, PHP Laravel, and C# ASP.NET.">
+
+    <meta property="og:title" content="THET HTAR SANN | Portfolio">
+    <meta property="og:description" content="System Engineer specializing in Java Spring Boot, PHP Laravel, and C# ASP.NET.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="thsss.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="THET HTAR SANN | Portfolio">
+    <meta name="twitter:description" content="System Engineer specializing in Java Spring Boot, PHP Laravel, and C# ASP.NET.">
+    <meta name="twitter:image" content="thsss.png">
+
+    <link rel="icon" type="image/png" href="sakura.png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Optional external stylesheet. (Inline styles below already cover layout.) -->
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +32,7 @@
             position: relative;
             overflow-x: hidden;
             cursor: url('sakura.png'), auto; /* Custom cursor image */
+            scroll-behavior: smooth;
         }
 
         header h1 {
@@ -187,6 +203,10 @@
         .dark-mode .card {
             background-color: #1f1f1f;
             color: #FFFFFF;
+        }
+
+        .dark-mode #projects.bg-light {
+            background-color: #121212 !important;
         }
 
         .dark-mode .bar {
@@ -445,17 +465,54 @@
         font-weight: bold;
         color: #444;
     }
+    /* Scrollbar styling (Experience/Certificates) */
+    .scrollable {
+        scrollbar-width: thin; /* Firefox */
+        scrollbar-color: #ccc #f0f0f0; /* thumb track (Firefox) */
+        scrollbar-gutter: stable; /* modern browsers: avoids layout shift */
+    }
+
     .scrollable::-webkit-scrollbar {
-        width: 8px; /* Customize scrollbar width */
+        width: 10px;
+        height: 10px;
+    }
+
+    .scrollable::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 999px;
     }
 
     .scrollable::-webkit-scrollbar-thumb {
-        background-color: #ccc; /* Customize scrollbar color */
-        border-radius: 4px;
+        background-color: #ccc;
+        border-radius: 999px;
+        border: 2px solid #f0f0f0; /* creates a modern “padded” thumb */
+        background-clip: padding-box;
     }
 
     .scrollable::-webkit-scrollbar-thumb:hover {
-        background-color: #aaa; /* Darken scrollbar on hover */
+        background-color: #aaa;
+    }
+
+    .scrollable::-webkit-scrollbar-thumb:active {
+        background-color: #aaa;
+    }
+
+    .dark-mode .scrollable {
+        scrollbar-color: #555 #333; /* Firefox */
+    }
+
+    .dark-mode .scrollable::-webkit-scrollbar-track {
+        background: #333;
+    }
+
+    .dark-mode .scrollable::-webkit-scrollbar-thumb {
+        background-color: #555;
+        border-color: #333;
+    }
+
+    .dark-mode .scrollable::-webkit-scrollbar-thumb:hover,
+    .dark-mode .scrollable::-webkit-scrollbar-thumb:active {
+        background-color: #666;
     }
     </style>
 </head>
@@ -519,28 +576,28 @@
         <div class="container">
             
             <div class="experience-list scrollable">
-                <h2 class="section-title m-3">Experience</h2>
+                <h2 class="section-title m-3" id="experience-title">Experience</h2>
                 <!-- Experience Item 1 -->
                 <div class="experience-item">
-                    <h3>System Engineer</h3>
+                    <h3 id="exp-0-title">System Engineer</h3>
                     <p class="company">Fellowship Corporation<span class="date">(Nov 2024 - Present)</span></p>
-                    <p>Isehara, Kanagawa, Japan</p>
+                    <p id="exp-0-location">Isehara, Kanagawa, Japan</p>
                 </div>
                 <!-- Experience Item 2 -->
                 <div class="experience-item">
-                    <h3>Trainee</h3>
+                    <h3 id="exp-1-title">Trainee</h3>
                     <p class="company">GIC <span class="date">(Aug 2024 - Oct 2024)</span></p>
-                    <p>Lanmadaw, Yangon, Myanmar</p>
+                    <p id="exp-1-location">Lanmadaw, Yangon, Myanmar</p>
                 </div>
                 <div class="experience-item">
-                    <h3>Internship Trainee</h3>
+                    <h3 id="exp-2-title">Internship Trainee</h3>
                     <p class="company">DAT <span class="date">(May 2024 - Jul 2024)</span></p>
-                    <p>Hlaing, Yangon, Myanmar</p>
+                    <p id="exp-2-location">Hlaing, Yangon, Myanmar</p>
                 </div>
                 <div class="experience-item">
-                    <h3>Instructor</h3>
+                    <h3 id="exp-3-title">Instructor</h3>
                     <p class="company">Kanji Japanese <span class="date">(Oct 2022 - Apr 2023)</span></p>
-                    <p>North Dagon, Yangon, Myanmar</p>
+                    <p id="exp-3-location">North Dagon, Yangon, Myanmar</p>
                 </div>
             </div>
         </div>
@@ -550,60 +607,60 @@
         <div class="container">
           
             <div class="certificate-list scrollable">
-                <h2 class="section-title m-3">Certificates</h2>
+                <h2 class="section-title m-3" id="certificates-title">Certificates</h2>
                 
                 <div class="certificate-item">
-                    <h3>NATTEST N2</h3>
+                    <h3 id="cert-0-title">NATTEST N2</h3>
                      <span class="date">(Aug 2024)</span>
                 </div>
                 <div class="certificate-item">
-                    <h3>Fundamentals of Engineering</h3>
+                    <h3 id="cert-1-title">Fundamentals of Engineering</h3>
                    <span class="date">(Oct 2023)</span>
                 </div>
                 <div class="certificate-item">
-                    <h3> JLPT N3</h3>
+                    <h3 id="cert-2-title"> JLPT N3</h3>
                    <span class="date">(Jul 2023)</span>
                 </div>
                 <!-- Certificate Item 1 -->
                 <div class="certificate-item">
-                    <h3>Python For EveryBody</h3>
-                    <p class="issuer">Issued by: Coursera <span class="date">(Jul 2021)</span></p>
+                    <h3 id="cert-3-title">Python For EveryBody</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Coursera</span> <span class="date">(Jul 2021)</span></p>
                 </div>
                 <!-- Certificate Item 2 -->
                 <div class="certificate-item">
-                    <h3>Python For Beginners</h3>
-                    <p class="issuer">Issued by: Sololearn <span class="date">(May 2021)</span></p>
+                    <h3 id="cert-4-title">Python For Beginners</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Sololearn</span> <span class="date">(May 2021)</span></p>
                     
                 </div>
                 <!-- Add more certificate items as needed -->
                 <div class="certificate-item">
-                    <h3>Introduction to Html 5</h3>
-                    <p class="issuer">Issued by: Coursera <span class="date">(Sep 2020)</span></p>
+                    <h3 id="cert-5-title">Introduction to Html 5</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Coursera</span> <span class="date">(Sep 2020)</span></p>
                   
                 </div>
                 <div class="certificate-item">
-                    <h3>SQL Fundamentals</h3>
-                    <p class="issuer">Issued by: Sololearn <span class="date">(Sep 2020)</span></p>
+                    <h3 id="cert-6-title">SQL Fundamentals</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Sololearn</span> <span class="date">(Sep 2020)</span></p>
                   
                 </div>
                 <div class="certificate-item">
-                    <h3>Capstone: Retrieving, Processing, and Visualizing Data with Python</h3>
-                    <p class="issuer">Issued by: Coursera <span class="date">(Jul 2020)</span></p>
+                    <h3 id="cert-7-title">Capstone: Retrieving, Processing, and Visualizing Data with Python</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Coursera</span> <span class="date">(Jul 2020)</span></p>
                   
                 </div>
                 <div class="certificate-item">
-                    <h3>Programming for Everybody</h3>
-                    <p class="issuer">Issued by: Coursera <span class="date">(Jul 2020)</span></p>
+                    <h3 id="cert-8-title">Programming for Everybody</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Coursera</span> <span class="date">(Jul 2020)</span></p>
                   
                 </div>
                 <div class="certificate-item">
-                    <h3>Python Data structures</h3>
-                    <p class="issuer">Issued by: Coursera <span class="date">(Jul 2020)</span></p>
+                    <h3 id="cert-9-title">Python Data structures</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Coursera</span> <span class="date">(Jul 2020)</span></p>
                   
                 </div>
                 <div class="certificate-item">
-                    <h3> Using Python to Access Web Data</h3>
-                    <p class="issuer">Issued by: Coursera <span class="date">(Jul 2020)</span></p>
+                    <h3 id="cert-10-title"> Using Python to Access Web Data</h3>
+                    <p class="issuer"><span class="issued-by-label">Issued by:</span> <span class="issuer-name">Coursera</span> <span class="date">(Jul 2020)</span></p>
                   
                 </div>
             </div>
@@ -644,11 +701,11 @@
                         <div class="bar">
                             <div class="bar-fill" style="width: 80%;"></div>
                         </div>
-                        <p id="framework-spring">Spring Boot</p>
+                        <p>Spring Boot</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 90%;"></div>
                         </div>
-                        <p id="framework-spring">ASP.NET</p>
+                        <p>ASP.NET</p>
                         <div class="bar">
                             <div class="bar-fill" style="width: 75%;"></div>
                         </div>
@@ -722,7 +779,7 @@
                         <div class="bar">
                             <div class="bar-fill" style="width: 80%;"></div>
                         </div>
-                        <p id="db-postgresql">SQL Server</p>
+                        <p>SQL Server</p>
                     </div>
                 </div>
             </div>
@@ -770,22 +827,22 @@
                                        enhancing the competitive experience.</p>
 
                                     <!-- Key Features Section -->
-                                    <strong><h6 id="keyfeatures">Key Features:</h6></strong>
+                                    <strong><h6 class="keyfeatures">Key Features:</h6></strong>
                                     <ul id="keyitemsOne">
-                                        <li id="keyitemOne">Multiplayer gameplay for two players locally).</li>
-                                        <li id="keyitemOne">Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.</li>
-                                        <li id="keyitemOne">Scoring system to track the winner of each match.</li>
+                                        <li>Multiplayer gameplay for two players locally).</li>
+                                        <li>Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.</li>
+                                        <li>Scoring system to track the winner of each match.</li>
                                     </ul>
 
                                     <!-- Technologies Used Section -->
-                                    <h6><strong id="technology-used">Technologies Used:</strong></h6>
+                                    <h6><strong class="technology-used">Technologies Used:</strong></h6>
                                     <ul id="techsOne">
-                                        <li id="techOne"><strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.</li>
-                                        <li id="techOne"><strong>Database:</strong> MySQL for storing player data, game sessions, and results.</li>
+                                        <li><strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.</li>
+                                        <li><strong>Database:</strong> MySQL for storing player data, game sessions, and results.</li>
                                     </ul>
 
                                     <!-- Role Section -->
-                                    <h6><strong id="role">Role:</strong></h6>
+                                    <h6><strong class="role">Role:</strong></h6>
                                     <p id="project-one-role-text">
                                         Developed the core gameplay mechanics for each game, ensuring smooth and interactive user experience.<br>
                                         Implemented multiplayer game logic for two players, allowing them to compete locally or over a local network.<br>
@@ -950,27 +1007,27 @@
                                                It offers a rich feature set for users to share content, interact with others, and communicate effectively.</p>
 
                                             <!-- Key Features Section -->
-                                            <strong><h6 id="keyfeatures">Key Features:</h6></strong>
+                                            <strong><h6 class="keyfeatures">Key Features:</h6></strong>
                                             <ul id="keyitemsNetBuddy">
-                                                <li id="keyitemNetBuddy">User registration and profile creation with customizable details.</li>
-                                                <li id="keyitemNetBuddy">Content sharing with media uploads saved to Google Drive.</li>
-                                                <li id="keyitemNetBuddy">Real-time messaging between friends using WebSocket.</li>
-                                                <li id="keyitemNetBuddy">Follow, friend, and interact with other users.</li>
-                                                <li id="keyitemNetBuddy">Post and comment management with edit and delete options.</li>
+                                                <li>User registration and profile creation with customizable details.</li>
+                                                <li>Content sharing with media uploads saved to Google Drive.</li>
+                                                <li>Real-time messaging between friends using WebSocket.</li>
+                                                <li>Follow, friend, and interact with other users.</li>
+                                                <li>Post and comment management with edit and delete options.</li>
                                             </ul>
 
                                             <!-- Technologies Used Section -->
-                                            <h6><strong id="technology-used">Technologies Used:</strong></h6>
+                                            <h6><strong class="technology-used">Technologies Used:</strong></h6>
                                             <ul id="techsNetBuddy">
-                                                <li id="techNetBuddy"><strong>Frontend:</strong> ASP.NET Razor Pages for user interface and interactions.</li>
-                                                <li id="techNetBuddy"><strong>Backend:</strong> C# with ASP.NET Core for server-side processing.</li>
-                                                <li id="techNetBuddy"><strong>Database:</strong> SQL Server for storing user data, posts, and comments.</li>
-                                                <li id="techNetBuddy"><strong>Real-Time Communication:</strong> WebSocket for live messaging.</li>
-                                                <li id="techNetBuddy"><strong>File Integration:</strong> Google Drive API for multimedia storage.</li>
+                                                <li><strong>Frontend:</strong> ASP.NET Razor Pages for user interface and interactions.</li>
+                                                <li><strong>Backend:</strong> C# with ASP.NET Core for server-side processing.</li>
+                                                <li><strong>Database:</strong> SQL Server for storing user data, posts, and comments.</li>
+                                                <li><strong>Real-Time Communication:</strong> WebSocket for live messaging.</li>
+                                                <li><strong>File Integration:</strong> Google Drive API for multimedia storage.</li>
                                             </ul>
 
                                             <!-- Role Section -->
-                                            <h6><strong id="role">Role:</strong></h6>
+                                            <h6><strong class="role">Role:</strong></h6>
                                             <p id="netbuddy-role-text">
                                                 Designed and developed the core features for user management, content sharing, and real-time communication.<br>
                                                 Integrated Google Drive API for storing multimedia files and ensuring seamless media management.<br>
@@ -1027,8 +1084,8 @@
                                
                                 
                                 <div class="card-body">
-                                    <h5 id="netbuddy-name-title" class="card-title">Product Management Project</h5>
-                                    <p id="netbuddy-name-text" class="card-text">
+                                    <h5 id="product-name-title" class="card-title">Product Management Project</h5>
+                                    <p id="product-name-text" class="card-text">
                                         Product Management is a full-stack application for managing user accounts and product inventories. 
                     It enables users to register, log in, add products, and view products added by other users. 
                     The application combines C# for backend services, Vue.js for the frontend, and SQL Server for data storage.
@@ -1057,24 +1114,24 @@
                 </p>
 
                 <!-- Key Features Section -->
-                <h6><strong id="keyfeatures">Highlighted Features:</strong></h6>
+                <h6><strong id="product-keyfeatures-title">Highlighted Features:</strong></h6>
                 <ul id="keyitemsProductManagement">
-                    <li id="keyitemProductManagement">User registration and login with JWT and session-based authentication.</li>
-                    <li id="keyitemProductManagement">Add, view, and manage products in a user-friendly interface.</li>
-                    <li id="keyitemProductManagement">Display products from other users in a public catalog.</li>
+                    <li>User registration and login with JWT and session-based authentication.</li>
+                    <li>Add, view, and manage products in a user-friendly interface.</li>
+                    <li>Display products from other users in a public catalog.</li>
                 </ul>
 
                 <!-- Technologies Used Section -->
-                <h6><strong id="technology-used">Technical Stack:</strong></h6>
+                <h6><strong id="product-technology-used-title">Technical Stack:</strong></h6>
                 <ul id="techsProductManagement">
-                    <li id="techProductManagement"><strong>Frontend:</strong> Vue.js for a dynamic and responsive user interface.</li>
-                    <li id="techProductManagement"><strong>Backend:</strong> C# for handling server-side logic and API endpoints.</li>
-                    <li id="techProductManagement"><strong>Database:</strong> SQL Server for reliable and structured data storage.</li>
-                    <li id="techProductManagement"><strong>Authentication:</strong> JWT and session management for secure user access.</li>
+                    <li><strong>Frontend:</strong> Vue.js for a dynamic and responsive user interface.</li>
+                    <li><strong>Backend:</strong> C# for handling server-side logic and API endpoints.</li>
+                    <li><strong>Database:</strong> SQL Server for reliable and structured data storage.</li>
+                    <li><strong>Authentication:</strong> JWT and session management for secure user access.</li>
                 </ul>
 
                 <!-- Role Section -->
-                <h6><strong id="role">My Contribution:</strong></h6>
+                <h6><strong id="product-role-title">My Contribution:</strong></h6>
                 <p id="product-management-role-text">
                     Designed and implemented the backend using C# for API development and authentication.<br>
                     Developed frontend components using Vue.js for seamless user experience.<br>
@@ -1147,557 +1204,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // Animate skill bars on scroll (optional)
-        document.addEventListener('DOMContentLoaded', function() {
-            var skillBars = document.querySelectorAll('.bar-fill');
-            skillBars.forEach(function(bar) {
-                var width = bar.style.width;
-                bar.style.width = '0%';
-                setTimeout(function() {
-                    bar.style.width = width;
-                }, 500);
-            });
-        });
-
-        // Initialize particles.js
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 100, density: { enable: true, value_area: 800 } },
-                shape: {
-                    type: 'image',
-                    image: {
-                        src: 'p.png', // Replace with the path to your flower image
-                        width: 100,
-                        height: 100
-                    }
-                },
-                opacity: {
-                    value: 0.9,
-                    random: false,
-                    anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
-                },
-                size: {
-                    value: 10,
-                    random: true,
-                    anim: { enable: false, speed: 50, size_min: 0.1, sync: false },
-                },
-                line_linked: {
-                    enable: false,
-                },
-                move: {
-                    enable: true,
-                    speed: 3,
-                    direction: 'none',
-                    random: false,
-                    straight: false,
-                    out_mode: 'out',
-                    bounce: false,
-                    attract: { enable: false, rotateX: 600, rotateY: 1200 },
-                },
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
-                    resize: true,
-                },
-                modes: {
-                    grab: { distance: 400, line_linked: { opacity: 1 } },
-                    bubble: { distance: 400, size: 50, duration: 2, opacity: 8, speed: 3 },
-                    repulse: { distance: 200, duration: 0.4 },
-                    push: { particles_nb: 4 },
-                    remove: { particles_nb: 2 },
-                },
-            },
-            retina_detect: true,
-        });
-
-        // Toggle dark mode
-        const darkModeToggle = document.getElementById("dark-mode-toggle");
-    const darkModeIcon = document.getElementById("dark-mode-icon");
-
-    darkModeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-
-        // Toggle the icon between moon and sun
-        if (document.body.classList.contains("dark-mode")) {
-            darkModeIcon.classList.replace("fa-moon", "fa-sun");
-        } else {
-            darkModeIcon.classList.replace("fa-sun", "fa-moon");
-        }
-    });
-     //   document.getElementById('dark-mode-toggle').addEventListener('click', function() {
-     //       document.body.classList.toggle('dark-mode');
-    //    });
-        document.getElementById("toggleDarkMode").addEventListener("click", function() {
-            document.getElementById("chatterModal").classList.toggle("dark-mode");
-        });
-
-     
-    </script>
-       <script>
-        // Content dictionary for translations
-        document.addEventListener('DOMContentLoaded', function () {
-            const languageToggle = document.getElementById('language-toggle');
-            const headerTitle = document.getElementById('header-title');
-            const navLinks = document.querySelectorAll('#nav-links .nav-link');
-            const aboutTitle = document.getElementById('about-title');
-            const aboutName = document.getElementById('about-name');
-            const aboutPosition = document.getElementById('about-position');
-            const aboutDescription = document.getElementById('about-description');
-            const downloadCv = document.getElementById('download-cv');
-            const skillstitle= document.getElementById('skills-title');
-            const programminglanguagestitle= document.getElementById('programming-languages-title');
-            const toolstitle= document.getElementById('tools-title');
-            const frameworkstitle= document.getElementById('frameworks-title');
-            const languagestitle= document.getElementById('languages-title');
-            const databasetitle= document.getElementById('database-title');
-            const langenglish= document.getElementById('lang-english');
-            const langjapanese= document.getElementById('lang-japanese');
-            const projecttitle= document.getElementById('project-title');
-            const projectnametitleone= document.getElementById('project-name-title-one');
-            const projectnametextone= document.getElementById('project-name-text-one');
-            const projectviewone= document.getElementById('project-view-one');
-            const projectviewtwo= document.getElementById('project-view-two');
-           const projectModalLabel=document.getElementById('projectModalLabel');
-           const projectonemodaltext=document.getElementById('project-one-modal-text');
-            const keyFeatures=document.getElementById('keyfeatures');
-            const listItems = document.querySelectorAll('#keyitemsOne li');
-            const technologyused=document.getElementById(" technology-used");
-            const role=document.getElementById("role");
-            const techListItems = document.querySelectorAll('#techsOne li');
-            const roleElement = document.getElementById("role");
-            const techused=document.getElementById("technology-used");
-            const projectoneroletext=document.getElementById("project-one-role-text");
-            const projectnametitletwo= document.getElementById("project-name-title-two");
-            const projectnametexttwo= document.getElementById('project-name-text-two');
-            const  projectTwoModalLabel=document.getElementById('projectTwoModalLabel');
-            const chatterdescription=document.getElementById('chatter-description');
-            const keyfeaturestitle=document.getElementById('key-features-title');
-            const keyfeatureslist=document.querySelectorAll('#key-features-list li');
-            // const registrationauthentication=document.getElementById('registration-authentication');
-            const technologiesusedtitle=document.getElementById("technologies-used-title");
-            const technologiesusedlist=document.querySelectorAll("#technologies-used-list li");
-            const roletitle=document.getElementById("role-title");
-            const roledescription=document.getElementById("role-description");
-            const closeOne=document.getElementById("close-one");
-            const closeTwo=document.getElementById("close-two");
-            const goOne=document.getElementById("go-to-project-one");
-            const goTwo=document.getElementById("go-to-project-two");
-            const netbuddyTitle = document.getElementById("netbuddy-name-title");
-            const netbuddyText = document.getElementById("netbuddy-name-text");
-            const netbuddyView = document.getElementById("netbuddy-view");
-            const netbuddyModalLabel = document.getElementById("netBuddyModalLabel");
-            const netbuddyModalText = document.getElementById("netbuddy-modal-text");
-            const keyFeaturesNetBuddy = document.getElementById("keyfeatures");
-            const keyItemsNetBuddy = document.querySelectorAll("#keyitemsNetBuddy li");
-            const technologyUsedNetBuddy = document.getElementById("technology-used");
-            const techsNetBuddy = document.querySelectorAll("#techsNetBuddy li");
-            const roleNetBuddy = document.getElementById("role");
-            const netbuddyRoleText = document.getElementById("netbuddy-role-text");
-            const closeNetBuddy = document.getElementById("close-netbuddy");
-            const goNetBuddy = document.getElementById("go-to-netbuddy-project");
-
-
-            const contacttitle= document.getElementById("contact-title");
-            const namelabel=  document.getElementById("name-label");
-               const emaillabel=  document.getElementById("email-label");
-               const messagelabel=document.getElementById("message-label");
-               const sendbtn=document.getElementById("send-btn");
-               const foottile= document.getElementById('footer-title');
-            const footaddresstitle= document.getElementById('footer-address-title');
-            const footerrights=document.getElementById('footer-rights');
-            const translations = {
-                en: {
-                    header: "Portfolio Website",
-                    navLinks: ["About", "Projects", "Contact", "Skill"],
-                   
-                     about: {
-                        title: "About Me",
-                        name: "THET HTAR SANN",
-                        position: "System Engineer",
-                        description: "I specialize in Java Spring Boot and PHP Laravel.",
-                        cvText: "Download CV",
-                        cvFile: "ThetHtarSann_CV.xlsx"
-                    },
-                    skills: {
-                        title: "Programming Skills",
-                        programmingLanguages: "Programming Languages",
-                        frameworks: "Frameworks",
-                        tools: "Tools",
-                        languages: "Languages",
-                        database: "Database",
-                        langJs: "JavaScript",
-                        langPython: "Python",
-                        langJava: "Java",
-                        langPhp: "PHP",
-                        langCsharp: "C#",
-                        frameworkSpring: "Spring Boot",
-                        frameworkLaravel: "Laravel",
-                        frameworkReact: "React",
-                        frameworkBootstrap: "Bootstrap",
-                        frameworkVue: "Vue",
-                        frameworkNode: "Node",
-                        toolGit: "Git",
-                        toolDocker: "Docker",
-                        toolPostman: "Postman",
-                        toolFigma: "Figma",
-                        langEnglish: "English",
-                        langJapanese: "Japanese",
-                        dbMysql: "MySQL",
-                        dbPostgresql: "PostgreSQL",
-                    },
-                    projects: {
-                        title: "Projects",
-                        viewProjectButton: "View Project",
-                        keys:"Key Feature",
-                        role: "Role:",
-                        technologyUsed: "Technologies Used:",
-                        projectOne: {
-                            name: "Game Project",
-                            description: "This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. The game allows two players to compete against each other locally on the same device. The application includes a scoring system that displays the winner of each match and maintains a record of winning results, enhancing the competitive experience.",
-                            projectModalTitle:"Game Project Details",
-                            projectModalTest:"This multiplayer gaming platform features three classic games: Tic Tac Toe, Four in a Row, and Checkers. The game allows two players to compete against each other locally on the same device. The application includes a scoring system that displays the winner of each match and maintains a record of winning results, enhancing the competitive experience.",
-                            keyitemsOne: [
-                                "Multiplayer gameplay for two players locally.",
-                                "Players can enjoy games like Tic Tac Toe, Four in a Row, and Checkers.",
-                                "Scoring system to track the winner of each match."
-                            ],
-                            techsOne: [
-                                "<strong>Backend:</strong> Java with Spring Boot for handling game logic, API requests, and user management.",
-                                "<strong>Database:</strong> MySQL for storing player data, game sessions, and results."
-                            ],
-                            projectOneRoleText: "Developed the core gameplay mechanics for each game, ensuring smooth and interactive user experience.Implemented multiplayer game logic for two players, allowing them to compete locally or over a local network.<br> Created the scoring system and leaderboard to track winners and maintain game statistics.Worked on both the back-end (Spring Boot, MySQL) and front-end to ensure seamless gameplay. "
-                        },
-                        projectTwo:{
-                            projectNameTitle: "Chatter",
-                            projectNameText: `
-                                Chatter is a messaging web application. The application allows registered users to log in, 
-                                send and receive messages, use emojis, and share files. Its interactive interface and features 
-                                make it user-friendly and engaging.
-                            `,
-                            projectModalTitleTwo: "Chatter Project Details",
-                            projectModalTestTwo: "Chatter is a messaging web application that enables registered users to log in, send and receive messages, use emojis, and share files. Designed with a user-friendly interface, Chatter makes online communication more interactive and accessible.",
-                            keyitemsTwo: [
-                                "User Registration and Authentication: Secure registration and login system.",
-                                "Messaging: Users can send and receive instant messages.",
-                                "Emojis: Emoji support for a more expressive messaging experience.",
-                                "File Sharing: Capability to send files directly in chats."
-                            ],
-                            techsTwo: [
-                                "<strong>Backend:</strong> Spring Boot (Java) for application logic and API endpoints",
-                                "<strong>Database:</strong> MySQL for data storage",
-                                "<strong>Frontend:</strong> React for an interactive user interface"
-                            ],
-                            projectTwoRoleText: "Led the development of core messaging functionalities, including the emoji and file-sharing features. Built and integrated authentication using Spring Boot, ensuring secure login and user management. Enhanced the UI in React to make the application more engaging and responsive.",
-                        },
-                        projectThree: {
-                        projectNameTitle: "NetBuddy",
-                        projectNameText: 
-                            `NetBuddy is a social media platform that enables smooth interaction between users, content sharing, and real-time communication. It integrates technologies like WebSocket, Google Drive, and SQL Server to offer ease of use and robust functionality.`,
-                        projectModalTitleThree: "NetBuddy Project Details",
-                        projectModalTestThree: "NetBuddy is a social media platform designed for users to share content, interact with others, and communicate in real-time. Integration with Google Drive API and WebSocket ensures seamless media management and real-time messaging.",
-                        keyitemsThree: [
-                            "User Registration and Profile Creation: Manage personal information with customizable details.",
-                            "Content Sharing: Smooth sharing with media uploads stored on Google Drive.",
-                            "Real-Time Messaging: Live messaging powered by WebSocket.",
-                            "User Interaction: Follow other users, add friends, and utilize comment features.",
-                            "Post Management: Manage posts and comments with edit and delete capabilities."
-                        ],
-                        techsThree: [
-                            "<strong>Frontend:</strong> Intuitive interface built with ASP.NET Razor Pages.",
-                            "<strong>Backend:</strong> Server-side logic implemented with C# and ASP.NET Core.",
-                            "<strong>Database:</strong> Data storage using SQL Server.",
-                            "<strong>Real-Time Communication:</strong> Live communication powered by WebSocket.",
-                            "<strong>File Integration:</strong> Media storage using Google Drive API."
-                        ],
-                        projectThreeRoleText: 
-                            "Designed and implemented core features for user management, content sharing, and real-time communication. Integrated Google Drive API to provide seamless multimedia storage. Built real-time messaging using WebSocket and developed a robust backend with ASP.NET Core and SQL Server.",
-                        close: "Close",
-                        goProject: "Go to Project",
-                    },
-
-                      close:"close",
-                      goProject:"Go To Project",
-                    },
-                    contact:{
-                            contactTitle: "Contact",
-                            nameLabel: "Name:",
-                            emailLabel: "Email:",
-                            messageLabel: "Message:",
-                            sendBtn: "Send",
-                        
-                    },
-                    footer:{
-                        footerTitle: "Find Me Here",
-                        footerAddressTitle: "<strong >Address:</strong> Sakura Dai, Isehara, Kanagawa, Japan",
-                        footerRights: "&copy; 2024 Portfolio Website. All rights reserved."
-                    },
-
-                },
-                jp: {
-                    header: "ポートフォリオサイト",
-                    navLinks: ["私について", "プロジェクト", "連絡先", "スキル"],
-                  
-                    about: {
-                        title: "私について",
-                        name: "タッターサン",
-                        position: "システムエンジニア",
-                        description: "Java Spring Boot と PHP Laravel を専門としています。",
-                        cvText: "履歴書をダウンロード",
-                        cvFile: "タッターサン.xlsx"
-                    },
-                     skills: {
-                        title: "プログラミングスキル",
-                        programmingLanguages: "プログラミング言語",
-                        frameworks: "フレームワーク",
-                        tools: "ツール",
-                        languages: "言語",
-                        database: "データベース",
-                        langJs: "JavaScript",
-                        langPython: "Python",
-                        langJava: "Java",
-                        langPhp: "PHP",
-                        langCsharp: "C#",
-                        frameworkSpring: "Spring Boot",
-                        frameworkLaravel: "Laravel",
-                        frameworkReact: "React",
-                        frameworkBootstrap: "Bootstrap",
-                        frameworkVue: "Vue",
-                        frameworkNode: "Node",
-                        toolGit: "Git",
-                        toolDocker: "Docker",
-                        toolPostman: "Postman",
-                        toolFigma: "Figma",
-                        langEnglish: "英語",
-                        langJapanese: "日本語",
-                        dbMysql: "MySQL",
-                        dbPostgresql: "PostgreSQL",
-                    },
-                    projects: {
-                        title: "プロジェクト",
-                        keys :"主な特徴",
-                        viewProjectButton: "プロジェクトを見る",
-                        role: "役割:",
-                        technologyUsed: "使用技術:",
-                        projectOne: {
-                            name: "ゲームプロジェクト",
-                            description: "このマルチプレイヤーゲームプラットフォームは、三つのクラシックゲームを提供します：三目並べ、四つ並べ、チェッカー。 ゲームは、同じデバイスで二人のプレイヤーが対戦できるようになっています。 アプリケーションには、各試合の勝者を表示し、勝利結果を記録するスコアリングシステムが含まれており、競争の体験を向上させます。",
-                            projectModalTitle:"ゲームプロジェクトの内容",
-                            projectModalTest: "このマルチプレイヤーゲームプラットフォームは、三つのクラシックゲームを提供します：三目並べ、四つ並べ、チェッカー。 ゲームは、同じデバイスで二人のプレイヤーが対戦できるようになっています。 アプリケーションには、各試合の勝者を表示し、勝利結果を記録するスコアリングシステムが含まれており、競争の体験を向上させます。",
-                            keyitemsOne:["ローカルで2人プレイ可能なマルチプレイヤーゲームプレイ。","プレイヤーは、三目並べ、四目並べ、チェッカーなどのゲームを楽しむことができます。","各試合の勝者を記録するスコアリングシステムを搭載。"],
-                            techsOne: [
-                                "<strong>バックエンド:</strong> ゲームロジック、APIリクエスト、ユーザー管理を処理するためのSpring Bootを使用したJava。",
-                                "<strong>データベース:</strong> プレイヤーデータ、ゲームセッション、結果を保存するためのMySQL。"
-                            ],
-                            projectOneRoleText: "  各ゲームのコアゲームプレイメカニクスを開発し、スムーズでインタラクティブなユーザー体験を実現しました。2人のプレイヤーがローカルまたはローカルネットワーク上で競い合うマルチプレイヤーゲームロジックを実装しました。勝者を追跡し、ゲーム統計を維持するためのスコアリングシステムとリーダーボードを作成しました。バックエンド（Spring Boot、MySQL）とフロントエンドの両方でシームレスなゲームプレイを実現しました。 "
-                        },
-                        projectTwo:{
-                            projectNameTitle: "チャッター",
-                            projectNameText: `
-                                チャッターはメッセージングウェブアプリケーションです。アプリケーションは登録ユーザーがログインし、 
-                                メッセージを送受信し、絵文字を使用し、ファイルを共有することを可能にします。インタラクティブなインターフェースと機能により、 
-                                ユーザーフレンドリーで魅力的です。
-                            `,
-                            projectModalTitleTwo: "チャッタープロジェクト詳細",
-                            projectModalTestTwo: "Chatterは、登録ユーザーがログインし、メッセージの送受信、絵文字の使用、ファイルの共有ができるメッセージングウェブアプリケーションです。ユーザーフレンドリーなインターフェースを備えたChatterは、オンラインコミュニケーションをよりインタラクティブでアクセス可能にします。",
-                            keyitemsTwo: [
-                                "ユーザー登録と認証: セキュアな登録とログインシステム。",
-                                "メッセージング: ユーザーがインスタントメッセージを送受信できます。",
-                                "絵文字: より表現力豊かなメッセージング体験のための絵文字サポート。",
-                                "ファイル共有: チャット内で直接ファイルを送信する機能。"
-                            ],
-                            techsTwo: [
-                                "<strong>バックエンド:</strong> アプリケーションロジックとAPIエンドポイントのためのSpring Boot（Java）",
-                                "<strong>データベース:</strong> データストレージのためのMySQL",
-                                "<strong>フロントエンド:</strong> インタラクティブなユーザーインターフェースのためのReact"
-                            ],
-                            projectTwoRoleText: "絵文字およびファイル共有機能を含むコアメッセージング機能の開発を主導しました。Spring Bootを使用して認証機能を構築し、セキュアなログインとユーザー管理を実現しました。ReactでUIを強化し、アプリケーションをより魅力的で応答性の高いものにしました。",
-   
-                        },
-                         projectTwo:{
-                            projectNameTitle: "チャッター",
-                            projectNameText: `
-                                チャッターはメッセージングウェブアプリケーションです。アプリケーションは登録ユーザーがログインし、 
-                                メッセージを送受信し、絵文字を使用し、ファイルを共有することを可能にします。インタラクティブなインターフェースと機能により、 
-                                ユーザーフレンドリーで魅力的です。
-                            `,
-                            projectModalTitleTwo: "チャッタープロジェクト詳細",
-                            projectModalTestTwo: "Chatterは、登録ユーザーがログインし、メッセージの送受信、絵文字の使用、ファイルの共有ができるメッセージングウェブアプリケーションです。ユーザーフレンドリーなインターフェースを備えたChatterは、オンラインコミュニケーションをよりインタラクティブでアクセス可能にします。",
-                            keyitemsTwo: [
-                                "ユーザー登録と認証: セキュアな登録とログインシステム。",
-                                "メッセージング: ユーザーがインスタントメッセージを送受信できます。",
-                                "絵文字: より表現力豊かなメッセージング体験のための絵文字サポート。",
-                                "ファイル共有: チャット内で直接ファイルを送信する機能。"
-                            ],
-                            techsTwo: [
-                                "<strong>バックエンド:</strong> アプリケーションロジックとAPIエンドポイントのためのSpring Boot（Java）",
-                                "<strong>データベース:</strong> データストレージのためのMySQL",
-                                "<strong>フロントエンド:</strong> インタラクティブなユーザーインターフェースのためのReact"
-                            ],
-                            projectTwoRoleText: "絵文字およびファイル共有機能を含むコアメッセージング機能の開発を主導しました。Spring Bootを使用して認証機能を構築し、セキュアなログインとユーザー管理を実現しました。ReactでUIを強化し、アプリケーションをより魅力的で応答性の高いものにしました。",
-   
-                        },
-                        projectThree: {
-                            projectNameTitle: "NetBuddy",
-                            projectNameText: 
-                                `NetBuddyは、ユーザー同士のスムーズなインタラクション、コンテンツ共有、リアルタイムコミュニケーションを可能にするソーシャルメディアプラットフォームです。WebSocket、Google Drive、SQL Serverなどの技術を統合し、使いやすさと機能性を備えています。`,
-                            projectModalTitleThree: "NetBuddyプロジェクト詳細",
-                            projectModalTestThree: "NetBuddyは、ユーザーがコンテンツを共有し、他のユーザーと交流し、リアルタイムでコミュニケーションを取るために設計されたソーシャルメディアプラットフォームです。Google Drive APIとWebSocketの統合により、スムーズなメディア管理とリアルタイムメッセージングを実現します。",
-                            keyitemsThree: [
-                                "ユーザー登録とプロフィール作成: カスタマイズ可能な詳細で個人情報を管理。",
-                                "コンテンツ共有: Google Driveに保存されたメディアアップロードによるスムーズな共有。",
-                                "リアルタイムメッセージング: WebSocketを使用したライブメッセージング。",
-                                "ユーザーインタラクション: 他のユーザーのフォロー、友達追加、コメント機能。",
-                                "投稿管理: 編集および削除機能を備えた投稿とコメント管理。"
-                            ],
-                            techsThree: [
-                                "<strong>フロントエンド:</strong> ASP.NET Razor Pagesで構築された直感的なインターフェース。",
-                                "<strong>バックエンド:</strong> サーバーサイドロジックのためのC#およびASP.NET Core。",
-                                "<strong>データベース:</strong> SQL Serverを使用したデータストレージ。",
-                                "<strong>リアルタイム通信:</strong> WebSocketを使用したライブ通信。",
-                                "<strong>ファイル統合:</strong> Google Drive APIを使用したメディアストレージ。"
-                            ],
-                            projectThreeRoleText: 
-                                "ユーザー管理、コンテンツ共有、リアルタイム通信のためのコア機能を設計および実装しました。Google Drive APIを統合し、シームレスなマルチメディアストレージを提供しました。また、WebSocketを利用してリアルタイムメッセージングを構築し、ASP.NET CoreとSQL Serverを使用して強力なバックエンドを開発しました。",
-                        
-                        },
-
-                        close:"閉じる",
-                      goProject:'プロジェクトへ移動',
-                    },
-                    contact:{
-                        contactTitle: "お問い合わせ",
-                        nameLabel: "名前:",
-                        emailLabel: "メール:",
-                        messageLabel: "メッセージ:",
-                        sendBtn: "送信",
-                    },
-                    footer:{
-                        footerTitle: "ここで見つけてください",
-                        footerAddressTitle: "　住所: 桜台　伊勢原　神奈川県",
-                        footerRights: " 2024 ポートフォリオウェブサイト。全著作権所有。",
-                    },
-                }
-            };
-
-            function switchLanguage(lang) {
-                // Update header
-                headerTitle.textContent = translations[lang].header;
-
-                // Update navigation links
-                navLinks.forEach((link, index) => {
-                    link.textContent = translations[lang].navLinks[index];
-                });
-
-                // Update About Me section
-                aboutTitle.textContent = translations[lang].about.title;
-                aboutName.textContent = translations[lang].about.name;
-                aboutPosition.textContent = translations[lang].about.position;
-                aboutDescription.textContent = translations[lang].about.description;
-                downloadCv.textContent = translations[lang].about.cvText;
-                downloadCv.setAttribute('download', translations[lang].about.cvFile);
-                downloadCv.setAttribute('href', translations[lang].about.cvFile);
-                skillstitle.textContent=translations[lang].skills.title;
-                toolstitle.textContent=translations[lang].skills.tools;
-                programminglanguagestitle.textContent=translations[lang].skills.programmingLanguages;
-                frameworkstitle.textContent=translations[lang].skills.frameworks;
-                languagestitle.textContent=translations[lang].skills.languages;
-                databasetitle.textContent=translations[lang].skills.database;
-                langenglish.textContent=translations[lang].skills.langEnglish;
-                langjapanese.textContent=translations[lang].skills.langJapanese;
-                projecttitle.textContent=translations[lang].projects.title;
-                projectnametitleone.textContent=translations[lang].projects.projectOne.name; 
-                projectnametextone.textContent=translations[lang].projects.projectOne.description;
-                projectviewone.textContent=translations[lang].projects.viewProjectButton;
-                projectviewtwo.textContent=translations[lang].projects.viewProjectButton;
-
-
-            projectModalLabel.textContent=translations[lang].projects.projectOne.projectModalTitle;
-            projectonemodaltext.textContent=translations[lang].projects.projectOne.projectModalTest;
-            keyFeatures.textContent=translations[lang].projects.keys;
-            listItems.forEach((li, index) => {
-                    li.textContent =translations[lang].projects.projectOne.keyitemsOne[index];
-                });
-
-                techListItems.forEach((li, index) => {
-                    li.innerHTML =translations[lang].projects.projectOne.techsOne[index];
-                });
-
-                roleElement.textContent = translations[lang].projects.role;
-                techused.textContent = translations[lang].technologyUsed;
-                projectoneroletext.textContent = translations[lang].projects.projectOne.projectOneRoleText;
-
-
-
-                projectnametitletwo.textContent=translations[lang].projects.projectTwo.projectNameTitle;
-                projectnametexttwo.textContent=translations[lang].projects.projectTwo.projectNameText;
-                projectTwoModalLabel.textContent=translations[lang].projects.projectTwo.projectNameTitle;
-                chatterdescription.textContent=translations[lang].projects.projectTwo.projectNameText;
-                keyfeaturestitle.textContent=translations[lang].projects.keys;
-                keyfeatureslist.forEach((li, index) => {
-                    li.textContent =translations[lang].projects.projectTwo.keyitemsTwo[index];
-                });
-                technologiesusedtitle.textContent=translations[lang].projects.technologyUsed;
-                technologiesusedlist.forEach((li, index) => {
-                    li.innerHTML =translations[lang].projects.projectTwo.techsTwo[index];
-                });
-                roletitle.textContent=translations[lang].projects.role;
-                roledescription.textContent=translations[lang].projects.projectTwo.projectTwoRoleText;
-                closeOne.textContent=translations[lang].projects.close;
-                closeTwo.textContent=translations[lang].projects.close;
-                goOne.textContent=translations[lang].projects.goProject;
-                goTwo.textContent=translations[lang].projects.goProject;
-
-                netbuddyTitle.textContent = translations[lang].projects.projectThree.projectNameTitle;
-                netbuddyText.textContent = translations[lang].projects.projectThree.projectNameText;
-                netbuddyView.textContent = translations[lang].projects.viewProjectButton;
-
-                netbuddyModalLabel.textContent = translations[lang].projects.projectThree.projectModalTitleThree;
-                netbuddyModalText.textContent = translations[lang].projects.projectThree.projectModalTestThree;
-
-                keyFeaturesNetBuddy.textContent = translations[lang].projects.keys;
-                keyItemsNetBuddy.forEach((li, index) => {
-                    li.textContent = translations[lang].projects.projectThree.keyitemsThree[index];
-                });
-
-                technologyUsedNetBuddy.textContent = translations[lang].projects.technologyUsed;
-                techsNetBuddy.forEach((li, index) => {
-                    li.innerHTML = translations[lang].projects.projectThree.techsThree[index];
-                });
-
-                roleNetBuddy.textContent = translations[lang].projects.role;
-                netbuddyRoleText.textContent = translations[lang].projects.projectThree.projectThreeRoleText;
-
-                closeNetBuddy.textContent = translations[lang].projects.close;
-                goNetBuddy.textContent = translations[lang].projects.goProject;
-
-
-
-
-               contacttitle.textContent = translations[lang].contact.contactTitle;
-              namelabel.textContent = translations[lang].contact.nameLabel;
-              emaillabel.textContent = translations[lang].contact.emailLabel;
-                messagelabel.textContent = translations[lang].contact.messageLabel;
-                sendbtn.textContent = translations[lang].contact.sendBtn;
-
-               foottile.textContent = translations[lang].footer.footerTitle;
-               footaddresstitle.textContent = translations[lang].footer.footerAddressTitle;
-                footerrights.textContent = translations[lang].footer.footerRights;
-
-            }
-
-            languageToggle.addEventListener('change', function () {
-                if (languageToggle.checked) {
-                    switchLanguage('jp');
-                } else {
-                    switchLanguage('en');
-                }
-            });
-        });
-
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
