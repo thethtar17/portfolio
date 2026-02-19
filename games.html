@@ -7,17 +7,11 @@
   <link rel="stylesheet" href="porfolio.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
-    .games-wrap { max-width: 920px; margin: 36px auto; padding: 18px; }
-    .games-list { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; }
-    .game-card { border:1px solid var(--border); background:var(--surface); padding:14px; border-radius:10px; box-shadow:var(--shadow-soft); display:flex; flex-direction:column; justify-content:space-between; min-height:340px; }
-    .game-card img.icon { width:100%; height:180px; object-fit:cover; border-radius:8px; }
-    .typing-area { margin-top:16px; }
-    .target-text { background:var(--bg); padding:12px; border-radius:8px; border:1px solid var(--border); font-size:15px; color:var(--muted); }
-    .typing-input { width:100%; padding:10px; margin-top:8px; border-radius:8px; border:1px solid var(--border); }
-    .stats { margin-top:10px; font-size:14px; color:var(--muted); }
-    .game-hero { display:flex; gap:18px; align-items:center; margin-bottom:18px; }
-    .game-hero img.title { width:1200px; height:300px; object-fit:contain; }
-    .app-icon { width:96px; height:96px; border-radius:18px; object-fit:cover; border:1px solid var(--border); box-shadow:var(--shadow-soft) }
+    .games-list { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-top: 12px; }
+    .game-card { border:1px solid var(--border); background:var(--surface); padding:14px; border-radius:var(--radius-sm); box-shadow:var(--shadow-soft); display:flex; flex-direction:column; justify-content:space-between; min-height:320px; }
+    .game-card img.icon { width:100%; height:180px; object-fit:cover; border-radius:10px; border: 1px solid var(--border); background: var(--bg); }
+    .game-hero { margin: 12px 0 18px; }
+    .game-hero img.title { width:100%; height:auto; display:block; object-fit:contain; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow-soft); }
   </style>
 </head>
 <body>
@@ -36,154 +30,96 @@
     </div>
   </header>
 
-  <main class="games-wrap">
+  <main class="wrap">
     <h1>Games</h1>
     <p class="subtitle">A small collection of simple browser games. Click a game to play.</p>
-
+<!-- 
     <section class="game-hero">
-      <img src="images/games/games title.png" alt="Games Title" class="title" width="1200" height="300" />
-    </section>
+      <img src="images/games/Games title.png" alt="Games Title" class="title" loading="lazy" />
+    </section> -->
 
     <div class="games-list">
       <div class="game-card">
-        <img src="images/games/typing.jpg" alt="Typing Game icon" class="icon" />
+        <img src="images/games/typing.jpg" alt="Typing Game icon" class="icon" loading="lazy" />
         <div>
           <h3>Typing Game</h3>
           <p class="subtitle">Test your typing speed and accuracy.</p>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;">
+        <div class="cta-row" style="margin-top:12px">
           <a class="cta cta-primary" href="Games/typing.html">Play Typing Game</a>
         </div>
       </div>
       <div class="game-card">
-        <img src="images/games/sudoku.jpg" alt="Sudoku icon" class="icon" />
+        <img src="images/games/sudoku.jpg" alt="Sudoku icon" class="icon" loading="lazy" />
         <div>
           <h3>Sudoku</h3>
           <p class="subtitle">Classic 9×9 Sudoku — generate and solve puzzles by difficulty.</p>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;">
+        <div class="cta-row" style="margin-top:12px">
           <a class="cta cta-primary" href="Games/sudoku.html">Play Sudoku</a>
         </div>
       </div>
       <div class="game-card">
-        <img src="images/games/match game.png" alt="Memory Match icon" class="icon" />
+        <img src="images/games/match game.png" alt="Memory Match icon" class="icon" loading="lazy" />
         <div>
           <h3>Memory Match</h3>
           <p class="subtitle">Flip cards and match pairs to win.</p>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;">
+        <div class="cta-row" style="margin-top:12px">
           <a class="cta cta-primary" href="Games/memory.html">Play Memory Match</a>
         </div>
       </div>
       <div class="game-card">
-        <img src="images/games/FourInaRow.png" alt="Connect Four icon" class="icon" />
+        <img src="images/games/FourInaRow.png" alt="Connect Four icon" class="icon" loading="lazy" />
         <div>
           <h3>Connect Four</h3>
           <p class="subtitle">Drop discs and connect four in a row to win.</p>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;">
+        <div class="cta-row" style="margin-top:12px">
           <a class="cta cta-primary" href="Games/connect4.html">Play Connect Four</a>
         </div>
       </div>
       <div class="game-card">
-        <img src="images/games/checker.png" alt="Checkers icon" class="icon" />
+        <img src="images/games/checker.png" alt="Checkers icon" class="icon" loading="lazy" />
         <div>
           <h3>Checkers</h3>
           <p class="subtitle">Play classic checkers locally or vs computer (AI).</p>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;">
+        <div class="cta-row" style="margin-top:12px">
           <a class="cta cta-primary" href="Games/checkers.html">Play Checkers</a>
         </div>
       </div>
       <div class="game-card">
-        <img src="images/games/snake.png" alt="Snake icon" class="icon" />
+        <img src="images/games/2048.png" alt="2048 icon" class="icon" loading="lazy" />
+        <div>
+          <h3>2048</h3>
+          <p class="subtitle">Slide and merge tiles to reach 2048 (and beyond).</p>
+        </div>
+        <div class="cta-row" style="margin-top:12px">
+          <a class="cta cta-primary" href="Games/2048.html">Play 2048</a>
+        </div>
+      </div>
+      <div class="game-card">
+        <img src="images/games/brickbreaker.svg" alt="Brick Breaker icon" class="icon" loading="lazy" />
+        <div>
+          <h3>Brick Breaker</h3>
+          <p class="subtitle">Bounce the ball, break all bricks, and keep the ball in play.</p>
+        </div>
+        <div class="cta-row" style="margin-top:12px">
+          <a class="cta cta-primary" href="Games/brickbreaker.html">Play Brick Breaker</a>
+        </div>
+      </div>
+      <div class="game-card">
+        <img src="images/games/snake.png" alt="Snake icon" class="icon" loading="lazy" />
         <div>
           <h3>Snake</h3>
           <p class="subtitle">Classic snake — eat food, grow longer, avoid walls and yourself.</p>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;">
+        <div class="cta-row" style="margin-top:12px">
           <a class="cta cta-primary" href="Games/snake.html">Play Snake</a>
         </div>
       </div>
     </div>
   </main>
-
-  <script>
-    (function(){
-      const sentences = [
-        'Practice makes perfect.',
-        'The quick brown fox jumps over the lazy dog.',
-        'Typing fast improves productivity.',
-        'Build something useful every day.'
-      ];
-
-      const targetEl = document.getElementById('targetText');
-      const inputEl = document.getElementById('typingInput');
-      const startBtn = document.getElementById('startBtn');
-      const resetBtn = document.getElementById('resetBtn');
-      const wpmEl = document.getElementById('wpm');
-      const accEl = document.getElementById('accuracy');
-      const timeEl = document.getElementById('time');
-
-      let target = '';
-      let startTime = null;
-      let timerInterval = null;
-
-      function pick() {
-        target = sentences[Math.floor(Math.random()*sentences.length)];
-        targetEl.textContent = target;
-      }
-
-      function reset() {
-        pick();
-        inputEl.value = '';
-        inputEl.disabled = true;
-        startTime = null;
-        clearInterval(timerInterval);
-        timeEl.textContent = 'Time: 0s';
-        wpmEl.textContent = 'WPM: 0';
-        accEl.textContent = 'Accuracy: 0%';
-      }
-
-      function updateStats() {
-        if (!startTime) return;
-        const elapsed = (Date.now() - startTime)/1000;
-        timeEl.textContent = 'Time: ' + Math.floor(elapsed) + 's';
-        const typed = inputEl.value || '';
-        const words = typed.trim().split(/\s+/).filter(Boolean).length;
-        const minutes = Math.max(1/60, elapsed/60);
-        const wpm = Math.round(words / minutes);
-        wpmEl.textContent = 'WPM: ' + wpm;
-        // accuracy
-        let correct = 0;
-        for (let i=0;i<typed.length && i<target.length;i++) if (typed[i]===target[i]) correct++;
-        const acc = typed.length ? Math.round((correct/typed.length)*100) : 0;
-        accEl.textContent = 'Accuracy: ' + acc + '%';
-      }
-
-      startBtn.addEventListener('click', () => {
-        inputEl.disabled = false;
-        inputEl.focus();
-        startTime = Date.now();
-        clearInterval(timerInterval);
-        timerInterval = setInterval(updateStats, 250);
-      });
-
-      resetBtn.addEventListener('click', reset);
-
-      inputEl.addEventListener('input', () => {
-        if (!startTime) return;
-        updateStats();
-        if (inputEl.value === target) {
-          clearInterval(timerInterval);
-          updateStats();
-          inputEl.disabled = true;
-        }
-      });
-
-      // init
-      reset();
-    })();
-  </script>
 </body>
 </html>

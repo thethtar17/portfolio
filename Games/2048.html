@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2048 — Games</title>
+  <link rel="stylesheet" href="../porfolio.css">
+  <style>
+    .game-wrap { max-width: var(--max); margin: 0 auto; padding: 24px 18px; }
+    .top-actions { display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+
+    .hud { display:flex; gap:12px; align-items:center; flex-wrap:wrap; justify-content:space-between; }
+    .stats { display:flex; gap:10px; flex-wrap:wrap; }
+    .stat { border:1px solid var(--border); background: var(--bg); border-radius: 12px; padding: 10px 12px; box-shadow: var(--shadow-soft); min-width: 120px; }
+    .stat .label { font-size: 12px; color: var(--muted); }
+    .stat .value { font-size: 18px; font-weight: 700; letter-spacing: -0.2px; }
+
+    .board {
+      margin-top: 14px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface-2) 90%, transparent), var(--surface-2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow-soft);
+      width: 100%;
+      max-width: 460px;
+      min-width: 0;
+    }
+    .grid { display:grid; grid-template-columns:repeat(4, 1fr); gap: 12px; }
+    .cell {
+      aspect-ratio: 1 / 1;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: color-mix(in srgb, var(--bg) 55%, var(--surface) 45%);
+      border: 1px solid var(--border);
+      box-shadow: inset 0 2px 10px rgba(18,19,26,0.06);
+      font-weight: 800;
+      font-size: clamp(14px, 3.6vw, 32px);
+      letter-spacing: -0.8px;
+      user-select:none;
+    }
+
+    .cell.empty { color: transparent; }
+
+    .cell.pop { animation: pop 160ms cubic-bezier(.2,.8,.2,1); }
+    @keyframes pop { from { transform: scale(0.92); } to { transform: scale(1); } }
+
+    /* Tile tones (no new colors: derived from theme tokens) */
+    .t-2    { background: color-mix(in srgb, var(--accent) 8%,  var(--surface)); }
+    .t-4    { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+    .t-8    { background: color-mix(in srgb, var(--accent) 18%, var(--surface)); }
+    .t-16   { background: color-mix(in srgb, var(--accent) 24%, var(--surface)); }
+    .t-32   { background: color-mix(in srgb, var(--accent) 30%, var(--surface)); }
+    .t-64   { background: color-mix(in srgb, var(--accent) 36%, var(--surface)); }
+    .t-128  { background: color-mix(in srgb, var(--accent) 42%, var(--surface)); }
+    .t-256  { background: color-mix(in srgb, var(--accent) 48%, var(--surface)); }
+    .t-512  { background: color-mix(in srgb, var(--accent) 54%, var(--surface)); }
+    .t-1024 { background: color-mix(in srgb, var(--accent) 60%, var(--surface)); }
+    .t-2048 { background: color-mix(in srgb, var(--accent) 66%, var(--surface)); }
+    .t-hi   { background: color-mix(in srgb, var(--accent-2) 70%, var(--surface)); }
+
+    .layout { display:grid; grid-template-columns: minmax(0, 480px) minmax(0, 1fr); gap: 24px; align-items:start; }
+    .layout > div { min-width: 0; }
+    @media (max-width: 1200px) { .layout { grid-template-columns: 1fr; } }
+
+    /* ensure hud elements wrap and do not overlap board */
+    .hud { gap: 18px; }
+    @media (max-width: 640px) { .hud { flex-direction: column; align-items: stretch; } }
+
+    .msg { position: relative; z-index: 2; }
+
+    .msg {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--surface) 85%, transparent);
+      color: var(--muted);
+    }
+    .msg strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">TH</div>
+        <div class="brand-text">
+          <strong>THET HTAR SANN</strong>
+          <span class="note">2048</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <a class="cta" href="../games.html">Back to Games</a>
+        <a class="cta" href="../porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-wrap">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="hud">
+          <div>
+            <h1 style="margin:0 0 6px">2048</h1>
+            <p class="subtitle" style="margin:0">Use arrow keys to slide tiles. Merge equal numbers. Reach <strong>2048</strong>.</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><div class="label">Score</div><div class="value" id="score">0</div></div>
+            <div class="stat"><div class="label">Best</div><div class="value" id="best">0</div></div>
+            <div class="cta-row">
+              <button class="cta cta-primary" id="restartBtn" type="button">Restart</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="layout">
+          <div>
+            <div class="board" aria-label="2048 board">
+              <div class="grid" id="grid"></div>
+            </div>
+            <div class="msg" id="message" role="status" aria-live="polite"></div>
+          </div>
+
+          <div>
+            <h3 style="margin:12px 0 6px">Rules</h3>
+            <p class="subtitle" style="margin:0">Tiles slide as far as possible; each tile merges at most once per move. After every valid move, a new tile appears (usually 2, sometimes 4). Game ends when the board is full and no merges are possible.</p>
+            <p class="subtitle" style="margin-top:12px">Tip: press <strong>R</strong> to restart.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const SIZE = 4;
+      const gridEl = document.getElementById('grid');
+      const scoreEl = document.getElementById('score');
+      const bestEl = document.getElementById('best');
+      const messageEl = document.getElementById('message');
+      const restartBtn = document.getElementById('restartBtn');
+
+      let grid = []; // 2D array
+      let score = 0;
+      let best = parseInt(localStorage.getItem('best-2048') || '0', 10);
+      let won = false;
+      let gameOver = false;
+      let popMask = null; // 2D boolean mask for pop animation
+
+      bestEl.textContent = String(best);
+
+      function newGrid(){
+        return Array.from({length: SIZE}, () => Array(SIZE).fill(0));
+      }
+
+      function emptyCells(){
+        const empties = [];
+        for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++) if(grid[r][c]===0) empties.push([r,c]);
+        return empties;
+      }
+
+      function addRandomTile(){
+        const empties = emptyCells();
+        if(empties.length === 0) return false;
+        const [r,c] = empties[Math.floor(Math.random()*empties.length)];
+        const value = (Math.random() < 0.9) ? 2 : 4;
+        grid[r][c] = value;
+        if(!popMask) popMask = newGrid().map(row => row.map(() => false));
+        popMask[r][c] = true;
+        return true;
+      }
+
+      function reset(){
+        grid = newGrid();
+        score = 0;
+        won = false;
+        gameOver = false;
+        popMask = newGrid().map(row => row.map(() => false));
+        addRandomTile();
+        addRandomTile();
+        setMessage('Make a move — use arrow keys.');
+        render();
+      }
+
+      function setMessage(text){
+        messageEl.innerHTML = text;
+      }
+
+      function render(){
+        scoreEl.textContent = String(score);
+        bestEl.textContent = String(best);
+
+        gridEl.innerHTML = '';
+        for(let r=0;r<SIZE;r++){
+          for(let c=0;c<SIZE;c++){
+            const v = grid[r][c];
+            const cell = document.createElement('div');
+            cell.className = 'cell' + (v===0 ? ' empty' : '');
+            if(v !== 0){
+              cell.textContent = String(v);
+              cell.classList.add('t-' + v);
+              if(v > 2048) cell.classList.add('t-hi');
+            }
+            if(popMask && popMask[r] && popMask[r][c]) cell.classList.add('pop');
+            gridEl.appendChild(cell);
+          }
+        }
+        // clear pop after render
+        popMask = newGrid().map(row => row.map(() => false));
+      }
+
+      function rotateRight(m){
+        // rotate matrix clockwise
+        const out = newGrid();
+        for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++) out[c][SIZE-1-r] = m[r][c];
+        return out;
+      }
+
+      function moveLeftOnce(line){
+        // returns {line, gained, changed, mergedMask}
+        const filtered = line.filter(n => n !== 0);
+        const out = [];
+        let gained = 0;
+        let changed = false;
+        const mergedMask = Array(SIZE).fill(false);
+
+        for(let i=0;i<filtered.length;i++){
+          const cur = filtered[i];
+          const next = filtered[i+1];
+          if(next !== undefined && cur === next){
+            const merged = cur * 2;
+            out.push(merged);
+            gained += merged;
+            i++; // skip next
+            changed = true;
+          } else {
+            out.push(cur);
+          }
+        }
+        while(out.length < SIZE) out.push(0);
+
+        // detect change
+        for(let i=0;i<SIZE;i++) if(out[i] !== line[i]) changed = true;
+        return { line: out, gained, changed };
+      }
+
+      function doMove(direction){
+        if(gameOver) return;
+        // directions: 'left','right','up','down'
+        popMask = newGrid().map(row => row.map(() => false));
+
+        // To reuse left-move logic, rotate board
+        let work = grid.map(row => row.slice());
+        const rotateTimes = (direction === 'up') ? 3 : (direction === 'right') ? 2 : (direction === 'down') ? 1 : 0;
+        for(let i=0;i<rotateTimes;i++) work = rotateRight(work);
+
+        let anyChanged = false;
+        let gainedTotal = 0;
+
+        for(let r=0;r<SIZE;r++){
+          const before = work[r].slice();
+          const { line: after, gained, changed } = moveLeftOnce(before);
+          work[r] = after;
+          if(changed) anyChanged = true;
+          gainedTotal += gained;
+          // mark pop for merged tiles (approx): any position where value increased vs before (and non-zero)
+          for(let c=0;c<SIZE;c++){
+            if(after[c] !== 0 && after[c] !== before[c]){
+              // pop only when it results from a merge (heuristic: value exists and not simply shifted from same value)
+              // We'll pop whenever a tile changes position/value to keep it simple.
+              // We'll map popMask later after un-rotating.
+            }
+          }
+        }
+
+        if(!anyChanged){
+          setMessage('No move — try a different direction.');
+          return;
+        }
+
+        score += gainedTotal;
+        if(score > best){
+          best = score;
+          localStorage.setItem('best-2048', String(best));
+        }
+
+        // unrotate to original orientation
+        for(let i=0;i<(4-rotateTimes)%4;i++) work = rotateRight(work);
+        grid = work;
+
+        // add new tile after a valid move
+        addRandomTile();
+
+        // check win
+        if(!won && hasValue(2048)){
+          won = true;
+          setMessage('<strong>You made 2048!</strong> You can continue playing.');
+        } else {
+          setMessage('Keep going…');
+        }
+
+        // check game over
+        if(isGameOver()){
+          gameOver = true;
+          setMessage('<strong>Game Over</strong> — no moves left.');
+        }
+
+        render();
+      }
+
+      function hasValue(v){
+        for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++) if(grid[r][c]===v) return true;
+        return false;
+      }
+
+      function isGameOver(){
+        if(emptyCells().length > 0) return false;
+        // any merge possible?
+        for(let r=0;r<SIZE;r++){
+          for(let c=0;c<SIZE;c++){
+            const cur = grid[r][c];
+            if((r+1<SIZE && grid[r+1][c]===cur) || (c+1<SIZE && grid[r][c+1]===cur)) return false;
+          }
+        }
+        return true;
+      }
+
+      window.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowLeft') { e.preventDefault(); doMove('left'); }
+        if(e.key === 'ArrowRight'){ e.preventDefault(); doMove('right'); }
+        if(e.key === 'ArrowUp')   { e.preventDefault(); doMove('up'); }
+        if(e.key === 'ArrowDown') { e.preventDefault(); doMove('down'); }
+        if(e.key === 'r' || e.key === 'R'){ reset(); }
+      });
+
+      restartBtn.addEventListener('click', ()=> reset());
+
+      reset();
+    })();
+  </script>
+</body>
+</html>
