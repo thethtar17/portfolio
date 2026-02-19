@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Games — Portfolio</title>
+  <link rel="stylesheet" href="porfolio.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    .games-wrap { max-width: 920px; margin: 36px auto; padding: 18px; }
+    .games-list { display:flex; gap:12px; flex-wrap:wrap; }
+    .game-card { border:1px solid var(--border); background:var(--surface); padding:14px; border-radius:10px; min-width:220px; box-shadow:var(--shadow-soft); }
+    .typing-area { margin-top:16px; }
+    .target-text { background:var(--bg); padding:12px; border-radius:8px; border:1px solid var(--border); font-size:15px; color:var(--muted); }
+    .typing-input { width:100%; padding:10px; margin-top:8px; border-radius:8px; border:1px solid var(--border); }
+    .stats { margin-top:10px; font-size:14px; color:var(--muted); }
+    .game-hero { display:flex; gap:18px; align-items:center; margin-bottom:18px; }
+    .game-hero img.title { width:1200px; height:300px; object-fit:contain; }
+    .app-icon { width:96px; height:96px; border-radius:18px; object-fit:cover; border:1px solid var(--border); box-shadow:var(--shadow-soft) }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">TH</div>
+        <div class="brand-text">
+          <strong>THET HTAR SANN</strong>
+          <span class="note">Games</span>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <a class="cta" href="porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="games-wrap">
+    <h1>Games</h1>
+    <p class="subtitle">A small collection of simple browser games. Click a game to play.</p>
+
+    <section class="game-hero">
+      <img src="images/games/games title.png" alt="Games Title" class="title" width="1200" height="300" />
+    </section>
+
+    <div class="games-list">
+      <div class="game-card">
+        <img src="images/games/typing.jpg" alt="Typing Game icon" style="width:100%;height:160px;object-fit:cover;border-radius:8px;" />
+        <h3>Typing Game</h3>
+        <p class="subtitle">Test your typing speed and accuracy.</p>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <a class="cta cta-primary" href="typing.html">Play Typing Game</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const sentences = [
+        'Practice makes perfect.',
+        'The quick brown fox jumps over the lazy dog.',
+        'Typing fast improves productivity.',
+        'Build something useful every day.'
+      ];
+
+      const targetEl = document.getElementById('targetText');
+      const inputEl = document.getElementById('typingInput');
+      const startBtn = document.getElementById('startBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const wpmEl = document.getElementById('wpm');
+      const accEl = document.getElementById('accuracy');
+      const timeEl = document.getElementById('time');
+
+      let target = '';
+      let startTime = null;
+      let timerInterval = null;
+
+      function pick() {
+        target = sentences[Math.floor(Math.random()*sentences.length)];
+        targetEl.textContent = target;
+      }
+
+      function reset() {
+        pick();
+        inputEl.value = '';
+        inputEl.disabled = true;
+        startTime = null;
+        clearInterval(timerInterval);
+        timeEl.textContent = 'Time: 0s';
+        wpmEl.textContent = 'WPM: 0';
+        accEl.textContent = 'Accuracy: 0%';
+      }
+
+      function updateStats() {
+        if (!startTime) return;
+        const elapsed = (Date.now() - startTime)/1000;
+        timeEl.textContent = 'Time: ' + Math.floor(elapsed) + 's';
+        const typed = inputEl.value || '';
+        const words = typed.trim().split(/\s+/).filter(Boolean).length;
+        const minutes = Math.max(1/60, elapsed/60);
+        const wpm = Math.round(words / minutes);
+        wpmEl.textContent = 'WPM: ' + wpm;
+        // accuracy
+        let correct = 0;
+        for (let i=0;i<typed.length && i<target.length;i++) if (typed[i]===target[i]) correct++;
+        const acc = typed.length ? Math.round((correct/typed.length)*100) : 0;
+        accEl.textContent = 'Accuracy: ' + acc + '%';
+      }
+
+      startBtn.addEventListener('click', () => {
+        inputEl.disabled = false;
+        inputEl.focus();
+        startTime = Date.now();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateStats, 250);
+      });
+
+      resetBtn.addEventListener('click', reset);
+
+      inputEl.addEventListener('input', () => {
+        if (!startTime) return;
+        updateStats();
+        if (inputEl.value === target) {
+          clearInterval(timerInterval);
+          updateStats();
+          inputEl.disabled = true;
+        }
+      });
+
+      // init
+      reset();
+    })();
+  </script>
+</body>
+</html>

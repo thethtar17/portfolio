@@ -42,6 +42,7 @@
         <nav class="nav-links" aria-label="Primary">
           <a id="nav-about" href="#about">About</a>
           <a id="nav-projects" href="#projects">Projects</a>
+          <a id="nav-games" href="games.html">Games</a>
           <a id="nav-experience" href="#experience">Experience</a>
           <a id="nav-certificates" href="#certificates">Certificate</a>
           <a id="nav-skills" href="#skills">Skill</a>
@@ -327,7 +328,7 @@
       </div>
 
       <div class="projects">
-        <article class="project" aria-label="Game Project">
+        <article id="project-game" class="project" aria-label="Game Project">
           <div class="media"><img src="game.png" alt="Game Project preview" /></div>
           <div class="body">
             <h3 id="project-name-title-one">Game Project</h3>
@@ -595,7 +596,21 @@
     </div>
   </footer>
 
-  <script src="porfolio.js"></script>
-   
+  
+  <!-- Typing game modal -->
+  <div id="typing-modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="typing-modal-title">
+      <div class="modal-header">
+        <h3 id="typing-modal-title">Typing Game</h3>
+        <button id="typing-close" class="close-btn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>This is the Typing Game placeholder. Replace this with your game iframe or embed.</p>
+        <p>You can link a game file or implement the game here — tell me how you'd like it integrated.</p>
+      </div>
+    </div>
+  </div>
 </body>
+  <script src="porfolio.js"></script>
+</html>
 </html>

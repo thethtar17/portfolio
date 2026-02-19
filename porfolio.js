@@ -2,7 +2,7 @@
   const translations = {
     en: {
       header: 'Portfolio Website',
-      navLinks: ['About', 'Projects', 'Experience', 'Certificate', 'Skill', 'Contact'],
+      navLinks: ['About', 'Projects', 'Games', 'Experience', 'Certificate', 'Skill', 'Contact'],
       about: {
         title: 'About Me',
         mini: 'A quick introduction',
@@ -189,7 +189,7 @@
     },
     jp: {
       header: 'ポートフォリオサイト',
-      navLinks: ['私について', 'プロジェクト', '経験', '証明書', 'スキル', '連絡先'],
+      navLinks: ['私について', 'プロジェクト', 'ゲーム', '経験', '証明書', 'スキル', '連絡先'],
       about: {
         title: '私について',
         mini: '簡単な紹介',
@@ -400,10 +400,12 @@
 
     el('nav-about').textContent = t.navLinks[0];
     el('nav-projects').textContent = t.navLinks[1];
-    el('nav-experience').textContent = t.navLinks[2];
-    el('nav-certificates').textContent = t.navLinks[3];
-    el('nav-skills').textContent = t.navLinks[4];
-    el('nav-contact').textContent = t.navLinks[5];
+    const navGamesEl = el('nav-games');
+    if (navGamesEl) navGamesEl.textContent = t.navLinks[2];
+    el('nav-experience').textContent = t.navLinks[3];
+    el('nav-certificates').textContent = t.navLinks[4];
+    el('nav-skills').textContent = t.navLinks[5];
+    el('nav-contact').textContent = t.navLinks[6];
 
     el('about-title').textContent = t.about.title;
     el('about-mini').textContent = t.about.mini;
@@ -854,6 +856,57 @@
       const next = document.body.classList.contains('theme-dark') ? 'light' : 'dark';
       localStorage.setItem('theme', next);
       applyTheme(next);
+    });
+  }
+
+  // Games dropdown behavior (use event delegation for robustness)
+  const gamesDropdown = el('games-dropdown');
+  const typingModal = el('typing-modal');
+  const typingClose = el('typing-close');
+
+  // Toggle dropdown or handle Typing Game click via delegation
+  document.addEventListener('click', (ev) => {
+    const target = ev.target;
+
+    // Click on the dropdown button
+    const btn = target.closest && target.closest('.nav-dropdown-btn');
+    if (btn) {
+      ev.preventDefault();
+      const isOpen = gamesDropdown && !gamesDropdown.hasAttribute('hidden');
+      if (gamesDropdown) {
+        if (isOpen) gamesDropdown.setAttribute('hidden', '');
+        else gamesDropdown.removeAttribute('hidden');
+      }
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      return;
+    }
+
+    // Click on Typing Game link
+    const typing = target.closest && target.closest('#go-typing-game');
+    if (typing) {
+      ev.preventDefault();
+      if (gamesDropdown) gamesDropdown.setAttribute('hidden', '');
+      if (typingModal) typingModal.removeAttribute('hidden');
+      return;
+    }
+
+    // Click outside dropdown -> close it
+    if (!target.closest || !target.closest('.nav-item.dropdown')) {
+      if (gamesDropdown) gamesDropdown.setAttribute('hidden', '');
+      const navBtn = el('nav-games');
+      if (navBtn) navBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // Typing modal close handlers
+  if (typingClose) {
+    typingClose.addEventListener('click', () => {
+      if (typingModal) typingModal.setAttribute('hidden', '');
+    });
+  }
+  if (typingModal) {
+    typingModal.addEventListener('click', (ev) => {
+      if (ev.target === typingModal) typingModal.setAttribute('hidden', '');
     });
   }
 })();

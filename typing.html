@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Typing Game — Games</title>
+  <link rel="stylesheet" href="porfolio.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    .game-page { max-width: 920px; margin: 36px auto; padding: 18px; }
+    .game-hero { display:flex;gap:18px;align-items:center;margin-bottom:18px }
+    .game-hero img.title { max-height:84px; object-fit:contain }
+    .app-icon { width:96px;height:96px;border-radius:18px;object-fit:cover;border:1px solid var(--border);box-shadow:var(--shadow-soft) }
+    .typing-area { margin-top:16px; }
+    .target-text { background:var(--bg); padding:12px; border-radius:8px; border:1px solid var(--border); font-size:15px; color:var(--muted); white-space:pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; }
+    .typing-input { width:100%; padding:10px; margin-top:8px; border-radius:8px; border:1px solid var(--border); }
+    .stats { margin-top:10px; font-size:14px; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">TH</div>
+        <div class="brand-text">
+          <strong id="ui-name">THET HTAR SANN</strong>
+          <span id="ui-role">Games</span>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <a class="cta" href="games.html">Back to Games</a>
+        <a class="cta" href="porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-page">
+   
+
+    <h2>Typing Game</h2>
+    <p class="subtitle">Improve your speed and accuracy. Type the passage shown below and your WPM and accuracy will update in real time.</p>
+
+    <div style="margin:12px 0;">
+      <label for="typingType">Mode:</label>
+      <select id="typingType" style="margin-left:8px;padding:6px;border-radius:6px;border:1px solid var(--border);">
+        <option value="english" selected>English</option>
+        <option value="programming">Programming</option>
+        <option value="japanese">Japanese</option>
+      </select>
+    </div>
+
+    <div class="typing-area panel">
+      <div class="panel-body">
+        <div class="target-text" id="targetText">Loading...</div>
+        <textarea id="typingInput" class="typing-input" rows="4" placeholder="Start typing here..." disabled></textarea>
+        <div class="stats">
+          <span id="wpm">WPM: 0</span> • <span id="accuracy">Accuracy: 0%</span> • <span id="time">Time: 0s</span>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;">
+          <button id="startBtn" class="cta cta-primary">Start</button>
+          <button id="stopBtn" class="cta" disabled>Stop</button>
+          <button id="resetBtn" class="cta">Reset</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const sentencesByType = {
+        english: [
+          'Practice makes perfect. Dedicate short daily sessions to typing varied passages, focusing on rhythm and accuracy rather than speed alone.',
+          'The quick brown fox jumps over the lazy dog is a classic pangram used to exercise every letter of the alphabet while training consistent keystrokes and finger placement.',
+          'Typing fast improves productivity when combined with correct posture and deliberate practice; measure your progress, adjust your drills, and remain patient with improvement.',
+          'Build something useful every day by setting small, achievable typing goals that challenge accuracy and introduce new vocabulary or sentence structures.'
+        ],
+        programming: [
+          "console.log('Hello, world!');",
+          'for (let i = 0; i < 10; i++) { console.log(i); }',
+          'function greet(name) { return `Hello ${name}`; }',
+          'const sum = (a, b) => a + b;'
+        ],
+        japanese: [
+          '練習は上達の鍵です。毎日短い時間でも繰り返し入力することで、正確さと速度が徐々に向上します。',
+          '速くタイピングするには姿勢とリズムが重要です。指の動きを安定させて、視線を適切に保ちましょう。',
+          '生産性を上げるためには正確さを優先しましょう。速さは正確さの上に成り立ちます。',
+          '毎日少しずつ実用的な文章やコードを打つことで、実践的な力が身につきます。'
+        ]
+      };
+
+      const targetEl = document.getElementById('targetText');
+      const inputEl = document.getElementById('typingInput');
+      const typeSelect = document.getElementById('typingType');
+      const startBtn = document.getElementById('startBtn');
+      const stopBtn = document.getElementById('stopBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const wpmEl = document.getElementById('wpm');
+      const accEl = document.getElementById('accuracy');
+      const timeEl = document.getElementById('time');
+
+      let target = '';
+      let startTime = null;
+      let timerInterval = null;
+
+      function pick() {
+        const mode = (typeSelect && typeSelect.value) || 'english';
+        const list = sentencesByType[mode] || sentencesByType.english;
+        target = list[Math.floor(Math.random() * list.length)];
+        targetEl.textContent = target;
+      }
+
+      function reset() {
+        pick();
+        inputEl.value = '';
+        inputEl.disabled = true;
+        startTime = null;
+        clearInterval(timerInterval);
+        timeEl.textContent = 'Time: 0s';
+        wpmEl.textContent = 'WPM: 0';
+        accEl.textContent = 'Accuracy: 0%';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
+
+      function updateStats() {
+        if (!startTime) return;
+        const elapsed = (Date.now() - startTime)/1000;
+        timeEl.textContent = 'Time: ' + Math.floor(elapsed) + 's';
+        const typed = inputEl.value || '';
+        const mode = (typeSelect && typeSelect.value) || 'english';
+        let measure = 0;
+        if (mode === 'japanese') {
+          // use characters-per-minute for Japanese
+          measure = typed.length;
+        } else {
+          measure = typed.trim().split(/\s+/).filter(Boolean).length;
+        }
+        const minutes = Math.max(1/60, elapsed/60);
+        const score = Math.round(measure / minutes);
+        wpmEl.textContent = (mode === 'japanese' ? 'CPM: ' : 'WPM: ') + score;
+        // accuracy
+        let correct = 0;
+        for (let i=0;i<typed.length && i<target.length;i++) if (typed[i]===target[i]) correct++;
+        const acc = typed.length ? Math.round((correct/typed.length)*100) : 0;
+        accEl.textContent = 'Accuracy: ' + acc + '%';
+      }
+
+      function stopTyping() {
+        if (!startTime && !timerInterval) return;
+        clearInterval(timerInterval);
+        timerInterval = null;
+        updateStats();
+        inputEl.disabled = true;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        startTime = null;
+      }
+
+      startBtn.addEventListener('click', () => {
+        inputEl.disabled = false;
+        inputEl.focus();
+        startTime = Date.now();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateStats, 250);
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      });
+
+      stopBtn.addEventListener('click', stopTyping);
+
+      resetBtn.addEventListener('click', reset);
+
+      if (typeSelect) {
+        typeSelect.addEventListener('change', () => {
+          reset();
+        });
+      }
+
+      inputEl.addEventListener('input', () => {
+        if (!startTime) return;
+        updateStats();
+        if (inputEl.value === target) {
+          stopTyping();
+        }
+      });
+
+      // init
+      reset();
+    })();
+  </script>
+</body>
+</html>
