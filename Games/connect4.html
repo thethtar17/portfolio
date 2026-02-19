@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Connect Four — Games</title>
+  <link rel="stylesheet" href="../porfolio.css">
+  <style>
+    :root{--red:#e63946;--yellow:#ffd166;--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; background:var(--bg); color:#fff; padding:20px}
+    .wrap{max-width:920px;margin:24px auto;padding:18px}
+    .top{display:flex;align-items:center;gap:12px}
+    .board-card{background:var(--card);border-radius:12px;padding:18px;margin-top:18px;box-shadow:0 6px 20px rgba(2,6,23,.6)}
+    .controls{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+    .status{color:var(--muted);margin-left:auto}
+
+    .board{display:grid;grid-template-columns:repeat(7,64px);grid-auto-rows:64px;gap:8px;background:linear-gradient(180deg,#083041,#052024);padding:12px;border-radius:10px;position:relative}
+    .cell{width:64px;height:64px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);position:relative;cursor:pointer}
+    .cell.disabled{cursor:default;opacity:0.9}
+    .hole{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.03);box-shadow:inset 0 3px 6px rgba(2,6,23,.6)}
+    .disc{width:52px;height:52px;border-radius:50%;box-shadow:inset 0 -6px 10px rgba(0,0,0,.4);transform:translateY(-6px);transition:transform .12s ease}
+    .disc.red{background:var(--red)}
+    .disc.yellow{background:var(--yellow)}
+    .disc.win{box-shadow:0 0 18px 8px rgba(255,210,49,.28), inset 0 -6px 10px rgba(0,0,0,.4);transform:scale(1.06);animation:winPulse 1.1s ease-in-out 0s 3}
+
+    @keyframes winPulse{
+      0%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,210,49,0))}
+      50%{transform:scale(1.08);filter:drop-shadow(0 6px 18px rgba(255,210,49,.35))}
+      100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(255,210,49,0))}
+    }
+
+    .floating-disc{position:absolute;width:52px;height:52px;border-radius:50%;box-shadow:inset 0 -6px 10px rgba(0,0,0,.4);z-index:1200;transition:top .45s cubic-bezier(.2,.8,.2,1);}
+    .floating-disc.red{background:var(--red)}
+    .floating-disc.yellow{background:var(--yellow)}
+
+    .col-btn[disabled]{opacity:.46;cursor:not-allowed}
+
+    .col-buttons{display:grid;grid-template-columns:repeat(7,64px);gap:8px;margin-bottom:8px}
+    .col-btn{height:36px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.04);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .col-btn:active{transform:translateY(1px)}
+
+    .meta{display:flex;gap:12px;align-items:center;margin-top:12px}
+    .btn{background:#0ea5a4;padding:8px 12px;border-radius:8px;color:#052024;text-decoration:none;border:none;cursor:pointer}
+    .btn.secondary{background:#64748b;color:#fff}
+    .winner{font-weight:600}
+
+    @media (max-width:520px){.board,.col-buttons{grid-template-columns:repeat(7,40px)} .cell,.col-btn{height:40px;width:40px} .hole{width:34px;height:34px} .disc{width:30px;height:30px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top">
+      <h1>Connect Four</h1>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <a class="btn secondary" href="../games.html">Back to Games</a>
+        <a class="btn secondary" href="../porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+
+    <div class="board-card">
+      <div class="controls">
+        <div>Current: <span id="currentPlayer" class="winner">🔴 Red</span></div>
+        <div class="status" id="status">Make a move — choose a column.</div>
+      </div>
+
+      <div class="col-buttons" id="colButtons"></div>
+
+      <div class="board" id="board"></div>
+
+      <div class="meta">
+        <button id="restartBtn" class="btn">Restart</button>
+        <div style="margin-left:auto;color:var(--muted)">Grid: 7 × 6 — Connect 4 to win</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const ROWS = 6; const COLS = 7;
+      const boardEl = document.getElementById('board');
+      const colButtonsEl = document.getElementById('colButtons');
+      const statusEl = document.getElementById('status');
+      const currentEl = document.getElementById('currentPlayer');
+      const restartBtn = document.getElementById('restartBtn');
+
+      let board = [];
+      let currentPlayer = 1; // 1=red,2=yellow
+      let gameOver = false;
+      let animating = false;
+      let winningCells = [];
+
+      function initBoard(){
+        board = Array.from({length:ROWS}, ()=>Array(COLS).fill(0));
+        gameOver = false;
+        currentPlayer = 1;
+        renderColButtons();
+        renderBoard();
+        statusEl.textContent = 'Make a move — choose a column.';
+        updateCurrent();
+      }
+
+      function renderColButtons(){
+        colButtonsEl.innerHTML = '';
+        for(let c=0;c<COLS;c++){
+          const btn = document.createElement('button');
+          btn.className = 'col-btn';
+          btn.textContent = '↓';
+          btn.title = 'Drop in column ' + (c+1);
+          btn.addEventListener('click', ()=>handleColumn(c));
+          colButtonsEl.appendChild(btn);
+        }
+      }
+
+      function renderBoard(){
+        boardEl.innerHTML = '';
+        for(let r=0;r<ROWS;r++){
+          for(let c=0;c<COLS;c++){
+            const idx = r*COLS + c;
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            const hole = document.createElement('div');
+            hole.className = 'hole';
+            if(board[r][c]!==0){
+              const disc = document.createElement('div');
+              disc.className = 'disc ' + (board[r][c]===1? 'red':'yellow');
+              // apply win highlight if this cell is part of the winning connect
+              if(winningCells.some(cc => cc[0]===r && cc[1]===c)) disc.classList.add('win');
+              hole.appendChild(disc);
+            }
+            cell.appendChild(hole);
+            boardEl.appendChild(cell);
+          }
+        }
+      }
+
+      function handleColumn(col){
+        if(gameOver || animating) return;
+        // find lowest empty row
+        for(let r=ROWS-1;r>=0;r--){
+          if(board[r][col]===0){
+            // perform animated drop, after animation commits the move
+            performDropAnimation(r,col,currentPlayer);
+            return;
+          }
+        }
+        // column full
+        statusEl.textContent = 'Column is full — choose another.';
+      }
+
+      function performDropAnimation(row,col,player){
+        animating = true;
+        disableCols();
+        // ensure board is rendered so we can position animation target
+        renderBoard();
+        const cellIndex = row*COLS + col;
+        const targetCell = boardEl.children[cellIndex];
+        const boardRect = boardEl.getBoundingClientRect();
+        const cellRect = targetCell.getBoundingClientRect();
+        const discSize = 52 * (boardRect.width / (COLS*64 + (COLS-1)*8 + 24));
+        // create floating disc
+        const floatDisc = document.createElement('div');
+        floatDisc.className = 'floating-disc ' + (player===1? 'red':'yellow');
+        // compute left (centered in cell)
+        const left = cellRect.left - boardRect.left + (cellRect.width - 52)/2;
+        const endTop = cellRect.top - boardRect.top + (cellRect.height - 52)/2;
+        // start above board
+        floatDisc.style.left = left + 'px';
+        floatDisc.style.top = (-70) + 'px';
+        boardEl.appendChild(floatDisc);
+
+        // trigger animation to target
+        requestAnimationFrame(()=>{
+          floatDisc.style.top = endTop + 'px';
+        });
+
+        floatDisc.addEventListener('transitionend', ()=>{
+          // commit move
+          board[row][col] = player;
+          // remove floating disc
+          floatDisc.remove();
+          // check for win
+          const win = checkWinCells(row,col,player);
+          if(win){
+            winningCells = win;
+            gameOver = true;
+            statusEl.innerHTML = (player===1? '🔴 Red':'🟡 Yellow') + ' wins!';
+            currentEl.textContent = (player===1? '🔴 Red':'🟡 Yellow');
+            renderBoard();
+            disableCols();
+            animating = false;
+            return;
+          }
+          if(isBoardFull()){
+            gameOver = true;
+            statusEl.textContent = 'Draw — board is full.';
+            renderBoard();
+            animating = false;
+            disableCols();
+            return;
+          }
+          // continue game
+          winningCells = [];
+          renderBoard();
+          currentPlayer = player===1?2:1;
+          updateCurrent();
+          enableCols();
+          animating = false;
+        }, {once:true});
+      }
+
+      function animateDrop(row,col){
+        // simple render; could add animation by updating intermediate cells.
+        renderBoard();
+      }
+
+      function disableCols(){
+        Array.from(colButtonsEl.children).forEach(b=>b.disabled=true);
+      }
+
+      function enableCols(){
+        Array.from(colButtonsEl.children).forEach(b=>b.disabled=false);
+      }
+
+      function isBoardFull(){
+        for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(board[r][c]===0) return false;
+        return true;
+      }
+
+      function updateCurrent(){
+        currentEl.textContent = (currentPlayer===1? '🔴 Red':'🟡 Yellow');
+        statusEl.textContent = (currentPlayer===1? 'Red':'Yellow') + " to move.";
+      }
+
+      // returns array of winning cells [[r,c],...] or null
+      function checkWinCells(r,c,player){
+        const dirs = [ [0,1],[1,0],[1,1],[1,-1] ];
+        for(const [dr,dc] of dirs){
+          const cells = [[r,c]];
+          // forward
+          let rr = r+dr, cc = c+dc;
+          while(inBounds(rr,cc) && board[rr][cc]===player){ cells.push([rr,cc]); rr+=dr; cc+=dc }
+          // backward
+          rr = r-dr; cc = c-dc;
+          while(inBounds(rr,cc) && board[rr][cc]===player){ cells.unshift([rr,cc]); rr-=dr; cc-=dc }
+          if(cells.length>=4) return cells;
+        }
+        return null;
+      }
+
+      function inBounds(r,c){ return r>=0 && r<ROWS && c>=0 && c<COLS }
+
+      restartBtn.addEventListener('click', ()=>{
+        initBoard();
+        enableCols();
+      });
+
+      // keyboard shortcuts: 1-7 to drop
+      window.addEventListener('keydown', (e)=>{
+        if(e.key>='1' && e.key<='7'){
+          handleColumn(Number(e.key)-1);
+        }
+      });
+
+      // init
+      initBoard();
+    })();
+  </script>
+</body>
+</html>

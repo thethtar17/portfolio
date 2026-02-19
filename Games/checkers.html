@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkers — Games</title>
+  <link rel="stylesheet" href="../porfolio.css">
+  <style>
+    .game-page { max-width:920px; margin:36px auto; padding:18px; }
+    .controls { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+    .board { width:560px; max-width:100%; aspect-ratio:1/1; display:grid; grid-template-columns: repeat(8,1fr); border-radius:12px; padding:6px; background: linear-gradient(180deg,#e6d3bd,#dcbfa6); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    .square { width:100%; height:0; padding-bottom:100%; position:relative; }
+    .square.dark { background: linear-gradient(180deg,#4b382c,#5e4635); }
+    .square.light { background: linear-gradient(180deg,#f7ecd9,#f1debf); }
+    .square .inner { position:absolute; inset:8%; border-radius:10px; display:flex; align-items:center; justify-content:center; transition: background 180ms, transform 220ms; }
+    .piece { width:76%; height:76%; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; position:relative; transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms; }
+    .piece.black { background: linear-gradient(180deg,#1b1b1b,#3a3a3a); box-shadow: 0 8px 18px rgba(0,0,0,0.45), inset 0 -6px 10px rgba(255,255,255,0.02); border:2px solid rgba(0,0,0,0.25);} 
+    .piece.red { background: linear-gradient(180deg,#d94a43,#b12f28); box-shadow: 0 8px 18px rgba(0,0,0,0.3), inset 0 -6px 10px rgba(255,255,255,0.02); border:2px solid rgba(0,0,0,0.15);} 
+    .piece.king::after { content:'♔'; position:absolute; top:6px; right:8px; font-size:16px; color:rgba(255,255,255,0.95); text-shadow:0 1px 2px rgba(0,0,0,0.4); }
+    .square.highlight .inner { outline:3px solid rgba(255,255,0,0.9); box-shadow: 0 6px 18px rgba(255,255,0,0.06); }
+    .square.capture .inner { outline:3px solid rgba(255,0,0,0.9); box-shadow: 0 6px 18px rgba(255,0,0,0.06); }
+
+    /* Animations for move highlights and piece transitions */
+    @keyframes pulseYellow {
+      0% { box-shadow: 0 0 0 rgba(255,255,0,0.0); }
+      50% { box-shadow: 0 0 12px rgba(255,255,0,0.35); }
+      100% { box-shadow: 0 0 0 rgba(255,255,0,0.0); }
+    }
+    @keyframes pulseRed {
+      0% { box-shadow: 0 0 0 rgba(255,0,0,0.0); }
+      50% { box-shadow: 0 0 12px rgba(255,0,0,0.35); }
+      100% { box-shadow: 0 0 0 rgba(255,0,0,0.0); }
+    }
+    .square.highlight .inner { animation: pulseYellow 900ms ease-in-out infinite; }
+    .square.capture .inner { animation: pulseRed 900ms ease-in-out infinite; }
+
+    .square .inner:hover { transform: translateY(-3%); }
+    .square .inner:hover .piece { transform: translateY(-6%) scale(1.03); }
+    .status { margin-left:auto; color:var(--muted); }
+    @media (max-width:640px){ .board { width:92vw; } }
+    /* Modal (rules) */
+    .modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.45); z-index:60; }
+    .modal[hidden]{ display:none; }
+    .modal-content { background:var(--surface); padding:18px; border-radius:10px; max-width:720px; width:92%; box-shadow:0 10px 30px rgba(0,0,0,0.2); position:relative; }
+    .modal-content h3 { margin-top:0; }
+    .modal-close { position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">TH</div>
+        <div class="brand-text">
+          <strong>THET HTAR SANN</strong>
+          <span class="note">Games</span>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <a class="cta" href="../games.html">Back to Games</a>
+        <a class="cta" href="../porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-page">
+    <h2>Checkers</h2>
+    <p class="subtitle">Classic 8×8 checkers. Rules: forced captures, multi-jumps, kinging.</p>
+
+    <div class="controls">
+      <label for="mode">Mode:</label>
+      <select id="mode" style="margin-left:8px;padding:6px;border-radius:6px;border:1px solid var(--border);">
+        <option value="local">Local 2-Player</option>
+        <option value="ai">Play vs Computer</option>
+      </select>
+      <label for="aiLevel">AI:</label>
+      <select id="aiLevel" style="padding:6px;border-radius:6px;border:1px solid var(--border);">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+      </select>
+      <button id="rulesBtn" class="cta" title="Read Rules">Rules</button>
+      <button id="newBtn" class="cta cta-primary">New Game</button>
+      <button id="undoBtn" class="cta">Undo</button>
+      <div class="status"><span id="turnLabel">Turn: Black</span></div>
+    </div>
+
+    <div id="board" class="board" role="grid" aria-label="Checkers board"></div>
+  </main>
+
+  <div id="rulesModal" class="modal" role="dialog" aria-modal="true" hidden>
+    <div class="modal-content">
+      <button id="closeRules" class="modal-close" aria-label="Close rules">×</button>
+      <h3>Checkers Rules (Standard)</h3>
+      <ol>
+        <li><strong>Board & Setup</strong>: 8×8 board; pieces on dark squares; each player has 12 pieces.</li>
+        <li><strong>Movement</strong>: Normal pieces move diagonally forward, one square at a time.</li>
+        <li><strong>Capturing</strong>: If an opponent piece is adjacent diagonally and the square behind it is empty, you must jump and capture it. Multiple jumps allowed; captures are mandatory.</li>
+        <li><strong>King Promotion</strong>: A piece reaching the opponent's back row becomes a King and can move diagonally forward and backward.</li>
+        <li><strong>Winning</strong>: You win when the opponent has no pieces or cannot make a legal move.</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // Board representation: 8x8 array. null empty, {color:'b'|'r', king:bool}
+      const boardEl = document.getElementById('board');
+      const modeSel = document.getElementById('mode');
+      const aiLevelSel = document.getElementById('aiLevel');
+      const newBtn = document.getElementById('newBtn');
+      const undoBtn = document.getElementById('undoBtn');
+      const turnLabel = document.getElementById('turnLabel');
+
+      let board = null;
+      let turn = 'b'; // 'b' (black, top) starts
+      let selected = null; // {r,c}
+      let highlights = [];
+      let history = [];
+      let waitingAI = false;
+
+      function initBoard(){
+        board = Array.from({length:8},()=>Array(8).fill(null));
+        for(let r=0;r<3;r++){
+          for(let c=0;c<8;c++){
+            if ((r+c)%2===1) board[r][c] = {color:'b', king:false};
+          }
+        }
+        for(let r=5;r<8;r++){
+          for(let c=0;c<8;c++){
+            if ((r+c)%2===1) board[r][c] = {color:'r', king:false};
+          }
+        }
+        selected = null; highlights=[]; history=[]; waitingAI=false; turn='b'; updateTurnLabel(); render();
+      }
+
+      function render(){
+        boardEl.innerHTML='';
+        for(let r=0;r<8;r++){
+          for(let c=0;c<8;c++){
+            const sq = document.createElement('div'); sq.className='square '+(((r+c)%2) ? 'dark' : 'light');
+            sq.dataset.r=r; sq.dataset.c=c;
+            const inner = document.createElement('div'); inner.className='inner';
+            if ((r+c)%2===1){ // playable
+              const p = board[r][c];
+              if (p){
+                const piece = document.createElement('div'); piece.className='piece '+(p.color==='b'?'black':'red') + (p.king? ' king':'');
+                piece.textContent = '';
+                inner.appendChild(piece);
+              }
+            }
+            sq.appendChild(inner);
+            // highlight
+            if (highlights.some(h=>h.r==r && h.c==c)) sq.classList.add('highlight');
+            sq.addEventListener('click', onSquareClick);
+            boardEl.appendChild(sq);
+          }
+        }
+      }
+
+      function updateTurnLabel(){ turnLabel.textContent = 'Turn: ' + (turn==='b' ? 'Black' : 'Red'); }
+
+      function inBounds(r,c){ return r>=0&&r<8&&c>=0&&c<8; }
+
+      function cloneBoard(b){ return b.map(row=>row.map(cell=> cell ? {color:cell.color, king:cell.king} : null)); }
+
+      function getOpponent(color){ return color==='b' ? 'r' : 'b'; }
+
+      // Directions for black (down) and red (up)
+      const DIRS = { b:[[1,-1],[1,1]], r:[[-1,-1],[-1,1]] };
+      const KING_DIRS = [[1,-1],[1,1],[-1,-1],[-1,1]];
+
+      // Find all capture sequences starting from r,c
+      function findCapturesFrom(b, r, c){
+        const piece = b[r][c]; if (!piece) return [];
+        const dirs = piece.king ? KING_DIRS : DIRS[piece.color];
+        const results = [];
+
+        function dfs(boardState, cr, cc, path, captured){
+          let found = false;
+          for(const [dr,dc] of dirs){
+            const mr = cr+dr, mc=cc+dc; const lr=cr+2*dr, lc=cc+2*dc;
+            if (!inBounds(lr,lc) || !inBounds(mr,mc)) continue;
+            const mid = boardState[mr][mc]; const land = boardState[lr][lc];
+            if (mid && mid.color !== piece.color && !land){
+              // perform capture on cloned board
+              const nb = cloneBoard(boardState);
+              nb[cr][cc]=null; nb[mr][mc]=null; nb[lr][lc]={color:piece.color, king: piece.king};
+              // promote if reaches last row
+              if (!nb[lr][lc].king && (nb[lr][lc].color==='b' && lr===7 || nb[lr][lc].color==='r' && lr===0)) nb[lr][lc].king=true;
+              dfs(nb, lr, lc, path.concat([{r:lr,c:lc}]), captured.concat([{r:mr,c:mc}]));
+              found = true;
+            }
+          }
+          if (!found){ results.push({path, captured}); }
+        }
+
+        dfs(b, r, c, [], []);
+        return results;
+      }
+
+      function getAllMovesForColor(b, color){
+        const moves = [];
+        // check for captures first
+        for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+          const p = b[r][c]; if (p && p.color===color){
+            const caps = findCapturesFrom(b,r,c);
+            for(const cap of caps){ if (cap.captured.length>0) moves.push({from:{r,c}, type:'capture', path:cap.path, captured:cap.captured}); }
+          }
+        }
+        if (moves.length>0) return moves; // forced captures
+
+        // normal moves
+        for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+          const p = b[r][c]; if (p && p.color===color){
+            const dirs = p.king ? KING_DIRS : DIRS[p.color];
+            for(const [dr,dc] of dirs){ const nr=r+dr, nc=c+dc; if (inBounds(nr,nc) && !b[nr][nc]) moves.push({from:{r,c}, type:'move', to:{r:nr,c:nc}}); }
+          }
+        }
+        return moves;
+      }
+
+      function hasAnyCapture(b, color){
+        return getAllMovesForColor(b,color).some(m=>m.type==='capture');
+      }
+      // Get moves (captures and simple moves) for a specific piece at r,c
+      function getMovesFrom(b, r, c){
+        const moves = [];
+        const p = b[r][c]; if (!p) return moves;
+        // captures
+        const caps = findCapturesFrom(b, r, c);
+        for(const cap of caps){ if (cap.captured.length>0) moves.push({from:{r,c}, type:'capture', path:cap.path, captured:cap.captured}); }
+        if (moves.length>0) return moves; // prefer captures for that piece
+        // normal moves
+        const dirs = p.king ? KING_DIRS : DIRS[p.color];
+        for(const [dr,dc] of dirs){ const nr=r+dr, nc=c+dc; if (inBounds(nr,nc) && !b[nr][nc]) moves.push({from:{r,c}, type:'move', to:{r:nr,c:nc}}); }
+        return moves;
+      }
+
+      function onSquareClick(e){
+        if (waitingAI) return;
+        const r = +e.currentTarget.dataset.r; const c = +e.currentTarget.dataset.c;
+        const cell = board[r][c];
+
+        // if selecting own piece
+        if (cell && cell.color===turn){
+          selected = {r,c}; highlights = [];
+          const globalCaptures = getAllMovesForColor(board, turn).filter(m=>m.type==='capture');
+          const movesForPiece = getMovesFrom(board, r, c);
+          if (globalCaptures.length){
+            // only show capture destinations for this piece (if any)
+            const caps = movesForPiece.filter(m=>m.type==='capture');
+            for(const cap of caps) for(const p of cap.path) highlights.push(p);
+          } else {
+            for(const mv of movesForPiece) {
+              if (mv.type==='move') highlights.push(mv.to);
+              else for(const p of mv.path) highlights.push(p);
+            }
+          }
+          render();
+          return;
+        }
+
+        // if there's a selected piece and clicking a highlighted square, perform move
+        if (selected){
+          const globalCaptures = getAllMovesForColor(board, turn).filter(m=>m.type==='capture');
+          const movesForPiece = getMovesFrom(board, selected.r, selected.c);
+          let chosen = null;
+          if (globalCaptures.length){
+            // find a capture move for this piece that ends at clicked square
+            for(const m of movesForPiece.filter(x=>x.type==='capture')){
+              const last = m.path[m.path.length-1]; if (last && last.r===r && last.c===c){ chosen = m; break; }
+            }
+          } else {
+            // find simple move matching dest
+            for(const m of movesForPiece.filter(x=>x.type==='move')){
+              if (m.to.r===r && m.to.c===c){ chosen = m; break; }
+            }
+          }
+          if (chosen) applyMove(chosen);
+        }
+      }
+
+      function applyMove(move){
+        history.push({board:cloneBoard(board), turn, selected});
+        const fr = move.from.r, fc = move.from.c;
+        let piece = board[fr][fc];
+        board[fr][fc]=null;
+        if (move.type==='move'){
+          const tr = move.to.r, tc = move.to.c;
+          board[tr][tc]=piece;
+          // promotion
+          if (!piece.king && ((piece.color==='b' && tr===7) || (piece.color==='r' && tr===0))) board[tr][tc].king=true;
+          selected=null; highlights=[]; turn = getOpponent(turn); updateTurnLabel(); render();
+          // AI turn
+          if (modeSel.value==='ai' && turn==='r') scheduleAI();
+          return;
+        }
+        if (move.type==='capture'){
+          // execute sequence
+          let cr = fr, cc = fc;
+          for(const step of move.path){
+            const tr = step.r, tc=step.c; const mr = (cr+tr)/2, mc=(cc+tc)/2;
+            board[mr][mc]=null; // remove captured
+            board[tr][tc]=piece; board[cr][cc]=null; cr=tr; cc=tc;
+            // note: piece reference remains same
+          }
+          // promotion
+          if (!piece.king && ((piece.color==='b' && cr===7) || (piece.color==='r' && cr===0))) board[cr][cc].king=true;
+          // check additional captures from current position for same piece
+          const further = findCapturesFrom(board, cr, cc);
+          const furtherNonEmpty = further.filter(f=>f.captured.length>0);
+          if (furtherNonEmpty.length>0){
+            // must continue with same piece
+            selected = {r:cr,c:cc}; highlights = [];
+            for(const f of furtherNonEmpty){ for(const p of f.path) highlights.push(p); }
+            render();
+            return; // do not switch turn
+          } else {
+            selected=null; highlights=[]; turn = getOpponent(turn); updateTurnLabel(); render();
+            if (modeSel.value==='ai' && turn==='r') scheduleAI();
+            return;
+          }
+        }
+      }
+
+      function scheduleAI(){
+        if (waitingAI) return; waitingAI=true;
+        setTimeout(()=>{ doAIMove(); waitingAI=false; }, 350);
+      }
+
+      function doAIMove(){
+        const aiColor = 'r'; const moves = getAllMovesForColor(board, aiColor);
+        if (!moves.length) return endGame();
+        // prefer captures
+        const caps = moves.filter(m=>m.type==='capture');
+        let chosen = null;
+        if (caps.length){
+          // pick longest capture
+          caps.sort((a,b)=>b.captured.length - a.captured.length);
+          const best = caps.filter(c=>c.captured.length===caps[0].captured.length);
+          chosen = best[Math.floor(Math.random()*best.length)];
+        } else {
+          // choose random move; for medium try to prefer moves that advance
+          if (aiLevelSel.value==='medium'){
+            const advance = moves.filter(m=> (m.type==='move') && ((m.to.r>m.from.r && aiColor==='r') || (m.to.r<m.from.r && aiColor==='b')) );
+            chosen = advance.length ? advance[Math.floor(Math.random()*advance.length)] : moves[Math.floor(Math.random()*moves.length)];
+          } else chosen = moves[Math.floor(Math.random()*moves.length)];
+        }
+        if (chosen) applyMove(chosen);
+      }
+
+      function endGame(){
+        const moves = getAllMovesForColor(board, turn);
+        if (!moves.length){ alert((turn==='b' ? 'Black' : 'Red') + ' cannot move — game over.'); }
+      }
+
+      newBtn.addEventListener('click', initBoard);
+      undoBtn.addEventListener('click', ()=>{ const s = history.pop(); if (s){ board = s.board; turn = s.turn; selected = s.selected; highlights=[]; updateTurnLabel(); render(); } });
+      modeSel.addEventListener('change', ()=>{ initBoard(); });
+
+      // Rules modal
+      const rulesBtn = document.getElementById('rulesBtn');
+      const rulesModal = document.getElementById('rulesModal');
+      const closeRules = document.getElementById('closeRules');
+      rulesBtn.addEventListener('click', ()=>{ rulesModal.hidden = false; closeRules.focus(); });
+      closeRules.addEventListener('click', ()=>{ rulesModal.hidden = true; modeSel.focus(); });
+      rulesModal.addEventListener('click', (ev)=>{ if (ev.target === rulesModal) { rulesModal.hidden = true; modeSel.focus(); } });
+
+      // start
+      initBoard();
+    })();
+  </script>
+</body>
+</html>
