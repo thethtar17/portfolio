@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sudoku — Games</title>
+  <link rel="stylesheet" href="porfolio.css">
+  <style>
+    .game-page { max-width: 920px; margin: 36px auto; padding: 18px; }
+    .sudoku-grid { display:grid; grid-template-columns: repeat(9, 1fr); gap:6px; max-width:540px; margin-top:12px; }
+    .cell { position:relative; padding-top:100%; }
+    .cell input { position:absolute; inset:0; width:100%; height:100%; text-align:center; font-size:18px; border-radius:6px; border:1px solid var(--border); background:var(--surface); }
+    .cell.prefill input { background:linear-gradient(180deg,#f7f7f7,#fff); font-weight:600; }
+    .cell input.invalid { outline:2px solid #f66; background:#ffecec; }
+    .cell input.correct { outline:2px solid #28a745; background:#e8f8ee; }
+    .controls { margin:12px 0; display:flex; gap:8px; align-items:center; }
+    .status { margin-left:auto; color:var(--muted); }
+    .thick-right { border-right:2px solid var(--border); }
+    .thick-bottom { border-bottom:2px solid var(--border); }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">TH</div>
+        <div class="brand-text">
+          <strong>THET HTAR SANN</strong>
+          <span class="note">Games</span>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <a class="cta" href="games.html">Back to Games</a>
+        <a class="cta" href="porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-page">
+    <h2>Sudoku</h2>
+    <p class="subtitle">Generate a 9×9 Sudoku, play by difficulty, get hints or reveal the solution.</p>
+
+    <div class="controls">
+      <label for="difficulty">Difficulty:</label>
+      <select id="difficulty" style="margin-left:8px;padding:6px;border-radius:6px;border:1px solid var(--border);">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <button id="newBtn" class="cta cta-primary">New Puzzle</button>
+      <button id="hintBtn" class="cta">Hint</button>
+      <button id="solveBtn" class="cta">Solve</button>
+      <button id="checkBtn" class="cta">Check</button>
+      <div class="status"><span id="timer">Time: 0s</span></div>
+    </div>
+
+    <div id="grid" class="sudoku-grid" aria-label="Sudoku grid"></div>
+  </main>
+
+  <script>
+    (function(){
+      // Helper grid utilities and backtracking solver/generator
+      function makeEmpty() { return Array.from({length:9},()=>Array(9).fill(0)); }
+
+      function isSafe(board, r, c, val){
+        for(let i=0;i<9;i++) if (board[r][i]===val || board[i][c]===val) return false;
+        const sr = Math.floor(r/3)*3, sc = Math.floor(c/3)*3;
+        for(let i=0;i<3;i++) for(let j=0;j<3;j++) if (board[sr+i][sc+j]===val) return false;
+        return true;
+      }
+
+      function shuffleArr(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } }
+
+      function solve(board){
+        for(let r=0;r<9;r++){
+          for(let c=0;c<9;c++){
+            if (board[r][c]===0){
+              for(let val=1;val<=9;val++){
+                if (isSafe(board,r,c,val)){
+                  board[r][c]=val;
+                  if (solve(board)) return true;
+                  board[r][c]=0;
+                }
+              }
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+
+      function generateFull(){
+        const b = makeEmpty();
+        function fill(){
+          for(let r=0;r<9;r++){
+            for(let c=0;c<9;c++){
+              if (b[r][c]===0){
+                const nums=[1,2,3,4,5,6,7,8,9]; shuffleArr(nums);
+                for(const n of nums){
+                  if (isSafe(b,r,c,n)){
+                    b[r][c]=n;
+                    if (fill()) return true;
+                    b[r][c]=0;
+                  }
+                }
+                return false;
+              }
+            }
+          }
+          return true;
+        }
+        fill();
+        return b;
+      }
+
+      function deepCopy(board){ return board.map(row=>row.slice()); }
+
+      // UI and interactions
+      const gridEl = document.getElementById('grid');
+      const newBtn = document.getElementById('newBtn');
+      const hintBtn = document.getElementById('hintBtn');
+      const solveBtn = document.getElementById('solveBtn');
+      const checkBtn = document.getElementById('checkBtn');
+      const diffSel = document.getElementById('difficulty');
+      const timerEl = document.getElementById('timer');
+
+      let solution = null;
+      let puzzle = null;
+      let timer = null; let startTime = null;
+
+      function buildGrid(){
+        gridEl.innerHTML='';
+        for(let r=0;r<9;r++){
+          for(let c=0;c<9;c++){
+            const cell = document.createElement('div'); cell.className='cell';
+            if (c===2||c===5) cell.classList.add('thick-right');
+            if (r===2||r===5) cell.classList.add('thick-bottom');
+            const inp = document.createElement('input'); inp.type='text'; inp.maxLength=1; inp.inputMode='numeric';
+            inp.dataset.r=r; inp.dataset.c=c;
+            inp.addEventListener('input', onInput);
+            inp.addEventListener('keydown', onKeyDown);
+            cell.appendChild(inp); gridEl.appendChild(cell);
+          }
+        }
+      }
+
+      function renderPuzzle(){
+        const inputs = gridEl.querySelectorAll('input');
+        inputs.forEach(inp=>{ const r=+inp.dataset.r, c=+inp.dataset.c; const val=puzzle[r][c]; inp.classList.remove('invalid');
+          if (val){ inp.value = val; inp.disabled = true; inp.parentElement.classList.add('prefill'); }
+          else { inp.value=''; inp.disabled = false; inp.parentElement.classList.remove('prefill'); }
+        });
+      }
+
+      function onInput(e){
+        const v = e.target.value.replace(/[^1-9]/g,'').slice(0,1);
+        e.target.value = v;
+        if (!startTime) startTimer();
+      }
+
+      function onKeyDown(e){
+        const inp = e.target; const r=+inp.dataset.r, c=+inp.dataset.c;
+        if (e.key==='ArrowLeft') moveFocus(r,c-1);
+        if (e.key==='ArrowRight') moveFocus(r,c+1);
+        if (e.key==='ArrowUp') moveFocus(r-1,c);
+        if (e.key==='ArrowDown') moveFocus(r+1,c);
+        if (e.key==='Backspace') { inp.value=''; }
+      }
+
+      function moveFocus(r,c){ if (r<0||c<0||r>8||c>8) return; const idx=r*9+c; const input = gridEl.querySelectorAll('input')[idx]; input.focus(); }
+
+      function collectUser(){ const b=makeEmpty(); const inputs = gridEl.querySelectorAll('input'); inputs.forEach(inp=>{ const r=+inp.dataset.r, c=+inp.dataset.c; const v=parseInt(inp.value)||0; b[r][c]=v; }); return b; }
+
+      function startTimer(){ stopTimer(); startTime = Date.now(); timer = setInterval(()=>{ const s=Math.floor((Date.now()-startTime)/1000); timerEl.textContent = 'Time: ' + s + 's'; },1000); }
+      function stopTimer(){ if (timer) clearInterval(timer); timer=null; startTime=null; }
+
+      function newPuzzle(){
+        const full = generateFull();
+        solution = deepCopy(full);
+        // remove cells according to difficulty
+        let removeCount = 50; // medium default
+        const d = diffSel.value;
+        if (d==='easy') removeCount = 40;
+        if (d==='medium') removeCount = 50;
+        if (d==='hard') removeCount = 60;
+        const positions = Array.from({length:81},(_,i)=>i);
+        shuffleArr(positions);
+        puzzle = deepCopy(full);
+        for(let i=0;i<removeCount;i++){ const pos=positions[i]; const r=Math.floor(pos/9), c=pos%9; puzzle[r][c]=0; }
+        renderPuzzle(); stopTimer(); timerEl.textContent='Time: 0s';
+      }
+
+      function solvePuzzle(){
+        if (!solution) return; const inputs=gridEl.querySelectorAll('input'); inputs.forEach(inp=>{ const r=+inp.dataset.r,c=+inp.dataset.c; inp.value = solution[r][c]; inp.classList.remove('invalid'); inp.disabled=true; inp.parentElement.classList.add('prefill'); }); stopTimer(); }
+
+      function hint(){
+        const inputs = gridEl.querySelectorAll('input'); const empties = [];
+        inputs.forEach(inp=>{ const r=+inp.dataset.r,c=+inp.dataset.c; if (!inp.value) empties.push({inp,r,c}); });
+        if (!empties.length) return; const pick = empties[Math.floor(Math.random()*empties.length)]; pick.inp.value = solution[pick.r][pick.c]; pick.inp.disabled = true; pick.inp.parentElement.classList.add('prefill'); }
+
+      function check(){
+        const inputs = gridEl.querySelectorAll('input');
+        let any = false;
+        inputs.forEach(inp=>{
+          const r = +inp.dataset.r, c = +inp.dataset.c;
+          inp.classList.remove('invalid');
+          inp.classList.remove('correct');
+          if (inp.value){
+            const v = parseInt(inp.value)||0;
+            if (v === solution[r][c]) {
+              inp.classList.add('correct');
+            } else {
+              inp.classList.add('invalid');
+              any = true;
+            }
+          }
+        });
+        if (!any) alert('All filled cells match the solution so far.');
+        return !any;
+      }
+
+      // events
+      newBtn.addEventListener('click', ()=>{ newPuzzle(); });
+      solveBtn.addEventListener('click', ()=>{ solvePuzzle(); });
+      hintBtn.addEventListener('click', ()=>{ hint(); });
+      checkBtn.addEventListener('click', ()=>{ const ok = check(); if (ok) alert('All filled cells match the solution so far.'); });
+
+      // init
+      buildGrid(); newPuzzle();
+    })();
+  </script>
+</body>
+</html>
