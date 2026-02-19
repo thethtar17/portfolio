@@ -69,23 +69,89 @@
     (function(){
       const sentencesByType = {
         english: [
-          'Practice makes perfect. Dedicate short daily sessions to typing varied passages, focusing on rhythm and accuracy rather than speed alone.',
-          'The quick brown fox jumps over the lazy dog is a classic pangram used to exercise every letter of the alphabet while training consistent keystrokes and finger placement.',
-          'Typing fast improves productivity when combined with correct posture and deliberate practice; measure your progress, adjust your drills, and remain patient with improvement.',
-          'Build something useful every day by setting small, achievable typing goals that challenge accuracy and introduce new vocabulary or sentence structures.'
-        ],
+  'Consistent typing practice builds muscle memory over time, allowing your fingers to move naturally across the keyboard without conscious effort or hesitation.',
+  'Improving typing accuracy first will eventually lead to higher speed because fewer mistakes mean less time wasted correcting errors during writing.',
+  'A focused learner understands that small improvements repeated daily can produce remarkable long term results in both productivity and confidence.',
+  'Reading while typing strengthens coordination between visual recognition and motor skills, helping you maintain a steady rhythm during extended sessions.',
+  'Professional developers often rely on efficient typing habits to translate ideas into working code without interrupting their creative thinking process.',
+  'Maintaining proper posture reduces fatigue and allows longer practice sessions while preventing unnecessary strain on wrists and shoulders.',
+  'Typing games can transform repetitive exercises into engaging challenges that motivate learners to practice consistently every single day.',
+  'Accuracy driven practice encourages mindfulness and reduces frustration caused by rushing through difficult or unfamiliar sentences.',
+  'Setting achievable milestones helps learners stay motivated while gradually increasing the complexity and length of typed passages.',
+  'A calm and steady pace often produces better performance than trying to type as fast as possible without maintaining control.',
+  'Learning touch typing removes the need to look at the keyboard, enabling users to focus entirely on the content displayed on the screen.',
+  'Regular breaks during long typing sessions improve concentration and prevent burnout while supporting healthier learning habits.',
+  'Combining vocabulary expansion with typing exercises improves both language skills and keyboard proficiency simultaneously.',
+  'Tracking daily progress provides valuable feedback that helps identify weaknesses and encourages continuous improvement.',
+  'Typing complex paragraphs trains endurance and prepares users for real world writing tasks such as documentation or communication.',
+  'Practicing different writing styles exposes learners to diverse sentence structures and enhances adaptability while typing.',
+  'Confidence develops naturally when repeated success reinforces correct finger placement and movement patterns.',
+  'Slow deliberate typing sessions can be more beneficial than fast careless practice that reinforces incorrect habits.',
+  'Interactive learning environments increase engagement and make skill development feel less like work and more like play.',
+  'Consistency matters more than intensity because steady practice forms lasting habits that remain reliable over time.',
+  'Typing longer texts helps improve focus and strengthens mental stamina during demanding intellectual activities.',
+  'Experimenting with different keyboard layouts can deepen understanding of typing mechanics and adaptability.',
+  'Learning efficiency increases when mistakes are analyzed thoughtfully rather than ignored or rushed past.',
+  'Structured practice routines allow learners to balance speed training with accuracy improvement effectively.',
+  'Mastering typing is not about speed alone but about clarity, precision, comfort, and sustained performance.'
+]
+,
         programming: [
-          "console.log('Hello, world!');",
-          'for (let i = 0; i < 10; i++) { console.log(i); }',
-          'function greet(name) { return `Hello ${name}`; }',
-          'const sum = (a, b) => a + b;'
-        ],
-        japanese: [
-          '練習は上達の鍵です。毎日短い時間でも繰り返し入力することで、正確さと速度が徐々に向上します。',
-          '速くタイピングするには姿勢とリズムが重要です。指の動きを安定させて、視線を適切に保ちましょう。',
-          '生産性を上げるためには正確さを優先しましょう。速さは正確さの上に成り立ちます。',
-          '毎日少しずつ実用的な文章やコードを打つことで、実践的な力が身につきます。'
-        ]
+  "const numbers = Array.from({ length: 20 }, (_, i) => i + 1);",
+  "numbers.forEach(num => console.log(`Current value is ${num}`));",
+  "function calculateAverage(arr) { return arr.reduce((a,b)=>a+b,0)/arr.length; }",
+  "const isEven = number => number % 2 === 0;",
+  "let total = 0; for (const value of numbers) { total += value; }",
+  "document.querySelectorAll('.item').forEach(el => el.classList.add('active'));",
+  "async function fetchData(url) { const res = await fetch(url); return res.json(); }",
+  "const delay = ms => new Promise(resolve => setTimeout(resolve, ms));",
+  "try { JSON.parse(data); } catch (error) { console.error('Invalid JSON'); }",
+  "const user = { name: 'Alex', role: 'developer', active: true };",
+  "Object.entries(user).forEach(([key,value]) => console.log(key,value));",
+  "const uniqueValues = [...new Set([1,2,2,3,4,4,5])];",
+  "function debounce(fn, time){ let timer; return (...args)=>{ clearTimeout(timer); timer=setTimeout(()=>fn(...args),time); }; }",
+  "window.addEventListener('resize', () => console.log(window.innerWidth));",
+  "const sum = (...nums) => nums.reduce((acc,n)=>acc+n,0);",
+  "class Timer { constructor(){ this.start=Date.now(); } elapsed(){ return Date.now()-this.start; } }",
+  "const formatted = new Intl.DateTimeFormat('en-US').format(new Date());",
+  "const randomColor = () => `#${Math.floor(Math.random()*16777215).toString(16)}`;",
+  "const filtered = numbers.filter(n => n > 10).map(n => n * 2);",
+  "localStorage.setItem('theme','dark');",
+  "const deepCopy = obj => JSON.parse(JSON.stringify(obj));",
+  "if(user.active && user.role === 'developer'){ console.log('Access granted'); }",
+  "const promiseExample = new Promise(resolve => resolve('done'));",
+  "const sorted = numbers.sort((a,b)=>b-a);",
+  "export default function greet(name){ return `Welcome back, ${name}!`; }"
+],
+
+       japanese: [
+  'タイピングの上達には毎日の積み重ねが重要であり、短時間でも継続することで確実に成果が現れます。',
+  '正確に入力する習慣を身につけることで、結果的に入力速度も自然と向上していきます。',
+  '長い文章を入力する練習は集中力を高め、実務に近い環境でのタイピング能力を育てます。',
+  '画面を見ながら入力することで視覚と指の動きの連携が強化されます。',
+  '焦らず落ち着いたリズムで入力することが、安定したタイピングにつながります。',
+  '姿勢を正しく保つことで疲労を軽減し、長時間の作業でも効率を維持できます。',
+  '日々の小さな成長を記録することで学習へのモチベーションを保つことができます。',
+  '異なる種類の文章を入力することで柔軟な対応力が身につきます。',
+  'ミスを恐れずに挑戦しながら改善を続ける姿勢が上達への近道です。',
+  '正確さを意識した練習は無駄な修正時間を減らし作業効率を高めます。',
+  '毎日少しずつ新しい表現に触れることで語彙力も同時に向上します。',
+  '継続的な練習は自信を生み、自然な指の動きを形成します。',
+  'タイピングゲームは楽しみながらスキルを伸ばせる効果的な方法です。',
+  '一定のリズムを保つことで入力の安定性が大きく向上します。',
+  '長文入力は集中力と持久力を同時に鍛える優れたトレーニングです。',
+  '入力速度よりもまず正確性を優先することが重要です。',
+  '練習の成果はすぐには現れませんが、継続すれば必ず成長を実感できます。',
+  '日常的に文章を書く習慣がタイピング能力を大きく伸ばします。',
+  '視線をキーボードではなく画面に向ける練習を心がけましょう。',
+  '適度な休憩を取り入れることで集中力を長く維持できます。',
+  '反復練習によって指の位置を覚え無意識に入力できるようになります。',
+  '実用的な文章を使った練習は仕事にも直接役立ちます。',
+  'タイピングスキルは現代のデジタル社会において重要な基礎能力です。',
+  'ゆっくりでも正確に入力することが最終的な成長につながります。',
+  '毎日の努力が積み重なり大きな成果へと変わっていきます。'
+]
+
       };
 
       const targetEl = document.getElementById('targetText');
