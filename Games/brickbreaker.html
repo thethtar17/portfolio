@@ -85,6 +85,13 @@
       let score = 0, lives = 3;
       let running = false, paused = false, animationId = null;
 
+      function updateHUD(){
+        scoreEl.textContent = score;
+        livesEl.textContent = lives;
+        // disable start when no lives left
+        startBtn.disabled = (lives <= 0);
+      }
+
       function initBricks(){
         bricks = [];
         const brickWidth = (W - BRICK_LEFT*2 - (BRICK_COLS-1)*BRICK_PADDING) / BRICK_COLS;
@@ -139,12 +146,13 @@
         // brick collisions
         bricks.forEach(row=>row.forEach(b=>{ if(b.alive){ if(ball.x > b.x && ball.x < b.x + b.w && ball.y - ball.radius < b.y + b.h && ball.y + ball.radius > b.y){
           // simple bounce: invert vy
-          b.alive = false; score += 10; scoreEl.textContent = score; ball.vy *= -1;
+          b.alive = false; score += 10; ball.vy *= -1; updateHUD();
         } }}));
 
         // bottom -> lose life
         if(ball.y - ball.radius > H){
-          lives -= 1; livesEl.textContent = lives; if(lives <= 0){ running = false; setTimeout(()=>alert('Game Over — score: '+score),50); } else { resetBallAndPaddle(); paused = true; }
+          lives -= 1; updateHUD();
+          if(lives <= 0){ running = false; setTimeout(()=>alert('Game Over — score: '+score),50); } else { resetBallAndPaddle(); paused = true; }
         }
 
         // win check
@@ -163,11 +171,11 @@
       });
       canvas.addEventListener('mousemove', (e)=>{ const rect = canvas.getBoundingClientRect(); const mx = e.clientX - rect.left; paddleX = Math.min(W - PADDLE_WIDTH, Math.max(0, mx - PADDLE_WIDTH/2)); });
 
-      startBtn.addEventListener('click', ()=>{ if(!running){ running = true; paused = false; loop(); } else { paused = !paused; } });
-      restartBtn.addEventListener('click', ()=>{ running = false; cancelAnimationFrame(animationId); score = 0; lives = 3; scoreEl.textContent = score; livesEl.textContent = lives; initBricks(); resetBallAndPaddle(); draw(); });
+      startBtn.addEventListener('click', ()=>{ if(startBtn.disabled) return; if(!running){ running = true; paused = false; loop(); } else { paused = !paused; } });
+      restartBtn.addEventListener('click', ()=>{ running = false; cancelAnimationFrame(animationId); score = 0; lives = 3; initBricks(); resetBallAndPaddle(); draw(); updateHUD(); });
 
       // init
-      initBricks(); resetBallAndPaddle(); draw();
+      initBricks(); resetBallAndPaddle(); draw(); updateHUD();
     })();
   </script>
 </body>

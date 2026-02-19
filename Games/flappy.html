@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flappy Bird — Games</title>
+  <link rel="stylesheet" href="../porfolio.css">
+  <style>
+    .wrap{max-width:var(--max);margin:0 auto;padding:24px 18px}
+    .game-panel{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,transparent),var(--surface));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .panel-body{padding:18px}
+    .game-row{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+    canvas{background:linear-gradient(180deg,#87ceeb,#5dbbe6);border-radius:10px;display:block}
+    .hud{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .stat{border:1px solid var(--border);background:var(--bg);padding:8px 10px;border-radius:10px;box-shadow:var(--shadow-soft)}
+    .btn{background:#0ea5a4;padding:8px 12px;border-radius:8px;color:#052024;border:none;cursor:pointer}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-badge" aria-hidden="true">TH</div><div class="brand-text"><strong>THET HTAR SANN</strong><span class="note">Flappy Bird</span></div></div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <a class="cta" href="../games.html">Back to Games</a>
+        <a class="cta" href="../porfolio.html">Back to Portfolio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="game-panel">
+      <div class="panel-body">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div>
+            <h1 style="margin:0">Flappy Bird</h1>
+            <p class="subtitle" style="margin:6px 0 0">Tap, click or press Space to flap. Pass through pipes to score.</p>
+          </div>
+          <div class="hud">
+            <div class="stat">Score: <strong id="score">0</strong></div>
+            <div class="stat">Best: <strong id="best">0</strong></div>
+            <div><button id="startBtn" class="btn">Start</button><button id="restartBtn" class="btn" style="margin-left:8px">Restart</button></div>
+          </div>
+        </div>
+
+        <div class="game-row" style="margin-top:16px">
+          <canvas id="gameCanvas" width="420" height="640" aria-label="Flappy Bird canvas"></canvas>
+          <div style="max-width:320px">
+            <h3 style="margin-top:0">How to play</h3>
+            <ul class="subtitle">
+              <li>Press Space / Click / Tap to flap the bird upward.</li>
+              <li>Avoid hitting pipes, the ground, or the top of the screen.</li>
+              <li>Score increases by 1 for each pipe pair passed.</li>
+            </ul>
+            <p class="subtitle">Tip: press <strong>Space</strong> to flap or start/pause.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const scoreEl = document.getElementById('score');
+      const bestEl = document.getElementById('best');
+      const startBtn = document.getElementById('startBtn');
+      const restartBtn = document.getElementById('restartBtn');
+
+      const W = canvas.width, H = canvas.height;
+      const GRAVITY = 0.42; const FLAP = -8.2;
+      const PIPE_W = 64; const GAP_H = 160; const PIPE_SPACING = 200; const PIPE_SPEED = 2.2;
+
+      let bird = { x: 92, y: H/2, r: 14, vy: 0 };
+      let pipes = [];
+      let frame = 0;
+      let score = 0;
+      let best = parseInt(localStorage.getItem('flappy-best')||'0',10);
+      let running = false; let paused = false; let animId = null; let passed = new Set();
+
+      bestEl.textContent = best;
+
+      function reset(){
+        bird.y = H/2; bird.vy = 0; pipes = []; frame = 0; score = 0; passed.clear(); running = false; paused = false; updateHUD(); draw();
+      }
+
+      function spawnPipe(x){
+        const minTop = 60; const maxTop = H - 160 - GAP_H;
+        const top = Math.floor(minTop + Math.random()*(Math.max(0,maxTop-minTop)) );
+        pipes.push({x, top, passed:false});
+      }
+
+      function update(){
+        if(!running || paused) return;
+        frame++;
+        bird.vy += GRAVITY; bird.y += bird.vy;
+        // spawn pipes
+        if(frame % PIPE_SPACING === 0) spawnPipe(W + 40);
+        // move pipes
+        pipes.forEach(p=>p.x -= PIPE_SPEED);
+        // remove offscreen
+        if(pipes.length && pipes[0].x + PIPE_W < -40) pipes.shift();
+
+        // scoring: when bird passes pipe center
+        pipes.forEach((p,i)=>{
+          const cx = p.x + PIPE_W/2;
+          if(!p.passed && cx < bird.x){ p.passed = true; score += 1; updateHUD(); if(score>best){ best=score; localStorage.setItem('flappy-best',String(best)); bestEl.textContent = best }}
+        });
+
+        // collisions
+        if(bird.y - bird.r <= 0 || bird.y + bird.r >= H) return gameOver();
+        for(const p of pipes){
+          // top pipe rect: x..x+PIPE_W, y:0..p.top
+          if(collidesCircleRect(bird, p.x, 0, PIPE_W, p.top)) return gameOver();
+          // bottom pipe rect
+          if(collidesCircleRect(bird, p.x, p.top + GAP_H, PIPE_W, H - (p.top + GAP_H))) return gameOver();
+        }
+      }
+
+      function collidesCircleRect(c, rx, ry, rw, rh){
+        // closest point
+        const closestX = Math.max(rx, Math.min(c.x, rx+rw));
+        const closestY = Math.max(ry, Math.min(c.y, ry+rh));
+        const dx = c.x - closestX; const dy = c.y - closestY;
+        return (dx*dx + dy*dy) <= c.r*c.r;
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        // sky handled by css background
+        // draw pipes
+        pipes.forEach(p=>{
+          ctx.fillStyle = '#16a34a';
+          ctx.fillRect(p.x, 0, PIPE_W, p.top);
+          ctx.fillRect(p.x, p.top + GAP_H, PIPE_W, H - (p.top + GAP_H));
+          ctx.fillStyle = 'rgba(0,0,0,0.08)'; ctx.fillRect(p.x, p.top-6, PIPE_W, 6);
+        });
+        // draw bird
+        ctx.beginPath(); ctx.fillStyle = '#ffea00'; ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI*2); ctx.fill();
+      }
+
+      function loop(){ update(); draw(); animId = requestAnimationFrame(loop); }
+
+      function flap(){ if(!running){ running = true; loop(); } bird.vy = FLAP; }
+
+      function gameOver(){ running = false; cancelAnimationFrame(animId); setTimeout(()=>alert('Game Over — score: '+score),40); }
+
+      function updateHUD(){ scoreEl.textContent = score; bestEl.textContent = best; }
+
+      // input
+      window.addEventListener('keydown',(e)=>{ if(e.code==='Space'){ e.preventDefault(); flap(); } if(e.key==='r' || e.key==='R'){ reset(); } });
+      canvas.addEventListener('click', ()=> flap());
+      canvas.addEventListener('touchstart',(e)=>{ e.preventDefault(); flap(); }, {passive:false});
+
+      startBtn.addEventListener('click', ()=>{ if(!running){ running=true; paused=false; loop(); } else { paused=!paused; } });
+      restartBtn.addEventListener('click', ()=> reset());
+
+      // init
+      spawnPipe(W + 40); spawnPipe(W + 40 + PIPE_SPACING); updateHUD(); draw();
+    })();
+  </script>
+</body>
+</html>
