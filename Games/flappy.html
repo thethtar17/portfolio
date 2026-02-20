@@ -68,7 +68,7 @@
       const restartBtn = document.getElementById('restartBtn');
 
       const W = canvas.width, H = canvas.height;
-      const GRAVITY = 0.42; const FLAP = -8.2;
+      const GRAVITY = 0.42; const FLAP = -5.0; // reduced magnitude for shorter flap distance
       const PIPE_W = 64; const GAP_H = 160; const PIPE_SPACING = 200; const PIPE_SPEED = 2.2;
 
       let bird = { x: 92, y: H/2, r: 14, vy: 0 };

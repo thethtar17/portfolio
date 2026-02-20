@@ -41,10 +41,15 @@
             <h1 style="margin:0">Brick Breaker</h1>
             <p class="subtitle" style="margin:6px 0 0">Destroy all bricks with the bouncing ball. Don't let the ball fall below the paddle.</p>
           </div>
-          <div class="hud">
+            <div class="hud">
             <div class="stat">Score: <strong id="score">0</strong></div>
             <div class="stat">Lives: <strong id="lives">3</strong></div>
-            <div class="controls"><button id="startBtn" class="btn">Start</button><button id="restartBtn" class="btn" style="margin-left:8px">Restart</button></div>
+            <div class="controls">
+              <button id="moveLeftBtn" class="btn" aria-label="Move paddle left" style="margin-right:8px">◀</button>
+              <button id="moveRightBtn" class="btn" aria-label="Move paddle right" style="margin-right:8px">▶</button>
+              <button id="startBtn" class="btn">Start</button>
+              <button id="restartBtn" class="btn" style="margin-left:8px">Restart</button>
+            </div>
           </div>
         </div>
 
@@ -173,6 +178,39 @@
 
       startBtn.addEventListener('click', ()=>{ if(startBtn.disabled) return; if(!running){ running = true; paused = false; loop(); } else { paused = !paused; } });
       restartBtn.addEventListener('click', ()=>{ running = false; cancelAnimationFrame(animationId); score = 0; lives = 3; initBricks(); resetBallAndPaddle(); draw(); updateHUD(); });
+
+      // Add press-and-hold buttons for left/right paddle movement (works alongside existing keyboard/mouse controls)
+      const moveLeftBtn = document.getElementById('moveLeftBtn');
+      const moveRightBtn = document.getElementById('moveRightBtn');
+      let leftInterval = null, rightInterval = null;
+      const MOVE_STEP = 16; // increased step for faster movement
+      const MOVE_INTERVAL = 30; // ms between repeated moves when holding
+      function movePaddle(dir){
+        if(dir === 'left') paddleX = Math.max(0, paddleX - MOVE_STEP);
+        else paddleX = Math.min(W - PADDLE_WIDTH, paddleX + MOVE_STEP);
+      }
+      function startMoveLeft(){ if(leftInterval) return; movePaddle('left'); leftInterval = setInterval(()=>movePaddle('left'), MOVE_INTERVAL); }
+      function stopMoveLeft(){ if(leftInterval){ clearInterval(leftInterval); leftInterval = null; } }
+      function startMoveRight(){ if(rightInterval) return; movePaddle('right'); rightInterval = setInterval(()=>movePaddle('right'), MOVE_INTERVAL); }
+      function stopMoveRight(){ if(rightInterval){ clearInterval(rightInterval); rightInterval = null; } }
+
+      // Mouse events
+      moveLeftBtn.addEventListener('mousedown', startMoveLeft);
+      moveLeftBtn.addEventListener('mouseup', stopMoveLeft);
+      moveLeftBtn.addEventListener('mouseleave', stopMoveLeft);
+      moveRightBtn.addEventListener('mousedown', startMoveRight);
+      moveRightBtn.addEventListener('mouseup', stopMoveRight);
+      moveRightBtn.addEventListener('mouseleave', stopMoveRight);
+
+      // Touch events (prevent default to avoid triggering mouse events)
+      moveLeftBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); startMoveLeft(); }, {passive:false});
+      moveLeftBtn.addEventListener('touchend', stopMoveLeft);
+      moveRightBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); startMoveRight(); }, {passive:false});
+      moveRightBtn.addEventListener('touchend', stopMoveRight);
+
+      // Clear intervals if release happens outside buttons
+      window.addEventListener('mouseup', ()=>{ stopMoveLeft(); stopMoveRight(); });
+      window.addEventListener('touchend', ()=>{ stopMoveLeft(); stopMoveRight(); });
 
       // init
       initBricks(); resetBallAndPaddle(); draw(); updateHUD();
