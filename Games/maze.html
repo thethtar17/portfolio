@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maze Escape — Games</title>
+  <link rel="stylesheet" href="../porfolio.css">
+  <style>
+    .wrap{max-width:var(--max);margin:0 auto;padding:24px 18px}
+    .panel{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,transparent),var(--surface));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .panel-body{padding:18px}
+    canvas{background:#f7f7f7;border-radius:8px;display:block}
+    .hud{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .stat{border:1px solid var(--border);background:var(--bg);padding:8px 10px;border-radius:10px;box-shadow:var(--shadow-soft)}
+    .btn{background:#0ea5a4;padding:8px 12px;border-radius:8px;color:#052024;border:none;cursor:pointer}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-badge" aria-hidden="true">TH</div><div class="brand-text"><strong>THET HTAR SANN</strong><span class="note">Maze Escape</span></div></div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;"><a class="cta" href="../games.html">Back to Games</a><a class="cta" href="../porfolio.html">Back to Portfolio</a></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="panel">
+      <div class="panel-body">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div>
+            <h1 style="margin:0">Maze Escape</h1>
+            <p class="subtitle" style="margin:6px 0 0">Find your way through the maze and reach the exit. Use arrow keys to move one tile at a time.</p>
+          </div>
+          <div class="hud">
+            <div class="stat">Steps: <strong id="steps">0</strong></div>
+            <div class="stat">Time: <strong id="timer">--</strong></div>
+            <div class="stat">Status: <strong id="status">Idle</strong></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <label class="subtitle" style="margin:0">Difficulty</label>
+              <select id="difficulty" class="subtitle" style="padding:6px;border-radius:6px">
+                <option value="Easy">Easy</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+              <button id="startBtn" class="btn">Start</button>
+              <button id="restartBtn" class="btn" style="margin-left:8px">Restart</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+          <canvas id="gameCanvas" width="540" height="540" aria-label="Maze canvas"></canvas>
+          <div style="max-width:320px">
+            <h3 style="margin-top:0">How to play</h3>
+            <ul class="subtitle">
+              <li>Move with arrow keys or W/A/S/D.</li>
+              <li>You move one tile per key press. Walls block movement.</li>
+              <li>Reach the green exit tile to win.</li>
+            </ul>
+            <p class="subtitle">Tip: explore systematically (left-hand rule) if you get lost.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const stepsEl = document.getElementById('steps');
+      const statusEl = document.getElementById('status');
+      const restartBtn = document.getElementById('restartBtn');
+
+      // Maze parameters will be set by difficulty
+      let COLS = 15, ROWS = 15;
+      let TILE = Math.floor(canvas.width / COLS);
+
+      // 0 = wall, 1 = path, 2 = exit
+      let maze = [];
+      let player = { x: 1, y: 1 };
+      let steps = 0;
+      let playing = false;
+      let timerInterval = null;
+      let timeLeft = 0; // seconds
+      let enemies = [];
+
+      const DIFFICULTY = {
+        Easy: { cols: 11, rows: 11, time: 120, enemies: 0 },
+        Medium: { cols: 15, rows: 15, time: 90, enemies: 1 },
+        Hard: { cols: 21, rows: 21, time: 60, enemies: 2 }
+      };
+
+      // Recursive backtracker maze generator (odd dimensions recommended)
+      function generateMaze(cols, rows){
+        // ensure odd sizes
+        if(cols % 2 === 0) cols++;
+        if(rows % 2 === 0) rows++;
+        COLS = cols; ROWS = rows;
+        TILE = Math.floor(canvas.width / COLS);
+        // init grid all walls
+        const g = Array.from({length:rows}, ()=> Array(cols).fill(0));
+        const stack = [];
+        const start = { x:1, y:1 };
+        g[start.y][start.x] = 1;
+        stack.push(start);
+        const dirs = [ {x:0,y:-2},{x:2,y:0},{x:0,y:2},{x:-2,y:0} ];
+        while(stack.length){
+          const cur = stack[stack.length-1];
+          const neighbors = [];
+          for(const d of dirs){
+            const nx = cur.x + d.x, ny = cur.y + d.y;
+            if(nx>0 && ny>0 && nx<cols-1 && ny<rows-1 && g[ny][nx] === 0) neighbors.push({x:nx,y:ny,dx:d.x,dy:d.y});
+          }
+          if(neighbors.length === 0){ stack.pop(); continue; }
+          const n = neighbors[Math.floor(Math.random()*neighbors.length)];
+          // carve between
+          const betweenX = cur.x + n.dx/2, betweenY = cur.y + n.dy/2;
+          g[betweenY][betweenX] = 1;
+          g[n.y][n.x] = 1;
+          stack.push({x:n.x,y:n.y});
+        }
+        // place exit at bottom-right open cell
+        g[rows-2][cols-2] = 2;
+        return g;
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(let r=0;r<ROWS;r++){
+          for(let c=0;c<COLS;c++){
+            const t = maze[r] && maze[r][c] !== undefined ? maze[r][c] : 0;
+            if(t===0){ ctx.fillStyle = '#222'; }
+            else if(t===1){ ctx.fillStyle = '#fff'; }
+            else if(t===2){ ctx.fillStyle = '#7ad29f'; }
+            ctx.fillRect(c*TILE, r*TILE, TILE, TILE);
+            // grid lines
+            ctx.strokeStyle = '#e6e6e6'; ctx.strokeRect(c*TILE, r*TILE, TILE, TILE);
+          }
+        }
+        // draw player
+        const px = player.x * TILE + TILE/2;
+        const py = player.y * TILE + TILE/2;
+        ctx.fillStyle = '#0066cc'; ctx.beginPath(); ctx.arc(px, py, TILE*0.36, 0, Math.PI*2); ctx.fill();
+
+        // draw enemies
+        for(const en of enemies){
+          ctx.fillStyle = '#d9534f'; ctx.beginPath(); ctx.arc(en.x*TILE + TILE/2, en.y*TILE + TILE/2, TILE*0.33, 0, Math.PI*2); ctx.fill();
+        }
+      }
+
+      function setStatus(s){ statusEl.textContent = s; }
+
+      function tryMove(dx,dy){
+        if(!playing) return;
+        const nx = player.x + dx, ny = player.y + dy;
+        if(nx<0||ny<0||nx>=COLS||ny>=ROWS) return;
+        const tile = maze[ny][nx];
+        if(tile===0) return; // wall
+        // check enemy presence
+        for(const en of enemies){ if(en.x===nx && en.y===ny){ // moving into enemy
+            playing = false; setStatus('Lost - caught by enemy'); clearInterval(timerInterval); setTimeout(()=>alert('Caught by an enemy!'),40); return; } }
+        player.x = nx; player.y = ny;
+        steps++; stepsEl.textContent = steps;
+        if(tile===2){ playing=false; setStatus('You Win!'); clearInterval(timerInterval); setTimeout(()=>alert('You escaped the maze in '+steps+' steps!'),40); }
+      }
+
+      window.addEventListener('keydown',(e)=>{
+        if(!playing && e.key !== 'r' && e.key !== 'R' && e.key !== 'Enter') return;
+        const k = e.key;
+        if(k==='ArrowUp' || k==='w' || k==='W') tryMove(0,-1);
+        else if(k==='ArrowDown' || k==='s' || k==='S') tryMove(0,1);
+        else if(k==='ArrowLeft' || k==='a' || k==='A') tryMove(-1,0);
+        else if(k==='ArrowRight' || k==='d' || k==='D') tryMove(1,0);
+        else if(k==='r' || k==='R') reset();
+        else if(k==='Enter' && !playing) startGame();
+        draw();
+      });
+
+      function placeEnemies(count){ enemies = []; if(count<=0) return; const pathCells = [];
+        for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(maze[r][c]===1) pathCells.push({x:c,y:r});
+        for(let i=0;i<count;i++){
+          // pick a random path cell far from player
+          let idx = Math.floor(Math.random()*pathCells.length);
+          let cell = pathCells[idx];
+          // ensure not adjacent to player
+          if(Math.abs(cell.x-player.x)<=1 && Math.abs(cell.y-player.y)<=1){ i--; continue; }
+          enemies.push({ x: cell.x, y: cell.y, moveTimer: 0 });
+        }
+      }
+
+      function startGame(){
+        const diff = document.getElementById('difficulty').value;
+        const cfg = DIFFICULTY[diff] || DIFFICULTY.Medium;
+        maze = generateMaze(cfg.cols, cfg.rows);
+        player = { x:1, y:1 };
+        steps = 0; stepsEl.textContent = steps;
+        playing = true; setStatus('Playing');
+        timeLeft = cfg.time; document.getElementById('timer').textContent = timeLeft + 's';
+        placeEnemies(cfg.enemies);
+        // start timer
+        if(timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(()=>{ if(playing){ timeLeft--; document.getElementById('timer').textContent = timeLeft + 's'; if(timeLeft<=0){ playing=false; setStatus('Time Up'); clearInterval(timerInterval); setTimeout(()=>alert('Time up! You lose.'),40); } } }, 1000);
+        draw();
+      }
+
+      function reset(){ if(timerInterval) clearInterval(timerInterval); enemies = []; maze = []; steps = 0; stepsEl.textContent = steps; player = { x:1, y:1 }; playing = false; setStatus('Idle'); document.getElementById('timer').textContent = '--'; draw(); }
+
+      restartBtn.addEventListener('click', ()=> reset());
+      document.getElementById('startBtn').addEventListener('click', ()=> startGame());
+
+      // enemy movement: simple random walker on path, called each draw/update tick
+      function updateEnemies(){
+        for(const en of enemies){
+          en.moveTimer = (en.moveTimer || 0) + 1;
+          if(en.moveTimer < 20) continue; // move every 20 ticks
+          en.moveTimer = 0;
+          // choose random neighbor path
+          const moves = [{x:0,y:-1},{x:1,y:0},{x:0,y:1},{x:-1,y:0}];
+          const options = moves.map(m=>({x:en.x+m.x,y:en.y+m.y})).filter(p=> p.x>0 && p.y>0 && p.x<COLS && p.y<ROWS && maze[p.y] && maze[p.y][p.x] && maze[p.y][p.x]!==0);
+          if(options.length===0) continue;
+          const pick = options[Math.floor(Math.random()*options.length)];
+          en.x = pick.x; en.y = pick.y;
+          // check collision with player
+          if(en.x === player.x && en.y === player.y){ playing = false; setStatus('Lost - caught by enemy'); clearInterval(timerInterval); setTimeout(()=>alert('Caught by an enemy!'),40); }
+        }
+      }
+
+      // integrate enemy updates into a small loop to ensure enemies move when game is running
+      function gameTick(){ if(playing){ updateEnemies(); draw(); } requestAnimationFrame(gameTick); }
+
+      // init view
+      reset(); gameTick();
+    })();
+  </script>
+</body>
+</html>
