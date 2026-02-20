@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paceman — Games</title>
+  <link rel="stylesheet" href="../porfolio.css">
+  <style>
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px}
+    .panel{background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 92%,transparent),var(--surface));border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    canvas{background:#000;border-radius:6px;display:block}
+    .hud{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .stat{border:1px solid var(--border);background:var(--bg);padding:8px 10px;border-radius:10px;box-shadow:var(--shadow-soft)}
+    .btn{background:#0ea5a4;padding:8px 12px;border-radius:8px;color:#052024;border:none;cursor:pointer}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><div class="brand-badge" aria-hidden="true">TH</div><div class="brand-text"><strong>THET HTAR SANN</strong><span class="note">Paceman</span></div></div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;"><a class="cta" href="../games.html">Back to Games</a><a class="cta" href="../porfolio.html">Back to Portfolio</a></div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="panel">
+      <div class="panel-body">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <div>
+            <h1 style="margin:0">Paceman</h1>
+            <p class="subtitle" style="margin:6px 0 0">Eat all pellets, avoid ghosts. Arrow keys to move. Eat power pellets to turn ghosts vulnerable.</p>
+          </div>
+          <div class="hud">
+            <div class="stat">Score: <strong id="score">0</strong></div>
+            <div class="stat">Lives: <strong id="lives">3</strong></div>
+            <div><button id="startBtn" class="btn">Start</button><button id="restartBtn" class="btn" style="margin-left:8px">Restart</button></div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+          <canvas id="gameCanvas" width="420" height="420" aria-label="Paceman canvas"></canvas>
+          <div style="max-width:320px">
+            <h3 style="margin-top:0">How to play</h3>
+            <ul class="subtitle">
+              <li>Move continuously with arrows. Change direction at intersections.</li>
+              <li>Eat all small dots to clear level.</li>
+              <li>Eat power pellets to eat ghosts temporarily.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const scoreEl = document.getElementById('score');
+      const livesEl = document.getElementById('lives');
+      const startBtn = document.getElementById('startBtn');
+      const restartBtn = document.getElementById('restartBtn');
+
+      const COLS = 21, ROWS = 21; // odd sizes
+      const TILE = Math.floor(canvas.width / COLS);
+
+      // 0 = wall, 1 = path, 2 = power pellet
+      const MAZE = [
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        [0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,0,0,1,0],
+        [0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,0],
+        [0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,1,1,0],
+        [0,1,0,1,1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0],
+        [0,1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0],
+        [0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,0,0,1,0],
+        [0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,0],
+        [0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0],
+        [0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,0],
+        [0,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,0,0,1,0],
+        [0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0],
+        [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+        [0,1,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,0,0,1,0],
+        [0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,0],
+        [0,1,0,1,0,1,0,0,1,0,0,0,1,0,1,0,1,0,1,1,0],
+        [0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,2,0],
+        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      ];
+
+      // create pellet map from MAZE
+      let pellets = [];
+      function initPellets(){ pellets = []; for(let r=0;r<ROWS;r++){ pellets[r]=[]; for(let c=0;c<COLS;c++){ if(MAZE[r][c]===1) pellets[r][c]=1; else if(MAZE[r][c]===2) pellets[r][c]=2; else pellets[r][c]=0; } } }
+
+      let player = { x:10 + 0.5, y:15 + 0.5, dir: {x:0,y:0}, nextDir: {x:0,y:0}, speed: 2.2, radius: TILE*0.4 };
+      let score = 0, lives = 3;
+      let ghosts = [];
+      let running = false, animId=null;
+      let powerTimer = 0;
+
+      const GHOST_SPEED = 1.0; // lower = slower (pixels per frame)
+
+      function resetGame(){ initPellets(); score=0; lives=3; powerTimer=0; player.x=10.5; player.y=15.5; player.dir={x:0,y:0}; player.nextDir={x:0,y:0}; ghosts = [ {x:9.5,y:9.5,dir:{x:1,y:0},speed:GHOST_SPEED,vul:false,home:{x:9.5,y:9.5}}, {x:11.5,y:9.5,dir:{x:-1,y:0},speed:GHOST_SPEED,vul:false,home:{x:11.5,y:9.5}} ]; scoreEl.textContent=score; livesEl.textContent=lives; draw(); }
+
+      function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); // draw maze
+        for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){ const t = MAZE[r][c]; if(t===0) ctx.fillStyle='#001b36'; else ctx.fillStyle='#000'; ctx.fillRect(c*TILE, r*TILE, TILE, TILE); if(pellets[r] && pellets[r][c]){ if(pellets[r][c]===1){ ctx.fillStyle='#ffdca8'; ctx.beginPath(); ctx.arc(c*TILE+TILE/2, r*TILE+TILE/2, 3,0,Math.PI*2); ctx.fill(); } else if(pellets[r][c]===2){ ctx.fillStyle='#ffd166'; ctx.beginPath(); ctx.arc(c*TILE+TILE/2, r*TILE+TILE/2, 7,0,Math.PI*2); ctx.fill(); } } }
+        // draw player
+        ctx.fillStyle = '#ffea00'; ctx.beginPath(); ctx.arc(player.x*TILE, player.y*TILE, player.radius, 0, Math.PI*2); ctx.fill();
+        // draw ghosts
+        for(const g of ghosts){ ctx.fillStyle = g.vul ? '#6ec1ff' : '#ff6b6b'; ctx.beginPath(); ctx.arc(g.x*TILE, g.y*TILE, TILE*0.4,0,Math.PI*2); ctx.fill(); }
+      }
+
+      function tileAt(px,py){ const tx = Math.floor(px), ty = Math.floor(py); if(ty<0||tx<0||ty>=ROWS||tx>=COLS) return 0; return MAZE[ty][tx]; }
+
+      // check whether an entity with radius (in tile units) can occupy position x,y
+      function canOccupy(x, y, radiusTiles = 0.4){
+        const txMin = Math.floor(x - radiusTiles);
+        const txMax = Math.floor(x + radiusTiles);
+        const tyMin = Math.floor(y - radiusTiles);
+        const tyMax = Math.floor(y + radiusTiles);
+        for(let ty = tyMin; ty <= tyMax; ty++){
+          for(let tx = txMin; tx <= txMax; tx++){
+            if(ty < 0 || tx < 0 || ty >= ROWS || tx >= COLS) return false;
+            if(MAZE[ty][tx] === 0) return false;
+          }
+        }
+        return true;
+      }
+
+      function canMove(px,py,dir){ const nx = px + dir.x*0.5; const ny = py + dir.y*0.5; return canOccupy(nx, ny, player.radius / TILE); }
+
+      function update(){ if(!running) return; // player movement continuous, change direction when possible
+        // attempt direction change when centered in tile
+        const cx = player.x - Math.floor(player.x); const cy = player.y - Math.floor(player.y);
+        const centered = Math.abs(cx-0.5)<0.28 && Math.abs(cy-0.5)<0.28;
+        if(player.nextDir.x!==0 || player.nextDir.y!==0){ if(canMove(Math.floor(player.x)+0.5, Math.floor(player.y)+0.5, player.nextDir)) player.dir = player.nextDir; }
+        // move (remember previous to revert if entering wall)
+        const prevPlayerX = player.x, prevPlayerY = player.y;
+        const nextPlayerX = player.x + player.dir.x * (player.speed / TILE);
+        const nextPlayerY = player.y + player.dir.y * (player.speed / TILE);
+        // if the next position would overlap any wall, stop movement (don't enter)
+        if(canOccupy(nextPlayerX, nextPlayerY, player.radius / TILE)){
+          player.x = nextPlayerX; player.y = nextPlayerY;
+          // additionally ensure the center tile is a path; otherwise revert
+          if(tileAt(player.x, player.y) === 0){ player.x = prevPlayerX; player.y = prevPlayerY; player.dir = {x:0,y:0}; }
+        } else {
+          // prevent sliding into walls: stop movement
+          player.dir = {x:0,y:0};
+        }
+        // clamp inside bounds
+        player.x = Math.max(0.5, Math.min(COLS - 0.5, player.x));
+        player.y = Math.max(0.5, Math.min(ROWS - 0.5, player.y));
+        // collect pellets
+        const ptX = Math.floor(player.x), ptY = Math.floor(player.y);
+        if(pellets[ptY] && pellets[ptY][ptX]){
+          if(pellets[ptY][ptX]===1){ score += 10; pellets[ptY][ptX]=0; }
+          else if(pellets[ptY][ptX]===2){ score += 50; pellets[ptY][ptX]=0; powerTimer = 300; // frames
+            for(const g of ghosts) g.vul = true; }
+          scoreEl.textContent = score;
+        }
+        // power timer
+        if(powerTimer>0){ powerTimer--; if(powerTimer===0){ for(const g of ghosts) g.vul=false; } }
+
+        // ghosts movement: decide at tile centers or when blocked; avoid immediate reversals
+        const dirsAll = [{x:1,y:0},{x:-1,y:0},{x:0,y:1},{x:0,y:-1}];
+        const gRadiusTiles = (TILE*0.4)/TILE; // 0.4
+        const centerThreshold = 0.18;
+        for(const g of ghosts){
+          // ensure g.dir exists
+          if(!g.dir) g.dir = {x:0,y:0};
+
+          // IMPORTANT: ghosts use tile centers at N + 0.5, so use floor()+0.5 not round()
+          const tileX = Math.floor(g.x);
+          const tileY = Math.floor(g.y);
+          const centerX = tileX + 0.5;
+          const centerY = tileY + 0.5;
+          const atCenter = Math.abs(g.x - centerX) < centerThreshold && Math.abs(g.y - centerY) < centerThreshold;
+
+          // if at center (or current path ahead is blocked), pick a direction
+          const aheadX = g.x + (g.dir.x * 0.5);
+          const aheadY = g.y + (g.dir.y * 0.5);
+          const aheadBlocked = !canOccupy(aheadX, aheadY, gRadiusTiles);
+
+          if(atCenter || aheadBlocked || (g.dir.x===0 && g.dir.y===0)){
+            // gather legal options from this tile
+            const options = [];
+            for(const d of dirsAll){
+              const tx = tileX + d.x, ty = tileY + d.y;
+              if(tx>=0 && ty>=0 && tx<COLS && ty<ROWS && MAZE[ty][tx] !== 0) options.push(d);
+            }
+            if(options.length === 0){
+              g.dir = {x:0,y:0};
+            } else {
+              // avoid immediate reverse unless no other option
+              const reverse = {x: -g.dir.x, y: -g.dir.y};
+              const filtered = options.filter(d => !(d.x===reverse.x && d.y===reverse.y));
+              const pickPool = filtered.length > 0 ? filtered : options;
+
+              // prefer chase when not vulnerable
+              if(!g.vul && Math.random() < 0.6){
+                pickPool.sort((a,b)=>{
+                  const da = Math.hypot((tileX + a.x + 0.5) - player.x, (tileY + a.y + 0.5) - player.y);
+                  const db = Math.hypot((tileX + b.x + 0.5) - player.x, (tileY + b.y + 0.5) - player.y);
+                  return da - db;
+                });
+                g.dir = pickPool[0];
+              } else {
+                g.dir = pickPool[Math.floor(Math.random()*pickPool.length)];
+              }
+            }
+            // snap ghost to *this tile's* center (small correction, no big jump)
+            g.x = centerX;
+            g.y = centerY;
+          }
+
+          // apply movement along g.dir if possible
+          const prevGX = g.x, prevGY = g.y;
+          const nextGX = g.x + g.dir.x * (g.speed / TILE);
+          const nextGY = g.y + g.dir.y * (g.speed / TILE);
+          if(canOccupy(nextGX, nextGY, gRadiusTiles)){
+            g.x = nextGX; g.y = nextGY;
+            // ensure ghost didn't end up centered inside a wall tile
+            if(tileAt(g.x, g.y) === 0){ g.x = prevGX; g.y = prevGY; g.dir = null; }
+          } else {
+            // blocked: clear dir so it'll re-evaluate next frame
+            g.dir = null;
+          }
+
+          // clamp inside bounds
+          g.x = Math.max(0.5, Math.min(COLS - 0.5, g.x));
+          g.y = Math.max(0.5, Math.min(ROWS - 0.5, g.y));
+
+          // collision with player
+          const dx = g.x - player.x, dy = g.y - player.y;
+          if(Math.hypot(dx,dy) < 0.6){
+            if(g.vul){ // eat ghost
+              score += 200; scoreEl.textContent = score; g.x = g.home.x; g.y = g.home.y; g.vul = false; g.dir = {x:0,y:0};
+            } else { // player dies
+              lives--; livesEl.textContent = lives;
+              if(lives<=0){ running=false; setTimeout(()=>alert('Game Over — score: '+score),40); }
+              else {
+                // reset positions
+                player.x=10.5; player.y=15.5; player.dir={x:0,y:0}; player.nextDir={x:0,y:0};
+                for(const gg of ghosts){ gg.x = gg.home.x; gg.y = gg.home.y; gg.dir={x:1,y:0}; gg.speed = GHOST_SPEED; gg.vul=false; }
+              }
+            }
+          }
+        }
+      }
+
+      function loop(){ update(); draw(); animId = requestAnimationFrame(loop); }
+
+      // input
+      window.addEventListener('keydown',(e)=>{
+        const k = e.key;
+        if(k==='ArrowUp'){ player.nextDir = {x:0,y:-1}; }
+        if(k==='ArrowDown'){ player.nextDir = {x:0,y:1}; }
+        if(k==='ArrowLeft'){ player.nextDir = {x:-1,y:0}; }
+        if(k==='ArrowRight'){ player.nextDir = {x:1,y:0}; }
+        if(k===' ') { /* pause toggle */ running = !running; if(running) loop(); }
+      });
+
+      startBtn.addEventListener('click', ()=>{ if(!running){ running=true; loop(); } });
+      restartBtn.addEventListener('click', ()=>{ running=false; if(animId) cancelAnimationFrame(animId); resetGame(); });
+
+      // init
+      resetGame();
+    })();
+  </script>
+</body>
+</html>
